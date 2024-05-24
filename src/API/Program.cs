@@ -1,3 +1,6 @@
+using API.Context;
+using Microsoft.EntityFrameworkCore;
+
 namespace API
 {
     public class Program
@@ -11,6 +14,10 @@ namespace API
 
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            #region DBContext
+            builder.Services.AddDbContext<DBGenSparkMinirojectContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+            #endregion
 
             var app = builder.Build();
 
