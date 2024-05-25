@@ -22,7 +22,9 @@ namespace API.Controllers
 
         [Authorize(policy: "CustomerPolicy")]
         [HttpPost("register")]
-        //[ProducesResponseType]
+        [ProducesResponseType(typeof(ReturnCustomerRegisterDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorDto),StatusCodes.Status409Conflict)]
+        [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> Register(CustomerRegisterDto customerRegisterDto)
         {
             try
@@ -38,12 +40,15 @@ namespace API.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+                return NotFound(new ErrorDto(StatusCodes.Status500InternalServerError, ex.Message));
             }
 
         }
 
         [HttpPost("login")]
+        [ProducesResponseType(typeof(ReturnCustomerLoginDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Login(CustomerLoginDto customerLoginDto)
         {
             try
@@ -53,11 +58,13 @@ namespace API.Controllers
             }
             catch (InvalidUserCredentialException ex)
             {
-                return StatusCode(StatusCodes.Status401Unauthorized, ex.Message);
+                _logger.LogWarning(ex.Message);
+                return NotFound(new ErrorDto(StatusCodes.Status401Unauthorized, ex.Message));
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+                _logger.LogError(ex.Message);
+                return NotFound(new ErrorDto(StatusCodes.Status500InternalServerError, ex.Message));
             }
         }
     }
