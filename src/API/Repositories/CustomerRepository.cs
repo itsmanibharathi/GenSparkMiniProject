@@ -53,9 +53,9 @@ namespace API.Repositories
             try
             {
 
-                return (await _context.Customers.FirstOrDefaultAsync(c=> c.CustomerId == id))?? throw new NoEmployeeInThisIdException();
+                return (await _context.Customers.FirstOrDefaultAsync(c=> c.CustomerId == id))?? throw new RestaurantNotFoundException();
             }
-            catch (NoEmployeeInThisIdException)
+            catch (RestaurantNotFoundException)
             {
                 throw;
             }
@@ -69,7 +69,8 @@ namespace API.Repositories
         {
             try
             {
-                return await _context.Customers.ToListAsync() ?? throw new EmptyDatabaseException("Customer DB Empty");
+                var res = await _context.Customers.ToListAsync();
+                return res.Count > 0 ? res : throw new EmptyDatabaseException("Customer DB Empty");
             }
             catch (EmptyDatabaseException)
             {

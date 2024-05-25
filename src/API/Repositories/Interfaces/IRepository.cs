@@ -9,6 +9,5 @@ namespace API.Repositories.Interfaces
         public Task<bool> Delete(k id);
         public Task<T> Get(k id);
         public Task<IEnumerable<T>> Get();
-        Task<Customer> Add(Customer customer);
     }
 }

@@ -24,7 +24,7 @@ namespace API.Services
                 Audience = null,
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.NameIdentifier, customer.CustomerId.ToString()),
+                    new Claim("Id", customer.CustomerId.ToString()),
                     new Claim(ClaimTypes.Name, customer.CustomerName),
                 }),
                 Expires = DateTime.UtcNow.AddDays(100),

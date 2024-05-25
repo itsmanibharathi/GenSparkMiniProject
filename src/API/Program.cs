@@ -97,12 +97,16 @@ namespace API
             #region Repositories
             builder.Services.AddScoped<IRepository<int, Customer>, CustomerRepository>();
             builder.Services.AddScoped<ICustomerAuthRepository, CustomerAuthRepository>();
+            builder.Services.AddScoped<IRepository<int, Restaurant>, RestaurantRepository>();
+            builder.Services.AddScoped<IRestaurantAuthRepository,  RestaurantAuthRepository>();
             #endregion
 
             #region Services
-            builder.Services.AddScoped<ICustomerAuthService, CustomerAuthService>();
             builder.Services.AddScoped<IPasswordHashService, PasswordHashService>();
             builder.Services.AddScoped<ITokenService<Customer>, CustomerTokenService>();
+            builder.Services.AddScoped<ITokenService<Restaurant>, RestaurantTokenService>();
+            builder.Services.AddScoped<ICustomerAuthService, CustomerAuthService>();
+            builder.Services.AddScoped<IRestaurantAuthService, RestaurantAuthService>();
             #endregion
 
 
