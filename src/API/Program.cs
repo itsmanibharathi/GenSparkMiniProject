@@ -32,6 +32,7 @@ namespace API
             builder.Services.AddLogging(l => l.AddLog4Net());
 
             builder.Services.AddEndpointsApiExplorer();
+            
             #region Swagger
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -66,7 +67,7 @@ namespace API
             });
             #endregion
 
-            #region JWT
+            #region JWT Auth/Authorization
 
             builder.Services.AddAuthentication()
                 .AddJwtBearer("CustomerScheme", options =>
@@ -78,12 +79,43 @@ namespace API
                         ValidateIssuerSigningKey = true,
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:CustomerSecret"]))
                     };
+                })
+                .AddJwtBearer("RestaurantScheme", options =>
+                {
+                    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
+                    {
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:RestaurantSecret"]))
+                    };
+                })
+                .AddJwtBearer("EmployeeScheme", options =>
+                {
+                    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
+                    {
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:EmployeeSecret"]))
+                    };
                 });
+
             builder.Services.AddAuthorization(options =>
             {
                 options.AddPolicy("CustomerPolicy", policy =>
                 {
                     policy.AuthenticationSchemes.Add("CustomerScheme");
+                    policy.RequireAuthenticatedUser();
+                });
+                options.AddPolicy("RestaurantPolicy", policy =>
+                {
+                    policy.AuthenticationSchemes.Add("RestaurantScheme");
+                    policy.RequireAuthenticatedUser();
+                });
+                options.AddPolicy("EmployeePolicy", policy =>
+                {
+                    policy.AuthenticationSchemes.Add("EmployeeScheme");
                     policy.RequireAuthenticatedUser();
                 });
             });
