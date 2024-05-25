@@ -19,7 +19,7 @@ namespace API.Models
         public DateTime UpdateAt { get; set; }
         public bool IsActive { get; set; }
         public AddressCode AddressCode { get; set; }
-        public RestaurantAuth restaurantAuth { get; set; }
+        public RestaurantAuth? RestaurantAuth { get; set; }
         public ICollection<Product>? Products { get; set; }
     }
 }

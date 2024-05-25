@@ -43,20 +43,19 @@ namespace API.Context
                 .HasIndex(p => p.ProductName);
            
             // Table Relation 
-
-            modelBuilder.Entity<CustomerAuth>()
-                .HasOne(ca => ca.customer)
-                .WithOne(c => c.CustomerAuth)
-                .HasForeignKey<Customer>(c => c.CustomerId );
-
+            modelBuilder.Entity<Customer>()
+                .HasOne(c => c.CustomerAuth)
+                .WithOne(ca => ca.Customer)
+                .HasForeignKey<CustomerAuth>(ca => ca.CustomerId);
             modelBuilder.Entity<Customer>()
                 .HasMany(c => c.Addresses)
                 .WithOne(ca => ca.Customer)
                 .HasForeignKey(ca => ca.CustomerId);
-            modelBuilder.Entity<RestaurantAuth>()
-                .HasOne(ra => ra.Restaurant)
-                .WithOne(r => r.restaurantAuth)
-                .HasForeignKey<Restaurant>(r => r.RestaurantId);
+
+            modelBuilder.Entity<Restaurant>()
+                .HasOne(r => r.RestaurantAuth)
+                .WithOne(ra => ra.Restaurant)
+                .HasForeignKey<RestaurantAuth>(ra => ra.RestaurantId);
 
             modelBuilder.Entity<Restaurant>()
                 .HasMany(r => r.Products)

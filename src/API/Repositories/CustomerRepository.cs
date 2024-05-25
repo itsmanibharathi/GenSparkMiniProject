@@ -1,7 +1,7 @@
 ﻿using API.Context;
 using API.Exceptions;
-using API.Interfaces;
 using API.Models;
+using API.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Net.Mail;
 
@@ -65,7 +65,7 @@ namespace API.Repositories
             }
         }
 
-        public async Task<IEnumerable<Customer>> GetAll()
+        public virtual async Task<IEnumerable<Customer>> Get()
         {
             try
             {

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(DBGenSparkMinirojectContext))]
-    [Migration("20240524085052_setupCustomerProduct")]
-    partial class setupCustomerProduct
+    [Migration("20240525113745_Create_customer_Product")]
+    partial class Create_customer_Product
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -27,7 +27,10 @@ namespace API.Migrations
             modelBuilder.Entity("API.Models.Customer", b =>
                 {
                     b.Property<int>("CustomerId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CustomerId"), 1L, 1);
 
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("datetime2");
@@ -40,13 +43,12 @@ namespace API.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CustomerPhone")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime>("UpdateAt")
+                    b.Property<DateTime?>("UpdateAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("CustomerId");
@@ -97,27 +99,16 @@ namespace API.Migrations
             modelBuilder.Entity("API.Models.CustomerAuth", b =>
                 {
                     b.Property<int>("CustomerId")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CustomerId"), 1L, 1);
 
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Email")
+                    b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<byte[]>("PasswordHash")
-                        .IsRequired()
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<byte[]>("PasswordSalt")
-                        .IsRequired()
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<DateTime>("UpdateAt")
+                    b.Property<DateTime?>("UpdateAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("CustomerId");
@@ -203,7 +194,10 @@ namespace API.Migrations
             modelBuilder.Entity("API.Models.Restaurant", b =>
                 {
                     b.Property<int>("RestaurantId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RestaurantId"), 1L, 1);
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -264,21 +258,14 @@ namespace API.Migrations
             modelBuilder.Entity("API.Models.RestaurantAuth", b =>
                 {
                     b.Property<int>("RestaurantId")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RestaurantId"), 1L, 1);
 
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<byte[]>("PasswordHash")
+                    b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<byte[]>("PasswordSalt")
-                        .IsRequired()
-                        .HasColumnType("varbinary(max)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdateAt")
                         .HasColumnType("datetime2");
@@ -288,22 +275,22 @@ namespace API.Migrations
                     b.ToTable("RestaurantAuths");
                 });
 
-            modelBuilder.Entity("API.Models.Customer", b =>
-                {
-                    b.HasOne("API.Models.CustomerAuth", "CustomerAuth")
-                        .WithOne("customer")
-                        .HasForeignKey("API.Models.Customer", "CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CustomerAuth");
-                });
-
             modelBuilder.Entity("API.Models.CustomerAddress", b =>
                 {
                     b.HasOne("API.Models.Customer", "Customer")
                         .WithMany("Addresses")
                         .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+                });
+
+            modelBuilder.Entity("API.Models.CustomerAuth", b =>
+                {
+                    b.HasOne("API.Models.Customer", "Customer")
+                        .WithOne("CustomerAuth")
+                        .HasForeignKey("API.Models.CustomerAuth", "CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -332,26 +319,22 @@ namespace API.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("API.Models.Restaurant", b =>
+            modelBuilder.Entity("API.Models.RestaurantAuth", b =>
                 {
-                    b.HasOne("API.Models.RestaurantAuth", "restaurantAuth")
-                        .WithOne("Restaurant")
-                        .HasForeignKey("API.Models.Restaurant", "RestaurantId")
+                    b.HasOne("API.Models.Restaurant", "Restaurant")
+                        .WithOne("RestaurantAuth")
+                        .HasForeignKey("API.Models.RestaurantAuth", "RestaurantId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("restaurantAuth");
+                    b.Navigation("Restaurant");
                 });
 
             modelBuilder.Entity("API.Models.Customer", b =>
                 {
                     b.Navigation("Addresses");
-                });
 
-            modelBuilder.Entity("API.Models.CustomerAuth", b =>
-                {
-                    b.Navigation("customer")
-                        .IsRequired();
+                    b.Navigation("CustomerAuth");
                 });
 
             modelBuilder.Entity("API.Models.Product", b =>
@@ -362,12 +345,8 @@ namespace API.Migrations
             modelBuilder.Entity("API.Models.Restaurant", b =>
                 {
                     b.Navigation("Products");
-                });
 
-            modelBuilder.Entity("API.Models.RestaurantAuth", b =>
-                {
-                    b.Navigation("Restaurant")
-                        .IsRequired();
+                    b.Navigation("RestaurantAuth");
                 });
 #pragma warning restore 612, 618
         }

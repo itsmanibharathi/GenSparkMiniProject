@@ -5,71 +5,34 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace API.Migrations
 {
-    public partial class setupCustomerProduct : Migration
+    public partial class Create_customer_Product : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "CustomerAuths",
+                name: "Customers",
                 columns: table => new
                 {
                     CustomerId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PasswordHash = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
-                    PasswordSalt = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
-                    CreateAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CustomerAuths", x => x.CustomerId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "RestaurantAuths",
-                columns: table => new
-                {
-                    RestaurantId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PasswordHash = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
-                    PasswordSalt = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
-                    CreateAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RestaurantAuths", x => x.RestaurantId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Customers",
-                columns: table => new
-                {
-                    CustomerId = table.Column<int>(type: "int", nullable: false),
                     CustomerName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CustomerEmail = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CustomerPhone = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CustomerPhone = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreateAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Customers", x => x.CustomerId);
-                    table.ForeignKey(
-                        name: "FK_Customers_CustomerAuths_CustomerId",
-                        column: x => x.CustomerId,
-                        principalTable: "CustomerAuths",
-                        principalColumn: "CustomerId",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Restaurants",
                 columns: table => new
                 {
-                    RestaurantId = table.Column<int>(type: "int", nullable: false),
+                    RestaurantId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -88,12 +51,6 @@ namespace API.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Restaurants", x => x.RestaurantId);
-                    table.ForeignKey(
-                        name: "FK_Restaurants_RestaurantAuths_RestaurantId",
-                        column: x => x.RestaurantId,
-                        principalTable: "RestaurantAuths",
-                        principalColumn: "RestaurantId",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -124,6 +81,26 @@ namespace API.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CustomerAuths",
+                columns: table => new
+                {
+                    CustomerId = table.Column<int>(type: "int", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreateAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CustomerAuths", x => x.CustomerId);
+                    table.ForeignKey(
+                        name: "FK_CustomerAuths_Customers_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "Customers",
+                        principalColumn: "CustomerId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Products",
                 columns: table => new
                 {
@@ -143,6 +120,26 @@ namespace API.Migrations
                     table.PrimaryKey("PK_Products", x => x.ProductId);
                     table.ForeignKey(
                         name: "FK_Products_Restaurants_RestaurantId",
+                        column: x => x.RestaurantId,
+                        principalTable: "Restaurants",
+                        principalColumn: "RestaurantId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RestaurantAuths",
+                columns: table => new
+                {
+                    RestaurantId = table.Column<int>(type: "int", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreateAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RestaurantAuths", x => x.RestaurantId);
+                    table.ForeignKey(
+                        name: "FK_RestaurantAuths_Restaurants_RestaurantId",
                         column: x => x.RestaurantId,
                         principalTable: "Restaurants",
                         principalColumn: "RestaurantId",
@@ -194,7 +191,13 @@ namespace API.Migrations
                 name: "CustomerAddresses");
 
             migrationBuilder.DropTable(
+                name: "CustomerAuths");
+
+            migrationBuilder.DropTable(
                 name: "ProductImages");
+
+            migrationBuilder.DropTable(
+                name: "RestaurantAuths");
 
             migrationBuilder.DropTable(
                 name: "Customers");
@@ -203,13 +206,7 @@ namespace API.Migrations
                 name: "Products");
 
             migrationBuilder.DropTable(
-                name: "CustomerAuths");
-
-            migrationBuilder.DropTable(
                 name: "Restaurants");
-
-            migrationBuilder.DropTable(
-                name: "RestaurantAuths");
         }
     }
 }
