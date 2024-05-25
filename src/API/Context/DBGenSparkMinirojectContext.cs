@@ -15,8 +15,10 @@ namespace API.Context
         public DbSet<Restaurant> Restaurants { get; set; }
         public DbSet<RestaurantAuth> RestaurantAuths { get; set; }
         public DbSet<Product> Products { get; set; }
-        public DbSet<ProductImage> ProductImages { get; set; }  
-
+        public DbSet<ProductImage> ProductImages { get; set; }
+        public DbSet<Employee> Employees { get; set; }
+        public DbSet<EmployeeAuth> EmployeeAuths { get; set; }
+ 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
@@ -35,18 +37,31 @@ namespace API.Context
                 .HasKey(p => p.ProductId);
             modelBuilder.Entity<ProductImage>()
                 .HasKey(pi => pi.ProductImageId);
+            modelBuilder.Entity<Employee>()
+                .HasKey(e => e.EmployeeId);
+            modelBuilder.Entity<EmployeeAuth>()
+                .HasKey(ea => ea.EmployeeId);
+            
 
             // Table Index
+            modelBuilder.Entity<Customer>()
+                .HasIndex(c => c.CustomerEmail);
+            modelBuilder.Entity<Restaurant>()
+                .HasIndex(r => r.Email);
+            modelBuilder.Entity<Employee>()
+                .HasIndex(e => e.EmployeeEmail);
             modelBuilder.Entity<Product>()
                 .HasIndex(p => p.RestaurantId);
             modelBuilder.Entity<Product>()
                 .HasIndex(p => p.ProductName);
+            
            
             // Table Relation 
             modelBuilder.Entity<Customer>()
                 .HasOne(c => c.CustomerAuth)
                 .WithOne(ca => ca.Customer)
                 .HasForeignKey<CustomerAuth>(ca => ca.CustomerId);
+            
             modelBuilder.Entity<Customer>()
                 .HasMany(c => c.Addresses)
                 .WithOne(ca => ca.Customer)
@@ -61,6 +76,11 @@ namespace API.Context
                 .HasMany(r => r.Products)
                 .WithOne(p => p.Restaurant)
                 .HasForeignKey(p => p.RestaurantId);
+
+            modelBuilder.Entity<Employee>()
+                .HasOne(e => e.EmployeeAuth)
+                .WithOne(ea => ea.Employee)
+                .HasForeignKey<EmployeeAuth>(ea => ea.EmployeeId);
 
             modelBuilder.Entity<Product>()
                 .HasMany(p => p.ProductImages)

@@ -5,7 +5,7 @@ namespace API.Services.Interfaces
 {
     public interface ICustomerAuthService
     {
-        public Task<ReturnCustomerRegisterDto> Regiser(CustomerRegisterDto customerRegisterDto);
+        public Task<ReturnCustomerRegisterDto> Register(CustomerRegisterDto customerRegisterDto);
         public Task<ReturnCustomerLoginDto> Login(CustomerLoginDto customerLoginDto);
     }
 }

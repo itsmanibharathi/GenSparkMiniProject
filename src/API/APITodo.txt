@@ -1,0 +1,27 @@
+
+Importent : bug in automapper on Employee Aurh service : Register method
+
+
+
+
+
+
+
+Done 
+ - Steup the Basic Project Structure and configure
+
+ - Add The Entity (Customer,Customer Auth, Restaurant, RestaurantSecretAuth, Employee, Employee )\
+
+ - Add login and register method for Customer, Restaurant and Employee
+
+
+
+
+
+
+
+
+
+
+
+

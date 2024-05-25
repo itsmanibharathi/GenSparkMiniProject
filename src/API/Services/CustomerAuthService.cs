@@ -41,7 +41,7 @@ namespace API.Services
             throw new InvalidUserCredentialException();
         }
 
-        public async Task<ReturnCustomerRegisterDto> Regiser(CustomerRegisterDto customerRegisterDto)
+        public async Task<ReturnCustomerRegisterDto> Register(CustomerRegisterDto customerRegisterDto)
         {
             Customer customer = _mapper.Map<Customer>(customerRegisterDto);
             customer.CustomerAuth = new CustomerAuth

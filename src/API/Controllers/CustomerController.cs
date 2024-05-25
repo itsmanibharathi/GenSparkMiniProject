@@ -30,7 +30,7 @@ namespace API.Controllers
             try
             {
                 _logger.LogInformation("Registering customer");
-                return Ok(await _customerAuthService.Regiser(customerRegisterDto));
+                return Ok(await _customerAuthService.Register(customerRegisterDto));
             }
             catch(DataDuplicateException ex)
             {

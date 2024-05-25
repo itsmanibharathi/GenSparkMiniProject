@@ -53,9 +53,9 @@ namespace API.Repositories
             try
             {
 
-                return (await _context.Customers.FirstOrDefaultAsync(c=> c.CustomerId == id))?? throw new RestaurantNotFoundException();
+                return (await _context.Customers.FirstOrDefaultAsync(c=> c.CustomerId == id))?? throw new CustomerNotFoundException();
             }
-            catch (RestaurantNotFoundException)
+            catch (CustomerNotFoundException)
             {
                 throw;
             }
