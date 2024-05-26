@@ -1,5 +1,5 @@
 
-Importent : bug in automapper on Employee Aurh service : Register method
+Important : bug in automapper on Employee Aurh service : Register method
 
 
 
