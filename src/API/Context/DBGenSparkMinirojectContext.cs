@@ -18,6 +18,8 @@ namespace API.Context
         public DbSet<ProductImage> ProductImages { get; set; }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<EmployeeAuth> EmployeeAuths { get; set; }
+        
+
  
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -41,7 +43,12 @@ namespace API.Context
                 .HasKey(e => e.EmployeeId);
             modelBuilder.Entity<EmployeeAuth>()
                 .HasKey(ea => ea.EmployeeId);
-            
+            modelBuilder.Entity<Order>()
+                .HasKey(o => o.OrderId);
+            modelBuilder.Entity<OrderItem>()
+                .HasKey(oi => oi.OrderItemId);
+            modelBuilder.Entity<Payment>()
+                .HasKey(p => p.PaymentId);
 
             // Table Index
             modelBuilder.Entity<Customer>()
@@ -86,10 +93,63 @@ namespace API.Context
                 .HasMany(p => p.ProductImages)
                 .WithOne(pi => pi.Product)
                 .HasForeignKey(pi => pi.ProductId);
+            
+            modelBuilder.Entity<Order>()
+                .HasMany(o => o.OrderItems)
+                .WithOne(oi => oi.Order)
+                .HasForeignKey(oi => oi.OrderId)
+                .OnDelete(DeleteBehavior.NoAction);
+                
+            
+            modelBuilder.Entity<Order>()
+                .HasOne(o => o.Customer)
+                .WithMany(c => c.Orders)
+                .HasForeignKey(o => o.CustomerId)
+                .OnDelete(DeleteBehavior.NoAction);
+                
+            
+            modelBuilder.Entity<Order>()
+                .HasOne(o => o.CustomerAddress)
+                .WithMany(ca => ca.Orders)
+                .HasForeignKey(o => o.CustomerAddressId)
+                .OnDelete(DeleteBehavior.NoAction);
+            
+            modelBuilder.Entity<Order>()
+                .HasOne(o => o.Employee)
+                .WithMany(e => e.Orders)
+                .HasForeignKey(o => o.EmployeeId)
+                .OnDelete(DeleteBehavior.NoAction);
+            
+            modelBuilder.Entity<Order>()
+                .HasOne(o => o.Restaurant)
+                .WithMany(r => r.Orders)
+                .HasForeignKey(o => o.RestaurantId)
+                .OnDelete(DeleteBehavior.NoAction);
+            
+            modelBuilder.Entity<Order>()
+                .HasOne(o => o.Payment)
+                .WithOne(p => p.Order)
+                .HasForeignKey<Payment>(p => p.PaymentId)
+                .OnDelete(DeleteBehavior.NoAction);
 
             // Property
             modelBuilder.Entity<Product>()
                 .Property(p => p.ProductPrice)
+                .HasColumnType("decimal(18,2)");
+            modelBuilder.Entity<OrderItem>()
+                .Property(oi => oi.Price)
+                .HasColumnType("decimal(18,2)");
+            modelBuilder.Entity<Order>()
+                .Property(o => o.OrderTotal)
+                .HasColumnType("decimal(18,2)");
+            modelBuilder.Entity<Payment>()
+                .Property(p => p.Amount)
+                .HasColumnType("decimal(18,2)");
+            modelBuilder.Entity<Product>()
+                .Property(p => p.ProductPrice)
+                .HasColumnType("decimal(18,2)");
+            modelBuilder.Entity<Employee>()
+                .Property(e => e.Balance)
                 .HasColumnType("decimal(18,2)");
         }
     }

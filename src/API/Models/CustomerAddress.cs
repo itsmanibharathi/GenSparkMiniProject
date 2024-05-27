@@ -18,6 +18,7 @@ namespace API.Models
         public DateTime UpdateAt { get; set; }
 
         public Customer? Customer { get; set; }
+        public ICollection<Order>? Orders { get; set; }   
 
     }
 }

@@ -13,5 +13,6 @@ namespace API.Models
         public bool IsActive { get; set; } = true;
         public ICollection<CustomerAddress>? Addresses { get; set; }
         public CustomerAuth? CustomerAuth { get; set; }
+        public ICollection<Order>? Orders { get; set; }
     }
 }

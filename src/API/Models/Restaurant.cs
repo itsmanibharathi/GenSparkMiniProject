@@ -21,5 +21,7 @@ namespace API.Models
         public AddressCode AddressCode { get; set; }
         public RestaurantAuth? RestaurantAuth { get; set; }
         public ICollection<Product>? Products { get; set; }
+        public ICollection<Order>? Orders { get; set; }
+
     }
 }
