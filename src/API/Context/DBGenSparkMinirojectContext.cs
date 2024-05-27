@@ -28,7 +28,7 @@ namespace API.Context
             modelBuilder.Entity<CustomerAuth>()
                 .HasKey(ca => ca.CustomerId);
             modelBuilder.Entity<CustomerAddress>()
-                .HasKey(ca => new { ca.CustomerId, ca.AddressId });
+                .HasKey(ca =>ca.AddressId );
             modelBuilder.Entity<Restaurant>()
                 .HasKey(r => r.RestaurantId);
             modelBuilder.Entity<RestaurantAuth>()
@@ -91,8 +91,6 @@ namespace API.Context
             modelBuilder.Entity<Product>()
                 .Property(p => p.ProductPrice)
                 .HasColumnType("decimal(18,2)");
-        }   
-
-
+        }
     }
 }

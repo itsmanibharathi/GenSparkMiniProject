@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(DBGenSparkMinirojectContext))]
-    [Migration("20240525113745_Create_customer_Product")]
-    partial class Create_customer_Product
+    [Migration("20240527065631_alter_CustomerAddress")]
+    partial class alter_CustomerAddress
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -36,7 +36,7 @@ namespace API.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CustomerEmail")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("CustomerName")
                         .IsRequired()
@@ -53,16 +53,18 @@ namespace API.Migrations
 
                     b.HasKey("CustomerId");
 
+                    b.HasIndex("CustomerEmail");
+
                     b.ToTable("Customers");
                 });
 
             modelBuilder.Entity("API.Models.CustomerAddress", b =>
                 {
-                    b.Property<int>("CustomerId")
+                    b.Property<int>("AddressId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("AddressId")
-                        .HasColumnType("int");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AddressId"), 1L, 1);
 
                     b.Property<string>("City")
                         .HasColumnType("nvarchar(max)");
@@ -75,6 +77,9 @@ namespace API.Migrations
 
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
 
                     b.Property<string>("State")
                         .HasColumnType("nvarchar(max)");
@@ -91,7 +96,9 @@ namespace API.Migrations
                     b.Property<string>("ZipCode")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("CustomerId", "AddressId");
+                    b.HasKey("AddressId");
+
+                    b.HasIndex("CustomerId");
 
                     b.ToTable("CustomerAddresses");
                 });
@@ -114,6 +121,66 @@ namespace API.Migrations
                     b.HasKey("CustomerId");
 
                     b.ToTable("CustomerAuths");
+                });
+
+            modelBuilder.Entity("API.Models.Employee", b =>
+                {
+                    b.Property<int>("EmployeeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EmployeeId"), 1L, 1);
+
+                    b.Property<int>("AddressCode")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreateAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("EmployeeAddress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EmployeeEmail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("EmployeeName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EmployeePhone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdateAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("EmployeeId");
+
+                    b.HasIndex("EmployeeEmail");
+
+                    b.ToTable("Employees");
+                });
+
+            modelBuilder.Entity("API.Models.EmployeeAuth", b =>
+                {
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreateAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdateAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("EmployeeId");
+
+                    b.ToTable("EmployeeAuths");
                 });
 
             modelBuilder.Entity("API.Models.Product", b =>
@@ -223,7 +290,7 @@ namespace API.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("FssaiLicenseNumber")
                         .HasColumnType("int");
@@ -251,6 +318,8 @@ namespace API.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("RestaurantId");
+
+                    b.HasIndex("Email");
 
                     b.ToTable("Restaurants");
                 });
@@ -297,6 +366,17 @@ namespace API.Migrations
                     b.Navigation("Customer");
                 });
 
+            modelBuilder.Entity("API.Models.EmployeeAuth", b =>
+                {
+                    b.HasOne("API.Models.Employee", "Employee")
+                        .WithOne("EmployeeAuth")
+                        .HasForeignKey("API.Models.EmployeeAuth", "EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+                });
+
             modelBuilder.Entity("API.Models.Product", b =>
                 {
                     b.HasOne("API.Models.Restaurant", "Restaurant")
@@ -335,6 +415,11 @@ namespace API.Migrations
                     b.Navigation("Addresses");
 
                     b.Navigation("CustomerAuth");
+                });
+
+            modelBuilder.Entity("API.Models.Employee", b =>
+                {
+                    b.Navigation("EmployeeAuth");
                 });
 
             modelBuilder.Entity("API.Models.Product", b =>

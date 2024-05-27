@@ -58,11 +58,11 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Models.CustomerAddress", b =>
                 {
-                    b.Property<int>("CustomerId")
+                    b.Property<int>("AddressId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("AddressId")
-                        .HasColumnType("int");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AddressId"), 1L, 1);
 
                     b.Property<string>("City")
                         .HasColumnType("nvarchar(max)");
@@ -75,6 +75,9 @@ namespace API.Migrations
 
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
 
                     b.Property<string>("State")
                         .HasColumnType("nvarchar(max)");
@@ -91,7 +94,9 @@ namespace API.Migrations
                     b.Property<string>("ZipCode")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("CustomerId", "AddressId");
+                    b.HasKey("AddressId");
+
+                    b.HasIndex("CustomerId");
 
                     b.ToTable("CustomerAddresses");
                 });

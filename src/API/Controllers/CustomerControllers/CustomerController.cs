@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace API.Controllers
+namespace API.Controllers.CustomerControllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -20,10 +20,9 @@ namespace API.Controllers
             _logger = logger;
         }
 
-        [Authorize(policy: "CustomerPolicy")]
         [HttpPost("register")]
         [ProducesResponseType(typeof(ReturnCustomerRegisterDto), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ErrorDto),StatusCodes.Status409Conflict)]
+        [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status409Conflict)]
         [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> Register(CustomerRegisterDto customerRegisterDto)
         {
@@ -32,10 +31,10 @@ namespace API.Controllers
                 _logger.LogInformation("Registering customer");
                 return Ok(await _customerAuthService.Register(customerRegisterDto));
             }
-            catch(DataDuplicateException ex)
+            catch (DataDuplicateException ex)
             {
                 _logger.LogWarning(ex.Message);
-                return NotFound( new ErrorDto(StatusCodes.Status409Conflict, ex.Message));
+                return NotFound(new ErrorDto(StatusCodes.Status409Conflict, ex.Message));
             }
             catch (Exception ex)
             {
