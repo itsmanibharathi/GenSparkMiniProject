@@ -25,6 +25,9 @@ namespace API.Utility
             CreateMap<RestaurantLoginDto, Restaurant>();
             CreateMap<Restaurant, ReturnRestaurantLoginDto>();
 
+            // Return Search Product
+            CreateMap<Product, ReturnSearchProductDto>();
+
             // Restaurant Product
             CreateMap<RestaurantProductDto, Product>();
             CreateMap<Product, ReturnRestaurantProductDto>();

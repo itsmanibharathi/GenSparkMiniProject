@@ -62,7 +62,7 @@ namespace API.Repositories
             try
             {
 
-                return (await _context.Products.FirstOrDefaultAsync(c => c.ProductId == id)) ?? throw new ProductNotFoundException();
+                return (await _context.Products.Include(p => p.Restaurant).FirstOrDefaultAsync(c => c.ProductId == id)) ?? throw new ProductNotFoundException();
             }
             catch (ProductNotFoundException)
             {
@@ -78,7 +78,7 @@ namespace API.Repositories
         {
             try
             {
-                var res = await _context.Products.ToListAsync();
+                var res = await _context.Products.Include(p => p.Restaurant).ToListAsync();
                 return res.Count > 0 ? res : throw new EmptyDatabaseException("Product DB Empty");
             }
             catch (EmptyDatabaseException)
