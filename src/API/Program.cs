@@ -23,6 +23,7 @@ namespace API
             XmlConfigurator.Configure(logRepository, new System.IO.FileInfo("log4net.config"));
             #endregion
 
+
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddControllers();
@@ -133,6 +134,8 @@ namespace API
             builder.Services.AddScoped<IRestaurantAuthRepository,  RestaurantAuthRepository>();
             builder.Services.AddScoped<IRepository<int,Employee>, EmployeeRepository>();
             builder.Services.AddScoped<IEmployeeAuthRepository, EmployeeAuthRepository>();
+            builder.Services.AddScoped<IRepository<int, Product>, ProductRepository>();
+            builder.Services.AddScoped<IProductSearchRepository, ProductRepository>();
             #endregion
 
             #region Services
@@ -143,6 +146,8 @@ namespace API
             builder.Services.AddScoped<ICustomerAuthService, CustomerAuthService>();
             builder.Services.AddScoped<IRestaurantAuthService, RestaurantAuthService>();
             builder.Services.AddScoped<IEmployeeAuthService, EmployeeAuthService>();
+            builder.Services.AddScoped<IProductSerivce, ProductService>();
+            builder.Services.AddScoped<IRestaurantProductService, RestaurantProductService>();
             #endregion
 
 

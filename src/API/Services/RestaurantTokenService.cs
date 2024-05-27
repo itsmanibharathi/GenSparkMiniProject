@@ -25,9 +25,8 @@ namespace API.Services
                 {
                     new Claim("Id", item.RestaurantId.ToString()),
                     new Claim(ClaimTypes.Name, item.Name)
-                    
                 }),
-                Expires = DateTime.UtcNow.AddHours(1),
+                Expires = DateTime.UtcNow.AddDays(100),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);

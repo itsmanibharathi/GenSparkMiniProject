@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace API.Controllers
+namespace API.Controllers.RestaurantControllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -15,7 +15,7 @@ namespace API.Controllers
         private readonly IRestaurantAuthService _restaurantAuthService;
         private ILogger<Restaurant> _logger;
 
-        public RestaurantController(IRestaurantAuthService restaurantAuthService , ILogger<Restaurant> logger )
+        public RestaurantController(IRestaurantAuthService restaurantAuthService, ILogger<Restaurant> logger)
         {
             _restaurantAuthService = restaurantAuthService;
             _logger = logger;
