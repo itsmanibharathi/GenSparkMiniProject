@@ -18,6 +18,10 @@ namespace API.Context
         public DbSet<ProductImage> ProductImages { get; set; }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<EmployeeAuth> EmployeeAuths { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<Payment> Payments { get; set; }
+
         
 
  
@@ -140,7 +144,19 @@ namespace API.Context
                 .Property(oi => oi.Price)
                 .HasColumnType("decimal(18,2)");
             modelBuilder.Entity<Order>()
-                .Property(o => o.OrderTotal)
+                .Property(o => o.TotalOrderPrice)
+                .HasColumnType("decimal(18,2)");
+            modelBuilder.Entity<Order>()
+                .Property(o => o.ShippingPrice)
+                .HasColumnType("decimal(18,2)");
+            modelBuilder.Entity<Order>()
+                .Property(o => o.TotalTax)
+                .HasColumnType("decimal(18,2)");
+            modelBuilder.Entity<Order>()
+                .Property(o => o.DiscountPrice)
+                .HasColumnType("decimal(18,2)");
+            modelBuilder.Entity<Order>()
+                .Property(o => o.TotalAmount)
                 .HasColumnType("decimal(18,2)");
             modelBuilder.Entity<Payment>()
                 .Property(p => p.Amount)

@@ -1,4 +1,6 @@
-﻿namespace API.Models.DTOs
+﻿using API.Models.Enums;
+
+namespace API.Models.DTOs
 {
     public class RestaurantRegisterDto
     {
@@ -11,6 +13,7 @@
         public string City { get; set; }
         public string State { get; set; }
         public string Zip { get; set; }
+        public AddressCode AddressCode { get; set; }
         public int FssaiLicenseNumber { get; set; }
         public string Password { get; set; }
 

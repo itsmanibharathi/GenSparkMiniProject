@@ -133,11 +133,12 @@ namespace API
             builder.Services.AddScoped<IRepository<int, Restaurant>, RestaurantRepository>();
             builder.Services.AddScoped<IRestaurantAuthRepository,  RestaurantAuthRepository>();
             builder.Services.AddScoped<IRepository<int,Employee>, EmployeeRepository>();
+
             builder.Services.AddScoped<IEmployeeAuthRepository, EmployeeAuthRepository>();
             builder.Services.AddScoped<IRepository<int, Product>, ProductRepository>();
             builder.Services.AddScoped<IProductSearchRepository, ProductRepository>();
             builder.Services.AddScoped<ICustomerAddressRepository, CustomerAddressRepository>();
-
+            builder.Services.AddScoped<ICustomerOrderRepository, CustomerOrderRepository>();
             #endregion
 
             #region Services
@@ -145,12 +146,15 @@ namespace API
             builder.Services.AddScoped<ITokenService<Customer>, CustomerTokenService>();
             builder.Services.AddScoped<ITokenService<Restaurant>, RestaurantTokenService>();
             builder.Services.AddScoped<ITokenService<Employee>, EmployeeTokenService>();
+
             builder.Services.AddScoped<ICustomerAuthService, CustomerAuthService>();
+            builder.Services.AddScoped<ICustomerAddressService, CustomerAddressService>();
+            builder.Services.AddScoped<ICustomerOrderService, CustomerOrderService>();
+            
             builder.Services.AddScoped<IRestaurantAuthService, RestaurantAuthService>();
             builder.Services.AddScoped<IEmployeeAuthService, EmployeeAuthService>();
             builder.Services.AddScoped<IProductSerivce, ProductService>();
             builder.Services.AddScoped<IRestaurantProductService, RestaurantProductService>();
-            builder.Services.AddScoped<ICustomerAddressService, CustomerAddressService>();
             #endregion
 
 

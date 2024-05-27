@@ -12,7 +12,25 @@ namespace API.Models
         public DateTime OrderDate { get; set; } = DateTime.Now;
         public DateTime DeliveryDate { get; set; }
         public OrderStatus OrderStatus { get; set; }
-        public decimal OrderTotal { get; set; }
+        
+        public decimal ShippingPrice { get; set; }
+        public decimal DiscountPrice { get; set; }
+        public decimal _totalOrderPrice;
+        public decimal TotalTax;
+        public decimal TotalAmount { get; set; }
+        public decimal TotalOrderPrice {
+            get
+            {
+                return _totalOrderPrice;
+            }
+            set 
+            {
+                _totalOrderPrice = value;
+                TotalTax = _totalOrderPrice * 0.1m;  // 10% tax
+                DiscountPrice = _totalOrderPrice * 0.05m; // 5% discount
+                TotalAmount = _totalOrderPrice + TotalTax + ShippingPrice - DiscountPrice;
+            } 
+        }
         public Customer Customer { get; set; }
         public CustomerAddress CustomerAddress { get; set; }
         public Employee Employee { get; set; }
