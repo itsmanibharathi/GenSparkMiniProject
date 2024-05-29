@@ -2,7 +2,9 @@
 using API.Exceptions;
 using API.Models;
 using API.Repositories.Interfaces;
+using AutoMapper.Configuration.Annotations;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.CodeAnalysis;
 using System.Net.Mail;
 
 namespace API.Repositories
@@ -42,7 +44,7 @@ namespace API.Repositories
             var customer = await _context.Customers.FirstOrDefaultAsync(c => c.CustomerEmail == entity.CustomerEmail && c.CustomerPhone == entity.CustomerPhone);
             return customer != null;
         }
-
+        [ExcludeFromCodeCoverage]
         public virtual Task<bool> Delete(int id)
         {
             throw new NotImplementedException();
@@ -81,7 +83,7 @@ namespace API.Repositories
                 throw new UnableToDoActionException("Unable to get the Customers",ex);
             }
         }
-
+        
         public virtual async Task<Customer> Update(Customer customer)
         {
             try

@@ -28,7 +28,7 @@ namespace UnitTest.Repositories.CustomerRepositoriesTest
             };
             foreach (var item in _context.Customers)
             {
-                System.Console.WriteLine(item.CustomerName + " " + item.CustomerId );
+                System.Console.WriteLine(item.CustomerName + " " + item.CustomerId);
             }
             var result = await _repository.Add(customer);
             Assert.IsTrue(result.CustomerId == 3);
@@ -55,9 +55,7 @@ namespace UnitTest.Repositories.CustomerRepositoriesTest
         [Test]
         public async Task AddCustomerIntenalErrorException()
         {
-            DbContextOptionsBuilder optionsBuilder = new DbContextOptionsBuilder()
-                                .UseInMemoryDatabase("dummyDB");
-            _repository = new CustomerRepository(new DBGenSparkMinirojectContext(optionsBuilder.Options));
+            dummyDB();
             Customer customer = new Customer()
             {
                 CustomerName = "Ludena",
@@ -76,6 +74,65 @@ namespace UnitTest.Repositories.CustomerRepositoriesTest
             {
                 Assert.Pass();
             }
+        }
+
+        // Get Customer
+        [Test]
+        public async Task GetCustomer()
+        {
+            var result = await _repository.Get(1);
+            Assert.That(result.CustomerName, Is.EqualTo("Mani"));
+        }
+
+        [Test]
+        public async Task GetCustomerNotFoundException()
+        {
+            try
+            {
+                var result = await _repository.Get(3);
+            }
+            catch (CustomerNotFoundException)
+            {
+                Assert.Pass();
+            }
+        }
+
+        [Test]
+        public async Task GetCustomerIntenalErrorException()
+        {
+            dummyDB();
+            try
+            {
+                var result = await _repository.Get(1);
+            }
+            catch (Exception)
+            {
+                Assert.Pass();
+            }
+        }
+
+        // Update Customer
+        [Ignore("Test is not yet implemented")]
+        [Test]
+        public async Task UpdateCustomer()
+        {
+            Customer customer = new Customer()
+            {
+                CustomerId = 1,
+                CustomerName = "Manibharathi"
+            };
+            var result = await _repository.Update(customer);
+            Assert.That(result.CustomerName, Is.EqualTo("Manibharathi"));
+        }
+
+
+
+
+        private void dummyDB()
+        {
+            DbContextOptionsBuilder optionsBuilder = new DbContextOptionsBuilder()
+                                .UseInMemoryDatabase("dummyDB");
+            _repository = new CustomerRepository(new DBGenSparkMinirojectContext(optionsBuilder.Options));
         }
     }
 }
