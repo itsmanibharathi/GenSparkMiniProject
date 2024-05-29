@@ -86,7 +86,8 @@ namespace API.Repositories
         {
             try
             {
-                _context.Customers.Update(entity);
+                _context.Customers.Attach(entity);
+                _context.Entry(entity).State = EntityState.Modified;
                 var res = await _context.SaveChangesAsync();
                 return res > 0 ? entity : throw new UnableToDoActionException("Unable to update");
             }
