@@ -1,4 +1,5 @@
-﻿using API.Models.DTOs;
+﻿using API.Exceptions;
+using API.Models.DTOs;
 using API.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -32,11 +33,32 @@ namespace API.Controllers.CustomerControllers
                 _logger.LogInformation("Creating order");
                 return Ok(await _customerOrderService.CreateOrder(createCustomerOrderDto));
             }
+            catch (CustomerNotFoundException ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest(new ErrorDto(StatusCodes.Status400BadRequest, ex.Message));
+            }
+            catch (CustomerAddressNotFoundException ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest(new ErrorDto(StatusCodes.Status400BadRequest, ex.Message));
+            }
+            catch (ProductNotFoundException ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest(new ErrorDto(StatusCodes.Status400BadRequest, ex.Message));
+            }
+            catch (ProductUnAvailableException ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest(new ErrorDto(StatusCodes.Status400BadRequest, ex.Message));
+            }
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
                 return NotFound(new ErrorDto(StatusCodes.Status500InternalServerError, ex.Message));
             }
+            
         }
 
         [HttpGet("{orderId}")]
@@ -50,6 +72,11 @@ namespace API.Controllers.CustomerControllers
                 int customerId = int.Parse(User.FindFirst("Id").Value);
                 _logger.LogInformation("Getting order");
                 return Ok(await _customerOrderService.GetOrder(customerId, orderId));
+            }
+            catch (OrderNotFoundException ex)
+            {
+                _logger.LogError(ex.Message);
+                return NotFound(new ErrorDto(StatusCodes.Status404NotFound, ex.Message));
             }
             catch (Exception ex)
             {
@@ -69,6 +96,11 @@ namespace API.Controllers.CustomerControllers
                 int customerId = int.Parse(User.FindFirst("Id").Value);
                 _logger.LogInformation("Getting all orders");
                 return Ok(await _customerOrderService.GetAllOrders(customerId));
+            }
+            catch (OrderNotFoundException ex)
+            {
+                _logger.LogError(ex.Message);
+                return NotFound(new ErrorDto(StatusCodes.Status404NotFound, ex.Message));
             }
             catch (Exception ex)
             {

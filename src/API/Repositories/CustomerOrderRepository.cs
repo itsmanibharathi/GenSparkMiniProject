@@ -31,7 +31,7 @@ namespace API.Repositories
         {
             try
             {
-                var res = await _context.Orders.SingleOrDefaultAsync(o => o.CustomerId == customerId && o.OrderId == orderId);
+                var res = await _context.Orders.SingleOrDefaultAsync(o => o.OrderId == orderId && o.CustomerId == customerId);
                 return res ?? throw new OrderNotFoundException();
             }
             catch (OrderNotFoundException)
