@@ -82,14 +82,20 @@ namespace API.Repositories
             }
         }
 
-        public virtual async Task<Customer> Update(Customer entity)
+        public virtual async Task<Customer> Update(Customer customer)
         {
             try
             {
-                _context.Customers.Attach(entity);
-                _context.Entry(entity).State = EntityState.Modified;
+                var entry = _context.Entry(customer);
+                foreach (var property in entry.Properties)
+                {
+                    if (property.IsModified)
+                    {
+                        entry.Property(property.Metadata.Name).IsModified = true;
+                    }
+                }
                 var res = await _context.SaveChangesAsync();
-                return res > 0 ? entity : throw new UnableToDoActionException("Unable to update");
+                return res > 0 ? entry.Entity : throw new UnableToDoActionException("Unable to update");
             }
             catch (Exception ex)
             {
