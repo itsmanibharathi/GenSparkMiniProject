@@ -6,10 +6,13 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{03D56228-F0D9-4FDF-B672-EB1198F1E8CF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API", "src\API\API.csproj", "{303310DC-12B5-48A0-92C5-5C3EC463ADF2}"
+<<<<<<< HEAD
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{DCA668BF-CC7B-40AE-8E56-9FA254C76662}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServicesTesting", "test\ServicesTesting\ServicesTesting.csproj", "{3DCE3F6C-7729-4C29-A8E7-B78F959B0D84}"
+=======
+>>>>>>> main
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

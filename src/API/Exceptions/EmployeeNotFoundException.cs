@@ -1,15 +1,15 @@
 ﻿namespace API.Exceptions
 {
-    public class NoEmployeeInThisIdException : Exception
+    public class EmployeeNotFoundException : Exception
     {
         string message;
-        public NoEmployeeInThisIdException()
+        public EmployeeNotFoundException()
         {
             message = "No Employee in this Id";
         }
-        public NoEmployeeInThisIdException(string message)
+        public EmployeeNotFoundException(int id)
         {
-            this.message = message;
+            message = $"No Employee in this Id {id}";
         }
         public override string Message => message;
     }

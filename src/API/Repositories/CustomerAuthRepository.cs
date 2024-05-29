@@ -1,59 +1,35 @@
 ﻿using API.Context;
 using API.Exceptions;
 using API.Models;
+using API.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Repositories
 {
-    public class CustomerAuthRepository : CustomerRepository
+    public class CustomerAuthRepository : ICustomerAuthRepository
     {
-        public CustomerAuthRepository(DBGenSparkMinirojectContext context) : base(context)
-        {
-        }
+        private readonly DBGenSparkMinirojectContext _context;
 
-        public async override Task<Customer> Add(Customer entity)
+        public CustomerAuthRepository(DBGenSparkMinirojectContext context)
+        {
+            _context = context;
+        }
+        public async Task<Customer> Get(string email)
         {
             try
             {
-                if (!await IsDuplicate(entity))
-                {
-                    _context.Customers.Add(entity);
-                    var res = await _context.SaveChangesAsync();
-                    return res > 0 ? entity : throw new UnableToDoActionException("Unable to insert");
-                }
-                throw new DataDuplicateException();
+                return (await _context.Customers
+                    .Include(c => c.CustomerAuth)
+                    .FirstOrDefaultAsync(c => c.CustomerEmail == email)
+                    ?? throw new InvalidUserCredentialException());   
             }
-            catch (DataDuplicateException)
+            catch (InvalidUserCredentialException)
             {
                 throw;
             }
             catch (Exception ex)
             {
-                throw new UnableToDoActionException("Unable to Insert the new Customer", ex);
-            }
-        }
-
-        private async Task<bool> IsDuplicate(Customer entity)
-        {
-            var customer = await _context.Customers
-                .Include(c => c.CustomerAuth)
-                .FirstOrDefaultAsync(c => c.CustomerAuth.CustomerId == entity.CustomerId);
-            return customer != null;
-        }
-
-        public async override Task<Customer> Get(int id)
-        {
-            try
-            {
-                return (await _context.Customers.Include(c => c.CustomerAuth).FirstOrDefaultAsync(c => c.CustomerId == id)) ?? throw new NoEmployeeInThisIdException();
-            }
-            catch (NoEmployeeInThisIdException)
-            {
-                throw;
-            }
-            catch (Exception ex)
-            {
-                throw new UnableToDoActionException("Unable to Get the Customer", ex);
+                throw new UnableToDoActionException("Unable to Login", ex);
             }
         }
     }

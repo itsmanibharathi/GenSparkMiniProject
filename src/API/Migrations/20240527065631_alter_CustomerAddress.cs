@@ -5,75 +5,57 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace API.Migrations
 {
-    public partial class setupCustomerProduct : Migration
+    public partial class alter_CustomerAddress : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "CustomerAuths",
+                name: "Customers",
                 columns: table => new
                 {
                     CustomerId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PasswordHash = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
-                    PasswordSalt = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
-                    CreateAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CustomerAuths", x => x.CustomerId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "RestaurantAuths",
-                columns: table => new
-                {
-                    RestaurantId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PasswordHash = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
-                    PasswordSalt = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
-                    CreateAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RestaurantAuths", x => x.RestaurantId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Customers",
-                columns: table => new
-                {
-                    CustomerId = table.Column<int>(type: "int", nullable: false),
                     CustomerName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CustomerEmail = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CustomerPhone = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CustomerEmail = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CustomerPhone = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreateAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Customers", x => x.CustomerId);
-                    table.ForeignKey(
-                        name: "FK_Customers_CustomerAuths_CustomerId",
-                        column: x => x.CustomerId,
-                        principalTable: "CustomerAuths",
-                        principalColumn: "CustomerId",
-                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Employees",
+                columns: table => new
+                {
+                    EmployeeId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    EmployeeName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    EmployeeEmail = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    EmployeePhone = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    EmployeeAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AddressCode = table.Column<int>(type: "int", nullable: false),
+                    CreateAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Employees", x => x.EmployeeId);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Restaurants",
                 columns: table => new
                 {
-                    RestaurantId = table.Column<int>(type: "int", nullable: false),
+                    RestaurantId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Branch = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     City = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -88,19 +70,14 @@ namespace API.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Restaurants", x => x.RestaurantId);
-                    table.ForeignKey(
-                        name: "FK_Restaurants_RestaurantAuths_RestaurantId",
-                        column: x => x.RestaurantId,
-                        principalTable: "RestaurantAuths",
-                        principalColumn: "RestaurantId",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "CustomerAddresses",
                 columns: table => new
                 {
-                    AddressId = table.Column<int>(type: "int", nullable: false),
+                    AddressId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     CustomerId = table.Column<int>(type: "int", nullable: false),
                     Type = table.Column<int>(type: "int", nullable: false),
                     Code = table.Column<int>(type: "int", nullable: false),
@@ -114,12 +91,52 @@ namespace API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CustomerAddresses", x => new { x.CustomerId, x.AddressId });
+                    table.PrimaryKey("PK_CustomerAddresses", x => x.AddressId);
                     table.ForeignKey(
                         name: "FK_CustomerAddresses_Customers_CustomerId",
                         column: x => x.CustomerId,
                         principalTable: "Customers",
                         principalColumn: "CustomerId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CustomerAuths",
+                columns: table => new
+                {
+                    CustomerId = table.Column<int>(type: "int", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreateAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CustomerAuths", x => x.CustomerId);
+                    table.ForeignKey(
+                        name: "FK_CustomerAuths_Customers_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "Customers",
+                        principalColumn: "CustomerId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EmployeeAuths",
+                columns: table => new
+                {
+                    EmployeeId = table.Column<int>(type: "int", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreateAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EmployeeAuths", x => x.EmployeeId);
+                    table.ForeignKey(
+                        name: "FK_EmployeeAuths_Employees_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "Employees",
+                        principalColumn: "EmployeeId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -150,6 +167,26 @@ namespace API.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "RestaurantAuths",
+                columns: table => new
+                {
+                    RestaurantId = table.Column<int>(type: "int", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreateAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RestaurantAuths", x => x.RestaurantId);
+                    table.ForeignKey(
+                        name: "FK_RestaurantAuths_Restaurants_RestaurantId",
+                        column: x => x.RestaurantId,
+                        principalTable: "Restaurants",
+                        principalColumn: "RestaurantId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ProductImages",
                 columns: table => new
                 {
@@ -173,6 +210,21 @@ namespace API.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_CustomerAddresses_CustomerId",
+                table: "CustomerAddresses",
+                column: "CustomerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Customers_CustomerEmail",
+                table: "Customers",
+                column: "CustomerEmail");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Employees_EmployeeEmail",
+                table: "Employees",
+                column: "EmployeeEmail");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ProductImages_ProductId",
                 table: "ProductImages",
                 column: "ProductId");
@@ -186,6 +238,11 @@ namespace API.Migrations
                 name: "IX_Products_RestaurantId",
                 table: "Products",
                 column: "RestaurantId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Restaurants_Email",
+                table: "Restaurants",
+                column: "Email");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -194,22 +251,28 @@ namespace API.Migrations
                 name: "CustomerAddresses");
 
             migrationBuilder.DropTable(
+                name: "CustomerAuths");
+
+            migrationBuilder.DropTable(
+                name: "EmployeeAuths");
+
+            migrationBuilder.DropTable(
                 name: "ProductImages");
+
+            migrationBuilder.DropTable(
+                name: "RestaurantAuths");
 
             migrationBuilder.DropTable(
                 name: "Customers");
 
             migrationBuilder.DropTable(
+                name: "Employees");
+
+            migrationBuilder.DropTable(
                 name: "Products");
 
             migrationBuilder.DropTable(
-                name: "CustomerAuths");
-
-            migrationBuilder.DropTable(
                 name: "Restaurants");
-
-            migrationBuilder.DropTable(
-                name: "RestaurantAuths");
         }
     }
 }
