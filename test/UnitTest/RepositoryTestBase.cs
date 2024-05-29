@@ -22,8 +22,18 @@ namespace RepositoryTest
             _context.Customers.AddRange(
                 new List<Customer>
                 {
-                    new Customer { CustomerName = "Mani",CustomerEmail = "mani@gmail.com", CustomerPhone = "123456789" },
-                    new Customer { CustomerName = "Kiko",CustomerEmail = "kiko@gmail.com", CustomerPhone = "987654321"}
+                    new Customer 
+                    { 
+                        CustomerName = "Mani",CustomerEmail = "mani@gmail.com", CustomerPhone = "123456789",
+                        CustomerAuth = new CustomerAuth()
+                        {
+                            Password = "abc;xyz"
+                        }
+                    },
+                    new Customer 
+                    { 
+                        CustomerName = "Kiko",CustomerEmail = "kiko@gmail.com", CustomerPhone = "987654321",
+                        CustomerAuth = new CustomerAuth() { Password = "abc;xyz" }}
                 });
             await  _context.SaveChangesAsync();
         }

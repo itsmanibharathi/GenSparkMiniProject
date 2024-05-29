@@ -24,7 +24,11 @@ namespace UnitTest.Repositories.CustomerRepositoriesTest
             {
                 CustomerName = "Ludena",
                 CustomerEmail = "ludena@gmail.com",
-                CustomerPhone = "1234567890"
+                CustomerPhone = "1234567890",
+                CustomerAuth = new CustomerAuth()
+                {
+                    Password = "abc;xyz"
+                }
             };
             foreach (var item in _context.Customers)
             {
