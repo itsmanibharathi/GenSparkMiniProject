@@ -1,4 +1,5 @@
-﻿using API.Models;
+﻿using API.Exceptions;
+using API.Models;
 using API.Models.DTOs;
 using API.Models.Enums;
 using API.Repositories.Interfaces;
@@ -38,7 +39,25 @@ namespace API.Services
 
             var customerAddressCode = _customerAddressRepository.Get(createCustomerOrderDto.CustomerId, createCustomerOrderDto.ShippingAddressId).Result.Code;
 
-            var orderProducts = createCustomerOrderDto.OrderItemIds.Select(x =>  new { product= _productRepository.Get(x.ProductId).Result , qty = x.Quantity});
+            //var orderProducts = await Task.WhenAll(createCustomerOrderDto.OrderItemIds.Select(async x => new
+            //{
+            //    product = await _productRepository.Get(x.ProductId),
+            //    qty = x.Quantity
+            //}));
+
+            var orderProducts = await Task.WhenAll(createCustomerOrderDto.OrderItemIds.Select(async x =>
+            {
+                var product = await _productRepository.Get(x.ProductId);
+                if (product == null || !product.ProductAvailable)
+                {
+                    throw new ProductUnAvailableException(product.ProductName );
+                }
+                return new
+                {
+                    product,
+                    qty = x.Quantity
+                };
+            }));
 
             var orderGroup = orderProducts.GroupBy(x => x.product.RestaurantId).Select(x => new { restaurantId = x.Key, products = x.ToList() });
             var orders = orderGroup
@@ -46,13 +65,17 @@ namespace API.Services
                 new Order { 
                     CustomerId = customer.CustomerId, 
                     RestaurantId = x.restaurantId,
+                    DiscountRat =0,
+                    TaxRat = 0.05m,
+                    CustomerAddressId = createCustomerOrderDto.ShippingAddressId,
                     ShippingPrice = calShipingPrice(_restaurantRepository.Get(x.restaurantId).Result.AddressCode , customerAddressCode  ),
                     TotalOrderPrice = x.products.Sum(y => y.product.ProductPrice * y.qty),
                     OrderItems = x.products
                         .Select(y => new OrderItem { 
                             ProductId = y.product.ProductId, 
-                            Quantity = y.qty }).ToList() 
-
+                            Quantity = y.qty,
+                            Price = y.product.ProductPrice
+                        }).ToList(),
                 }).ToList();
 
             foreach (var order in orders)

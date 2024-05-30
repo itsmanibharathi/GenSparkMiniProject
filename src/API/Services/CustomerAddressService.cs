@@ -24,9 +24,9 @@ namespace API.Services
             return _mapper.Map<ReturnCustomerAddressDto>(res);
         }
 
-        public async Task<SuccessDto> Delete(int id)
+        public async Task<SuccessDto> Delete(int CustomerId, int CustomerAddressId)
         {
-            var res = await _repository.Delete(id);
+            var res = await _repository.Delete(CustomerId , CustomerAddressId);
             if (!res)
             {
                 throw new UnableToDoActionException("Unable to Delete the Address");
@@ -36,7 +36,7 @@ namespace API.Services
 
         public async Task<IEnumerable<ReturnCustomerAddressDto>> Get(int CustomerId)
         {
-            var res = await _repository.GetByCustomerId(CustomerId);
+            var res = await _repository.Get(CustomerId);
             return _mapper.Map<IEnumerable<ReturnCustomerAddressDto>>(res);
         }
 

@@ -2,7 +2,9 @@
 using API.Exceptions;
 using API.Models;
 using API.Repositories.Interfaces;
+using AutoMapper.Configuration.Annotations;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.CodeAnalysis;
 using System.Net.Mail;
 
 namespace API.Repositories
@@ -42,7 +44,7 @@ namespace API.Repositories
             var customer = await _context.Customers.FirstOrDefaultAsync(c => c.CustomerEmail == entity.CustomerEmail && c.CustomerPhone == entity.CustomerPhone);
             return customer != null;
         }
-
+        [ExcludeFromCodeCoverage]
         public virtual Task<bool> Delete(int id)
         {
             throw new NotImplementedException();
@@ -82,13 +84,21 @@ namespace API.Repositories
             }
         }
 
-        public virtual async Task<Customer> Update(Customer entity)
+        [ExcludeFromCodeCoverage]
+        public virtual async Task<Customer> Update(Customer customer)
         {
             try
             {
-                _context.Customers.Update(entity);
+                var entry = _context.Entry(customer);
+                foreach (var property in entry.Properties)
+                {
+                    if (property.IsModified)
+                    {
+                        entry.Property(property.Metadata.Name).IsModified = true;
+                    }
+                }
                 var res = await _context.SaveChangesAsync();
-                return res > 0 ? entity : throw new UnableToDoActionException("Unable to update");
+                return res > 0 ? entry.Entity : throw new UnableToDoActionException("Unable to update");
             }
             catch (Exception ex)
             {

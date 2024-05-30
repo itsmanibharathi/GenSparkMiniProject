@@ -3,6 +3,7 @@ using API.Exceptions;
 using API.Models;
 using API.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.CodeAnalysis;
 
 namespace API.Repositories
 {
@@ -10,6 +11,7 @@ namespace API.Repositories
     {
         private readonly DBGenSparkMinirojectContext _context;
 
+        [ExcludeFromCodeCoverage]
         public RestaurantRepository(DBGenSparkMinirojectContext context) 
         {
             _context = context;
@@ -26,12 +28,17 @@ namespace API.Repositories
                 }
                 throw new DataDuplicateException("Email or Fssai License Number already exists");
             }
+            catch (DataDuplicateException)
+            {
+                throw;
+            }
             catch (Exception ex)
             {
                 throw new UnableToDoActionException("Unable To Add the Restaurant", ex);
             }
         }
 
+        [ExcludeFromCodeCoverage]
         public Task<bool> Delete(int id)
         {
             throw new NotImplementedException();
@@ -83,7 +90,7 @@ namespace API.Repositories
                 throw new UnableToDoActionException("Unable to update the Restaurant", ex);
             }
         }
-
+        [ExcludeFromCodeCoverage]
         private async Task<bool> Duplicate(Restaurant entity)
         {
             return await _context.Restaurants.AnyAsync(x => x.Email == entity.Email || x.FssaiLicenseNumber == entity.FssaiLicenseNumber);

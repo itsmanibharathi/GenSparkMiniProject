@@ -8,7 +8,7 @@ namespace API.Services.Interfaces
         public Task<IEnumerable<ReturnCustomerAddressDto>> Get(int CustomerId);
         public Task<ReturnCustomerAddressDto> Get(int CustomerId, int CustomerAddressId);
         //Task<SuccessDto> Update(UpdateCustomerAddressDto updateCustomerAddressDto);
-        public Task<SuccessDto> Delete(int id);
+        public Task<SuccessDto> Delete(int CustomerId, int CustomerAddressId);
 
     }
 }

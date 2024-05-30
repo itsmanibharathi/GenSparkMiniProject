@@ -4,6 +4,7 @@ using API.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(DBGenSparkMinirojectContext))]
-    partial class DBGenSparkMinirojectContextModelSnapshot : ModelSnapshot
+    [Migration("20240529043422_alter_OrderCusAddress")]
+    partial class alter_OrderCusAddress
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -201,7 +203,7 @@ namespace API.Migrations
                     b.Property<DateTime>("DeliveryDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal>("DiscountRat")
+                    b.Property<decimal>("DiscountPrice")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int?>("EmployeeId")
@@ -219,13 +221,13 @@ namespace API.Migrations
                     b.Property<decimal>("ShippingPrice")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("TaxRat")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<decimal>("TotalAmount")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("TotalOrderPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("TotalTax")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("OrderId");
