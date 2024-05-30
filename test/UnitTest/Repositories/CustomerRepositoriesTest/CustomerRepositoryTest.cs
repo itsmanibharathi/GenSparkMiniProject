@@ -59,22 +59,18 @@ namespace UnitTest.Repositories.CustomerRepositoriesTest
         [Test]
         public async Task AddCustomerIntenalErrorException()
         {
-            dummyDB();
+            DummyDB();
             Customer customer = new Customer()
             {
                 CustomerName = "Ludena",
                 CustomerEmail = "ludena@gmail.com",
                 CustomerPhone = "1234567890"
             };
-            foreach (var item in _context.Customers)
-            {
-                System.Console.WriteLine(item.CustomerName + " " + item.CustomerId);
-            }
             try
             {
                 var result = await _repository.Add(customer);
             }
-            catch (Exception)
+            catch (UnableToDoActionException)
             {
                 Assert.Pass();
             }
@@ -104,7 +100,7 @@ namespace UnitTest.Repositories.CustomerRepositoriesTest
         [Test]
         public async Task GetCustomerIntenalErrorException()
         {
-            dummyDB();
+            DummyDB();
             try
             {
                 var result = await _repository.Get(1);
@@ -120,6 +116,7 @@ namespace UnitTest.Repositories.CustomerRepositoriesTest
         [Test]
         public async Task UpdateCustomer()
         {
+            DummyDB();
             Customer customer = new Customer()
             {
                 CustomerId = 1,
@@ -127,16 +124,6 @@ namespace UnitTest.Repositories.CustomerRepositoriesTest
             };
             var result = await _repository.Update(customer);
             Assert.That(result.CustomerName, Is.EqualTo("Manibharathi"));
-        }
-
-
-
-
-        private void dummyDB()
-        {
-            DbContextOptionsBuilder optionsBuilder = new DbContextOptionsBuilder()
-                                .UseInMemoryDatabase("dummyDB");
-            _repository = new CustomerRepository(new DBGenSparkMinirojectContext(optionsBuilder.Options));
         }
     }
 }

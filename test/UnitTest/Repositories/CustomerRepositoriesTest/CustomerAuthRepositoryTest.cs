@@ -41,12 +41,12 @@ namespace UnitTest.Repositories.CustomerRepositoriesTest
             }
         }
 
-        [Ignore("Internal Server Error")]
+        //[Ignore("Internal Server Error")]
         [Test]
         public async Task GetCustomerIntenalErrorException()
         {
             DbContextOptionsBuilder optionsBuilder = new DbContextOptionsBuilder()
-                    .UseInMemoryDatabase("dummyDB");
+                .UseSqlServer("InvalidConnectionString");
             _repository = new CustomerAuthRepository(new DBGenSparkMinirojectContext(optionsBuilder.Options));
             try
             {
