@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UnitTest.Repositories.RestaurantRepositoriesTest
+namespace UnitTest.Repositories.ProductRepositoryTest
 {
     [TestFixture]
     internal class RestructureProductRepositoryTest : RepositoryTestBase
@@ -40,7 +40,7 @@ namespace UnitTest.Repositories.RestaurantRepositoriesTest
         }
 
         // Add Duplicate Product
-        [Test , Order(2)]
+        [Test, Order(2)]
         public async Task AddDuplicateProduct()
         {
             Product product = new Product()
