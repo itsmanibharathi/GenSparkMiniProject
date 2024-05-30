@@ -23,6 +23,7 @@ namespace UnitTest.Repositories
 
         private async Task SeedCustomerData()
         {
+            #region Customers Data
             _context.Customers.AddRange(
                 new List<Customer>
                 {
@@ -63,6 +64,9 @@ namespace UnitTest.Repositories
                         }
                     }
                 });
+            #endregion
+
+            #region Restaurants Data
             _context.Restaurants.AddRange(
                 new List<Restaurant>
                 {
@@ -78,7 +82,11 @@ namespace UnitTest.Repositories
                         State = "Tamil Nadu",
                         Zip = "638001",
                         AddressCode = AddressCode.d,
-                        FssaiLicenseNumber = 1
+                        FssaiLicenseNumber = 1,
+                        RestaurantAuth = new RestaurantAuth
+                        {
+                            Password = "abc;xyz"
+                        }
                     },
                     new Restaurant()
                     {
@@ -92,9 +100,14 @@ namespace UnitTest.Repositories
                         State = "Tamil Nadu",
                         Zip = "638001",
                         AddressCode = AddressCode.m,
-                        FssaiLicenseNumber = 12
+                        FssaiLicenseNumber = 12,
+                        RestaurantAuth = new RestaurantAuth
+                        {
+                            Password = "abc;xyz"
+                        }
                     }
                 });
+            #endregion
             await _context.SaveChangesAsync();
         }
 
