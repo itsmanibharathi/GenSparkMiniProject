@@ -115,7 +115,6 @@ namespace UnitTest.Repositories.CustomerRepositoriesTest
         [Test]
         public async Task UpdateCustomer()
         {
-            DummyDB();
             Customer customer = new Customer()
             {
                 CustomerId = 1,

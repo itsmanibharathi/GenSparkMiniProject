@@ -63,6 +63,38 @@ namespace UnitTest.Repositories
                         }
                     }
                 });
+            _context.Restaurants.AddRange(
+                new List<Restaurant>
+                {
+                    new Restaurant()
+                    {
+                        Name = "KFC",
+                        Description = "Fast Food",
+                        Phone = "123456789",
+                        Email = "kfc@gmail.com",
+                        Branch = "Erode Main",
+                        Address = "Erode",
+                        City = "Erode",
+                        State = "Tamil Nadu",
+                        Zip = "638001",
+                        AddressCode = AddressCode.d,
+                        FssaiLicenseNumber = 1
+                    },
+                    new Restaurant()
+                    {
+                        Name = "Dominos",
+                        Description = "Fast Food",
+                        Phone = "123456789",
+                        Email = "dominos@gmail.com",
+                        Branch = "Erode Main",
+                        Address = "Erode",
+                        City = "Erode",
+                        State = "Tamil Nadu",
+                        Zip = "638001",
+                        AddressCode = AddressCode.m,
+                        FssaiLicenseNumber = 12
+                    }
+                });
             await _context.SaveChangesAsync();
         }
 
@@ -91,6 +123,13 @@ namespace UnitTest.Repositories
         {
             var optionsBuilder = new DbContextOptionsBuilder<DBGenSparkMinirojectContext>()
                 .UseSqlServer("InvalidConnectionString");
+            _context = new DBGenSparkMinirojectContext(optionsBuilder.Options);
+        }
+
+        public void EmptyDB()
+        {
+            var optionsBuilder = new DbContextOptionsBuilder<DBGenSparkMinirojectContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString());
             _context = new DBGenSparkMinirojectContext(optionsBuilder.Options);
         }
     }
