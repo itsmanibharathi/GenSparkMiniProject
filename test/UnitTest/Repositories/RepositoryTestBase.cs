@@ -23,91 +23,9 @@ namespace UnitTest.Repositories
 
         private async Task SeedCustomerData()
         {
-            #region Customers Data
-            _context.Customers.AddRange(
-                new List<Customer>
-                {
-                    new Customer
-                    {
-                        CustomerName = "Mani", CustomerEmail = "mani@gmail.com", CustomerPhone = "123456789",
-                        CustomerAuth = new CustomerAuth
-                        {
-                            Password = "abc;xyz"
-                        },
-                        Addresses = new List<CustomerAddress>
-                        {
-                            new CustomerAddress
-                            {
-                                Type = AddressType.Home,
-                                Code = AddressCode.a,
-                                City = "xxx",
-                                State = "yyy"
-                            }
-                        }
-                    },
-                    new Customer
-                    {
-                        CustomerName = "Kiko", CustomerEmail = "kiko@gmail.com", CustomerPhone = "987654321",
-                        CustomerAuth = new CustomerAuth
-                        {
-                            Password = "abc;xyz"
-                        },
-                        Addresses = new List<CustomerAddress>
-                        {
-                            new CustomerAddress
-                            {
-                                Type = AddressType.Work,
-                                Code = AddressCode.z,
-                                City = "xxx",
-                                State = "yyy"
-                            }
-                        }
-                    }
-                });
-            #endregion
-
-            #region Restaurants Data
-            _context.Restaurants.AddRange(
-                new List<Restaurant>
-                {
-                    new Restaurant()
-                    {
-                        Name = "KFC",
-                        Description = "Fast Food",
-                        Phone = "123456789",
-                        Email = "kfc@gmail.com",
-                        Branch = "Erode Main",
-                        Address = "Erode",
-                        City = "Erode",
-                        State = "Tamil Nadu",
-                        Zip = "638001",
-                        AddressCode = AddressCode.d,
-                        FssaiLicenseNumber = 1,
-                        RestaurantAuth = new RestaurantAuth
-                        {
-                            Password = "abc;xyz"
-                        }
-                    },
-                    new Restaurant()
-                    {
-                        Name = "Dominos",
-                        Description = "Fast Food",
-                        Phone = "123456789",
-                        Email = "dominos@gmail.com",
-                        Branch = "Erode Main",
-                        Address = "Erode",
-                        City = "Erode",
-                        State = "Tamil Nadu",
-                        Zip = "638001",
-                        AddressCode = AddressCode.m,
-                        FssaiLicenseNumber = 12,
-                        RestaurantAuth = new RestaurantAuth
-                        {
-                            Password = "abc;xyz"
-                        }
-                    }
-                });
-            #endregion
+            _context.Customers.AddRange(SeedDatas.Customers);
+            _context.Restaurants.AddRange(SeedDatas.Restaurants);
+                
             await _context.SaveChangesAsync();
         }
 
