@@ -3,6 +3,6 @@
     public class ReturnRestaurantRegisterDto
     {
         public int RestaurantId { get; set; }
-        public string RestaurantName { get; set; }
+        public string Name { get; set; }
     }
 }
