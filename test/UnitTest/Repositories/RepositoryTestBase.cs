@@ -6,7 +6,7 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace RepositoryTest
+namespace UnitTest.Repositories
 {
     public class RepositoryTestBase
     {

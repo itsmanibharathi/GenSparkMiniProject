@@ -4,7 +4,6 @@ using API.Models;
 using API.Repositories;
 using API.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using RepositoryTest;
 
 namespace UnitTest.Repositories.CustomerRepositoriesTest
 {

@@ -29,7 +29,6 @@
 
   <ItemGroup>
     <Folder Include="Repositories\EmployeeRepositoriesTest\" />
-    <Folder Include="Repositories\RestaurantRepositoriesTest\" />
   </ItemGroup>
 
 </Project>
