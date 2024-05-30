@@ -137,6 +137,9 @@ namespace API.Context
                 .OnDelete(DeleteBehavior.NoAction);
 
             // Property
+            modelBuilder.Entity<Customer>()
+                .Property(c => c.CustomerId)
+                .IsRequired();
             modelBuilder.Entity<Product>()
                 .Property(p => p.ProductPrice)
                 .HasColumnType("decimal(18,2)");

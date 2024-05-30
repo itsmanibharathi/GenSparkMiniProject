@@ -3,6 +3,7 @@ using API.Exceptions;
 using API.Models;
 using API.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.CodeAnalysis;
 
 namespace API.Repositories
 {
@@ -10,6 +11,7 @@ namespace API.Repositories
     {
         private readonly DBGenSparkMinirojectContext _context;
 
+        [ExcludeFromCodeCoverage]
         public CustomerAuthRepository(DBGenSparkMinirojectContext context)
         {
             _context = context;

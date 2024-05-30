@@ -91,7 +91,8 @@ namespace API.Controllers.CustomerControllers
         {
             try
             {
-                var result = await _customerAddressService.Delete(id);
+                int CustomerId = int.Parse(User.FindFirst("Id").Value);
+                var result = await _customerAddressService.Delete(CustomerId,id);
                 return Ok(result);
             }
             catch (Exception ex)

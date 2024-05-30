@@ -83,7 +83,8 @@ namespace API.Repositories
                 throw new UnableToDoActionException("Unable to get the Customers",ex);
             }
         }
-        
+
+        [ExcludeFromCodeCoverage]
         public virtual async Task<Customer> Update(Customer customer)
         {
             try

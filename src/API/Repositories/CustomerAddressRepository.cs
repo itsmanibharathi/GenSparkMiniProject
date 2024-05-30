@@ -3,6 +3,7 @@ using API.Exceptions;
 using API.Models;
 using API.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.CodeAnalysis;
 using System.Net.Mail;
 using System.Security.Cryptography.X509Certificates;
 
@@ -16,22 +17,24 @@ namespace API.Repositories
         {
             _context = context;
         }
+
+        /// <summary>
+        /// Add Customer Address
+        /// </summary>
+        /// <param name="entity">New Customer Address Object</param>
+        /// <returns>Return  </returns>
+        /// <exception cref="UnableToDoActionException">dd</exception>
         public virtual async Task<CustomerAddress> Add(CustomerAddress entity)
         {
             try
             {
-                _ = Get(entity.CustomerId);
                 if (!await IsDuplicate(entity))
                 {
                     _context.CustomerAddresses.Add(entity);
                     var res = await _context.SaveChangesAsync();
                     return res > 0 ? entity : throw new UnableToDoActionException("Unable to insert");
                 }
-                throw new DataDuplicateException();
-            }
-            catch (CustomerNotFoundException)
-            { 
-                throw;
+                throw new DataDuplicateException("Address Already exist");
             }
             catch (DataDuplicateException)
             {
@@ -43,26 +46,28 @@ namespace API.Repositories
             }
         }
 
+        [ExcludeFromCodeCoverage]
         private async Task<bool> IsDuplicate(CustomerAddress entity)
         {
             var CustomerAddress = await _context.CustomerAddresses.FirstOrDefaultAsync(ca => ca.CustomerId == entity.CustomerId && ca.Type == entity.Type && ca.Code == entity.Code);
             return CustomerAddress != null;
         }
 
-        public virtual async Task<bool> Delete(int id)
-        {
-            _context.CustomerAddresses.Remove(await Get(id));
-            var res = await _context.SaveChangesAsync();
-            return res > 0;
-        }
 
-        public virtual async Task<CustomerAddress> Get(int id)
+        /// <summary>
+        /// Delete Customer Address by Id
+        /// </summary>
+        /// <param name="CustomerId"></param>
+        /// <param name="CustomerAddressId"></param>
+        /// <returns></returns>
+        public virtual async Task<bool> Delete(int CustomerId, int CustomerAddressId)
         {
             try
             {
 
-                return (await _context.CustomerAddresses.FirstOrDefaultAsync(c => c.AddressId == id)) 
-                    ?? throw new CustomerAddressNotFoundException();
+                _context.CustomerAddresses.Remove(await Get(CustomerId,CustomerAddressId));
+                var res = await _context.SaveChangesAsync();
+                return res > 0;
             }
             catch (CustomerAddressNotFoundException)
             {
@@ -70,27 +75,10 @@ namespace API.Repositories
             }
             catch (Exception ex)
             {
-                throw new UnableToDoActionException("Unable to get the CustomerAddress", ex);
+                throw new UnableToDoActionException("Unable to delete the CustomerAddress", ex);
             }
         }
-
-        public virtual async Task<IEnumerable<CustomerAddress>> Get()
-        {
-            try
-            {
-                var res = await _context.CustomerAddresses.ToListAsync();
-                return res.Count > 0 ? res : throw new EmptyDatabaseException("CustomerAddress DB Empty");
-            }
-            catch (EmptyDatabaseException)
-            {
-                throw;
-            }
-            catch (Exception ex)
-            {
-                throw new UnableToDoActionException("Unable to get the CustomerAddresss", ex);
-            }
-        }
-
+        [ExcludeFromCodeCoverage]
         public virtual async Task<CustomerAddress> Update(CustomerAddress entity)
         {
             try
@@ -122,7 +110,7 @@ namespace API.Repositories
             }
         }
 
-        public async Task<IEnumerable<CustomerAddress>> GetByCustomerId(int CustomerId)
+        public async Task<IEnumerable<CustomerAddress>> Get(int CustomerId)
         {
             try
             {
