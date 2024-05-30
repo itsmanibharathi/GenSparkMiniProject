@@ -2,8 +2,10 @@
 {
     public enum OrderStatus
     {
-        Pending,
-        Processing,
+        Create,
+        Place,
+        Preparing,
+        PickedUp,
         Delivered,
         Cancelled
     }
