@@ -25,7 +25,8 @@ namespace UnitTest.Repositories
         {
             _context.Customers.AddRange(SeedDatas.Customers);
             _context.Restaurants.AddRange(SeedDatas.Restaurants);
-                
+            _context.Employees.AddRange(SeedDatas.Employees);
+
             await _context.SaveChangesAsync();
         }
 

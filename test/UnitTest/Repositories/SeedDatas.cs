@@ -117,8 +117,25 @@ namespace UnitTest.Repositories
                     }
                 }
             };
-        #endregion 
+        #endregion
 
+        #region Employee
+        public static List<Employee> Employees = new List<Employee>
+        {
+            new Employee
+            {
+                EmployeeName = "Joe",
+                EmployeeEmail = "joe@gmail.com",
+                EmployeePhone = "123456789",
+                EmployeeAddress = "123",
+                AddressCode = AddressCode.a,
+                EmployeeAuth = new EmployeeAuth
+                {
+                    Password = "abc;xyz"
+                }
+            }
+        };
+        #endregion
 
     }
 }
