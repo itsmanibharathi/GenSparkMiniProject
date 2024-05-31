@@ -12,5 +12,7 @@ namespace API.Models.DTOs.CustomerDto
         public decimal DiscountRat { get; set; }
         public decimal ShippingPrice { get; set; }
         public decimal TotalAmount { get; set; }
+        public DateTime OrderDate { get; set; } 
+        public DateTime DeliveryDate { get; set; }
     }
 }

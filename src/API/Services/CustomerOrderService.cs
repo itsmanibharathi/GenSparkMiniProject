@@ -95,7 +95,7 @@ namespace API.Services
         public async Task<IEnumerable<ReturnCustomerOrderDto>> GetAllOrders(int customerId)
         {
             var res= await _customerOrderRepository.Get(customerId);
-            return _mapper.Map<IEnumerable<ReturnCustomerOrderDto>>(res);
+            return _mapper.Map<IEnumerable<ReturnCustomerOrderDto>>(res.OrderByDescending(o => o.OrderDate));
         }
         public async Task<ReturnCustomerOrderDto> GetOrder(int customerId, int orderId)
         {
