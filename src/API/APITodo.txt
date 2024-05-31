@@ -2,8 +2,7 @@
 
 doto
 
-  - Create the order payment 
-  - check the updata method in product service
+  - Alter the restaurant product add/edite Dtos 	
   - product Update duplicat product name and category
 
 

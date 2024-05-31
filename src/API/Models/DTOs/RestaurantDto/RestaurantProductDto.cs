@@ -2,6 +2,9 @@
 
 namespace API.Models.DTOs.RestaurantDto
 {
+    /// <summary>
+    /// To Add/Edite the new Product 
+    /// </summary>
     public class RestaurantProductDto
     {
         public int ProductId { get; set; }
