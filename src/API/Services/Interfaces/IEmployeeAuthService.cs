@@ -1,4 +1,4 @@
-﻿using API.Models.DTOs;
+﻿using API.Models.DTOs.EmployeeDto;
 
 namespace API.Services.Interfaces
 {

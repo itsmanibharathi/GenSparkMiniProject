@@ -1,6 +1,6 @@
 ﻿using API.Exceptions;
 using API.Models;
-using API.Models.DTOs;
+using API.Models.DTOs.EmployeeDto;
 using API.Repositories;
 using API.Repositories.Interfaces;
 using API.Services.Interfaces;

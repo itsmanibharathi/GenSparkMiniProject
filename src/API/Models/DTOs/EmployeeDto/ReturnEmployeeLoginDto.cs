@@ -1,4 +1,4 @@
-﻿namespace API.Models.DTOs
+﻿namespace API.Models.DTOs.EmployeeDto
 {
     public class ReturnEmployeeLoginDto
     {

@@ -1,6 +1,7 @@
 ﻿using API.Exceptions;
 using API.Models;
 using API.Models.DTOs;
+using API.Models.DTOs.CustomerDto;
 using API.Repositories.Interfaces;
 using API.Services.Interfaces;
 using AutoMapper;
@@ -18,7 +19,7 @@ namespace API.Services
             _repository = repository;
             _mapper = mapper;
         }
-        public async Task<ReturnCustomerAddressDto> Add(AddCustomerAddressDto addCustomerAddressDto)
+        public async Task<ReturnCustomerAddressDto> Add(CustomerAddressDto addCustomerAddressDto)
         {
             var res= await _repository.Add(_mapper.Map<CustomerAddress>(addCustomerAddressDto));
             return _mapper.Map<ReturnCustomerAddressDto>(res);

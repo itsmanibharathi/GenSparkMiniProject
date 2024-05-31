@@ -1,7 +1,7 @@
 ﻿using API.Context;
 using API.Exceptions;
 using API.Models;
-using API.Models.DTOs;
+using API.Models.DTOs.CustomerDto;
 using API.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -123,7 +123,7 @@ namespace API.Repositories
             }
         }
 
-        public async Task<IEnumerable<Product>> Search(ProductSearchDto productSearchDto)
+        public async Task<IEnumerable<Product>> Search(CustomerSearchProductDto productSearchDto)
         {
             try
             {

@@ -1,5 +1,6 @@
 ﻿using API.Exceptions;
 using API.Models.DTOs;
+using API.Models.DTOs.RestaurantDto;
 using API.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;

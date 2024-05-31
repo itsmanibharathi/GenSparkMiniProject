@@ -1,8 +1,8 @@
 ﻿using API.Models.Enums;
 
-namespace API.Models.DTOs
+namespace API.Models.DTOs.CustomerDto
 {
-    public class ProductSearchDto
+    public class CustomerSearchProductDto
     {
         public string? ProductName { get; set; }
         public decimal? ProductPrice { get; set; }

@@ -1,6 +1,6 @@
 ﻿using API.Exceptions;
 using API.Models;
-using API.Models.DTOs;
+using API.Models.DTOs.RestaurantDto;
 using API.Repositories.Interfaces;
 using API.Services.Interfaces;
 using AutoMapper;

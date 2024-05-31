@@ -1,5 +1,6 @@
 ﻿using API.Exceptions;
 using API.Models.DTOs;
+using API.Models.DTOs.EmployeeDto;
 using API.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

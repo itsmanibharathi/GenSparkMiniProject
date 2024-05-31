@@ -1,5 +1,5 @@
 ﻿using API.Models;
-using API.Models.DTOs;
+using API.Models.DTOs.CustomerDto;
 using API.Models.Enums;
 using API.Repositories;
 using API.Repositories.Interfaces;
@@ -26,7 +26,7 @@ namespace UnitTest.Repositories.ProductRepositoryTest
         [Test, Order(1)]
         public async Task SearchProduct()
         {
-            ProductSearchDto productSearchDto = new ProductSearchDto()
+            CustomerSearchProductDto productSearchDto = new CustomerSearchProductDto()
             {
                 ProductPrice = 100
             };

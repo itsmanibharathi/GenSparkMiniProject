@@ -1,5 +1,7 @@
 ﻿using API.Models;
-using API.Models.DTOs;
+using API.Models.DTOs.CustomerDto;
+using API.Models.DTOs.EmployeeDto;
+using API.Models.DTOs.RestaurantDto;
 using AutoMapper;
 using Microsoft.Win32;
 
@@ -18,12 +20,12 @@ namespace API.Utility
             CreateMap<Customer, ReturnCustomerLoginDto>();
 
             // Customer Address
-            CreateMap<AddCustomerAddressDto, CustomerAddress>();
+            CreateMap<CustomerAddressDto, CustomerAddress>();
             CreateMap<CustomerAddress, ReturnCustomerAddressDto>();
 
             // Customer Order Create
-            CreateMap<CreateCustomerOrderDto, Order>();
-            CreateMap<Order, ReturnCreateCustomerOrderDto>();
+            CreateMap<CustomerOrderDto, Order>();
+            CreateMap<Order, ReturnCustomerOrderDto>();
 
             // Customer Order Payment
             CreateMap<OnlinePayment, ReturnOrderPaymentDto>();
@@ -39,7 +41,7 @@ namespace API.Utility
             CreateMap<Restaurant, ReturnRestaurantLoginDto>();
 
             // Return Search Product
-            CreateMap<Product, ReturnSearchProductDto>();
+            CreateMap<Product, ReturnCustomerSearchProductDto>();
 
             // Restaurant Product
             CreateMap<RestaurantProductDto, Product>();

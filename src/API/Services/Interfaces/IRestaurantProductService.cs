@@ -1,4 +1,4 @@
-﻿using API.Models.DTOs;
+﻿using API.Models.DTOs.RestaurantDto;
 
 namespace API.Services.Interfaces
 {

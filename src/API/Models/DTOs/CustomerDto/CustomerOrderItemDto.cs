@@ -1,6 +1,6 @@
-﻿namespace API.Models.DTOs
+﻿namespace API.Models.DTOs.CustomerDto
 {
-    public class OrderItemDto
+    public class CustomerOrderItemDto
     {
         public int ProductId { get; set; }
         public int Quantity { get; set; }

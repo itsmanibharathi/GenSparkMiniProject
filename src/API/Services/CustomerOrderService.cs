@@ -1,6 +1,6 @@
 ﻿using API.Exceptions;
 using API.Models;
-using API.Models.DTOs;
+using API.Models.DTOs.CustomerDto;
 using API.Models.Enums;
 using API.Repositories.Interfaces;
 using API.Services.Interfaces;
@@ -33,7 +33,7 @@ namespace API.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<ReturnCreateCustomerOrderDto>> CreateOrder(CreateCustomerOrderDto createCustomerOrderDto)
+        public async Task<IEnumerable<ReturnCustomerOrderDto>> CreateOrder(CustomerOrderDto createCustomerOrderDto)
         {
             var customer = await _customerRepository.Get(createCustomerOrderDto.CustomerId);
 
@@ -85,25 +85,25 @@ namespace API.Services
                 await _customerOrderRepository.Add(order);
             }
 
-            return _mapper.Map<IEnumerable<ReturnCreateCustomerOrderDto>>(orders);
+            return _mapper.Map<IEnumerable<ReturnCustomerOrderDto>>(orders);
         }
         int calShipingPrice(AddressCode from, AddressCode to)
         {
             return Math.Abs(from - to) * 10;
         }
 
-        public async Task<IEnumerable<ReturnCreateCustomerOrderDto>> GetAllOrders(int customerId)
+        public async Task<IEnumerable<ReturnCustomerOrderDto>> GetAllOrders(int customerId)
         {
             var res= await _customerOrderRepository.Get(customerId);
-            return _mapper.Map<IEnumerable<ReturnCreateCustomerOrderDto>>(res);
+            return _mapper.Map<IEnumerable<ReturnCustomerOrderDto>>(res);
         }
-        public async Task<ReturnCreateCustomerOrderDto> GetOrder(int customerId, int orderId)
+        public async Task<ReturnCustomerOrderDto> GetOrder(int customerId, int orderId)
         {
             var res = await _customerOrderRepository.Get(customerId, orderId);
-            return _mapper.Map<ReturnCreateCustomerOrderDto>(res);
+            return _mapper.Map<ReturnCustomerOrderDto>(res);
         }
 
-        public async Task<ReturnOrderPaymentDto> CreatePayment(OrderPaymentDto orderPaymentDto)
+        public async Task<ReturnOrderPaymentDto> CreatePayment(CustomerOrderPaymentDto orderPaymentDto)
         {
             try
             {

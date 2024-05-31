@@ -1,6 +1,6 @@
 ﻿using API.Models.Enums;
 
-namespace API.Models.DTOs
+namespace API.Models.DTOs.RestaurantDto
 {
     public class RestaurantRegisterDto
     {

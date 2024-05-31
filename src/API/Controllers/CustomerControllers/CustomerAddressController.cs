@@ -1,5 +1,6 @@
 ﻿using API.Exceptions;
 using API.Models.DTOs;
+using API.Models.DTOs.CustomerDto;
 using API.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -29,7 +30,7 @@ namespace API.Controllers.CustomerControllers
         [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status409Conflict)]
         [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status500InternalServerError)]
 
-        public async Task<IActionResult> Add(AddCustomerAddressDto addCustomerAddressDto)
+        public async Task<IActionResult> Add(CustomerAddressDto addCustomerAddressDto)
         {
             try
             {

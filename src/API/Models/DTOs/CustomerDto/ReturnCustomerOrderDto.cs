@@ -1,8 +1,8 @@
 ﻿using API.Models.Enums;
 
-namespace API.Models.DTOs
+namespace API.Models.DTOs.CustomerDto
 {
-    public class ReturnCreateCustomerOrderDto
+    public class ReturnCustomerOrderDto
     {
         public int OrderId { get; set; }
         public int RestaurantId { get; set; }

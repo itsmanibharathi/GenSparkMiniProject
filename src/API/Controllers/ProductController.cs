@@ -1,5 +1,6 @@
 ﻿using API.Exceptions;
 using API.Models.DTOs;
+using API.Models.DTOs.CustomerDto;
 using API.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,10 +22,10 @@ namespace API.Controllers
 
 
         [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<ReturnSearchProductDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<ReturnCustomerSearchProductDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Search([FromQuery] ProductSearchDto productSearchDto)
+        public async Task<IActionResult> Search([FromQuery] CustomerSearchProductDto productSearchDto)
         {
             try
             {
@@ -44,7 +45,7 @@ namespace API.Controllers
         }
 
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(ReturnSearchProductDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ReturnCustomerSearchProductDto), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Get(int id)
@@ -67,7 +68,7 @@ namespace API.Controllers
         }
 
         [HttpGet("all")]
-        [ProducesResponseType(typeof(IEnumerable<ReturnSearchProductDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<ReturnCustomerSearchProductDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Get()
         {

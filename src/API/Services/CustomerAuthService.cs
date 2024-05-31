@@ -1,6 +1,6 @@
 ﻿using API.Exceptions;
 using API.Models;
-using API.Models.DTOs;
+using API.Models.DTOs.CustomerDto;
 using API.Repositories;
 using API.Repositories.Interfaces;
 using API.Services.Interfaces;

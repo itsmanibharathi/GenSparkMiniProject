@@ -1,8 +1,8 @@
 ﻿using API.Models.Enums;
 
-namespace API.Models.DTOs
+namespace API.Models.DTOs.CustomerDto
 {
-    public class ReturnRestaurantProductDto
+    public class ReturnCustomerSearchProductDto
     {
         public int ProductId { get; set; }
         public int RestaurantId { get; set; }
@@ -11,7 +11,7 @@ namespace API.Models.DTOs
         public decimal ProductPrice { get; set; }
         public bool ProductAvailable { get; set; }
         public ProductCategory ProductCategories { get; set; }
-        public DateTime CreateAt { get; set; }
-        public DateTime UpdateAt { get; set; }
+        public string RestaurantName { get; set; }
+        public string RestaurantBranch { get; set; }
     }
 }

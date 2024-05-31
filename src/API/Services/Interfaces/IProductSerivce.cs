@@ -1,11 +1,11 @@
-﻿using API.Models.DTOs;
+﻿using API.Models.DTOs.CustomerDto;
 
 namespace API.Services.Interfaces
 {
     public interface IProductSerivce
     {
-        public Task<IEnumerable<ReturnSearchProductDto>> Search(ProductSearchDto productSearchDto);
-        public Task<IEnumerable<ReturnSearchProductDto>> Get();
-        public Task<ReturnSearchProductDto> Get(int id);
+        public Task<IEnumerable<ReturnCustomerSearchProductDto>> Search(CustomerSearchProductDto productSearchDto);
+        public Task<IEnumerable<ReturnCustomerSearchProductDto>> Get();
+        public Task<ReturnCustomerSearchProductDto> Get(int id);
     }
 }

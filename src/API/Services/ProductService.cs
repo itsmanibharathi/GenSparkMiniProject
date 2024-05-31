@@ -1,6 +1,6 @@
 ﻿using API.Exceptions;
 using API.Models;
-using API.Models.DTOs;
+using API.Models.DTOs.CustomerDto;
 using API.Repositories.Interfaces;
 using API.Services.Interfaces;
 using AutoMapper;
@@ -20,24 +20,24 @@ namespace API.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<ReturnSearchProductDto>> Get()
+        public async Task<IEnumerable<ReturnCustomerSearchProductDto>> Get()
         {
             var res= await _repository.Get();
-            return _mapper.Map<IEnumerable<ReturnSearchProductDto>>(res);
+            return _mapper.Map<IEnumerable<ReturnCustomerSearchProductDto>>(res);
         }
 
-        public async Task<ReturnSearchProductDto> Get(int id)
+        public async Task<ReturnCustomerSearchProductDto> Get(int id)
         {
             var res = await _repository.Get(id);
-            return _mapper.Map<ReturnSearchProductDto>(res);
+            return _mapper.Map<ReturnCustomerSearchProductDto>(res);
         }
 
-        public async Task<IEnumerable<ReturnSearchProductDto>> Search(ProductSearchDto productSearchDto)
+        public async Task<IEnumerable<ReturnCustomerSearchProductDto>> Search(CustomerSearchProductDto productSearchDto)
         {
             var res = await _productSearch.Search(productSearchDto);
             if (res.Any())
             {
-                return _mapper.Map<IEnumerable<ReturnSearchProductDto>>(res);
+                return _mapper.Map<IEnumerable<ReturnCustomerSearchProductDto>>(res);
             }
             throw new ProductNotFoundException();
         }

@@ -1,5 +1,6 @@
 ﻿using API.Exceptions;
 using API.Models.DTOs;
+using API.Models.DTOs.CustomerDto;
 using API.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -22,10 +23,10 @@ namespace API.Controllers.CustomerControllers
         }
 
         [HttpPost("create")]
-        [ProducesResponseType(typeof(IEnumerable<ReturnCreateCustomerOrderDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<ReturnCustomerOrderDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult> CreateOrder(CreateCustomerOrderDto createCustomerOrderDto)
+        public async Task<ActionResult> CreateOrder(CustomerOrderDto createCustomerOrderDto)
         {
             try
             {
@@ -62,7 +63,7 @@ namespace API.Controllers.CustomerControllers
         }
 
         [HttpGet("{orderId}")]
-        [ProducesResponseType(typeof(ReturnCreateCustomerOrderDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ReturnCustomerOrderDto), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> GetOrder(int orderId)
@@ -86,7 +87,7 @@ namespace API.Controllers.CustomerControllers
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<ReturnCreateCustomerOrderDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<ReturnCustomerOrderDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> GetAllOrders()
@@ -114,7 +115,7 @@ namespace API.Controllers.CustomerControllers
         [ProducesResponseType(typeof(ReturnOrderPaymentDto), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult> CreatePayment(OrderPaymentDto orderPaymentDto)
+        public async Task<ActionResult> CreatePayment(CustomerOrderPaymentDto orderPaymentDto)
         {
             try
             {

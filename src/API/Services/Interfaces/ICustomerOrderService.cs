@@ -1,12 +1,12 @@
-﻿using API.Models.DTOs;
+﻿using API.Models.DTOs.CustomerDto;
 
 namespace API.Services.Interfaces
 {
     public interface ICustomerOrderService
     {
-        public Task<IEnumerable<ReturnCreateCustomerOrderDto>> CreateOrder(CreateCustomerOrderDto createCustomerOrderDto);
-        public Task<ReturnOrderPaymentDto> CreatePayment(OrderPaymentDto orderPaymentDto);
-        public Task<ReturnCreateCustomerOrderDto> GetOrder(int customerId, int orderId);
-        public Task<IEnumerable<ReturnCreateCustomerOrderDto>> GetAllOrders(int customerId);
+        public Task<IEnumerable<ReturnCustomerOrderDto>> CreateOrder(CustomerOrderDto createCustomerOrderDto);
+        public Task<ReturnOrderPaymentDto> CreatePayment(CustomerOrderPaymentDto orderPaymentDto);
+        public Task<ReturnCustomerOrderDto> GetOrder(int customerId, int orderId);
+        public Task<IEnumerable<ReturnCustomerOrderDto>> GetAllOrders(int customerId);
     }
 }

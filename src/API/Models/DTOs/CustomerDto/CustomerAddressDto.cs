@@ -1,8 +1,8 @@
 ﻿using API.Models.Enums;
 
-namespace API.Models.DTOs
+namespace API.Models.DTOs.CustomerDto
 {
-    public class AddCustomerAddressDto
+    public class CustomerAddressDto
     {
         public int CustomerId { get; set; }
         public AddressType Type { get; set; }
