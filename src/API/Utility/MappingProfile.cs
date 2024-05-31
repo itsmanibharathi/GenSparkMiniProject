@@ -25,10 +25,15 @@ namespace API.Utility
             CreateMap<CreateCustomerOrderDto, Order>();
             CreateMap<Order, ReturnCreateCustomerOrderDto>();
 
+            // Customer Order Payment
+            CreateMap<OnlinePayment, ReturnOrderPaymentDto>();
+            CreateMap<CashPayment,ReturnOrderPaymentDto>();
+
             // Restaurant Register
             CreateMap<RestaurantRegisterDto, Restaurant>();
             CreateMap<Restaurant, ReturnRestaurantRegisterDto>();
 
+            
             // Restaurant Login
             CreateMap<RestaurantLoginDto, Restaurant>();
             CreateMap<Restaurant, ReturnRestaurantLoginDto>();
@@ -39,7 +44,7 @@ namespace API.Utility
             // Restaurant Product
             CreateMap<RestaurantProductDto, Product>();
             CreateMap<Product, ReturnRestaurantProductDto>();
-            CreateMap<ReturnRestaurantProductDto, Product>();
+            CreateMap<ReturnRestaurantProductDto, RestaurantProductDto>();
 
             // Employee Register
             CreateMap<EmployeeRegisterDto, Employee>();

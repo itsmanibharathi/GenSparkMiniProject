@@ -4,6 +4,7 @@ using API.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(DBGenSparkMinirojectContext))]
-    partial class DBGenSparkMinirojectContextModelSnapshot : ModelSnapshot
+    [Migration("20240530172511_alter_payment")]
+    partial class alter_payment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,21 +32,24 @@ namespace API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CashPaymentId"), 1L, 1);
 
-                    b.Property<decimal>("PaymentAmount")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("PaymentDate")
-                        .HasColumnType("datetime2");
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("PayAmount")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("PaymentStatus")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ReceiveBy")
+                    b.Property<int>("ReceiveBy")
                         .HasColumnType("int");
 
                     b.HasKey("CashPaymentId");
 
-                    b.HasIndex("ReceiveBy");
+                    b.HasIndex("EmployeeId");
 
                     b.ToTable("CashPayments");
                 });
@@ -219,14 +224,11 @@ namespace API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OnlinePaymentId"), 1L, 1);
 
-                    b.Property<int>("CustomerId")
+                    b.Property<int>("OrderId")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("PaymentAmount")
+                    b.Property<decimal>("PayAmount")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime>("PaymentDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("PaymentRef")
                         .IsRequired()
@@ -237,9 +239,7 @@ namespace API.Migrations
 
                     b.HasKey("OnlinePaymentId");
 
-                    b.HasIndex("CustomerId");
-
-                    b.ToTable("OnlinePayments");
+                    b.ToTable("Payments");
                 });
 
             modelBuilder.Entity("API.Models.Order", b =>
@@ -297,9 +297,6 @@ namespace API.Migrations
 
                     b.Property<decimal>("TotalOrderPrice")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime>("UpdateAt")
-                        .HasColumnType("datetime2");
 
                     b.HasKey("OrderId");
 
@@ -509,8 +506,10 @@ namespace API.Migrations
             modelBuilder.Entity("API.Models.CashPayment", b =>
                 {
                     b.HasOne("API.Models.Employee", "Employee")
-                        .WithMany("CashPayments")
-                        .HasForeignKey("ReceiveBy");
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Employee");
                 });
@@ -546,17 +545,6 @@ namespace API.Migrations
                         .IsRequired();
 
                     b.Navigation("Employee");
-                });
-
-            modelBuilder.Entity("API.Models.OnlinePayment", b =>
-                {
-                    b.HasOne("API.Models.Customer", "Customer")
-                        .WithMany("OnlinePayments")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Customer");
                 });
 
             modelBuilder.Entity("API.Models.Order", b =>
@@ -660,8 +648,6 @@ namespace API.Migrations
 
                     b.Navigation("CustomerAuth");
 
-                    b.Navigation("OnlinePayments");
-
                     b.Navigation("Orders");
                 });
 
@@ -672,8 +658,6 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Models.Employee", b =>
                 {
-                    b.Navigation("CashPayments");
-
                     b.Navigation("EmployeeAuth");
 
                     b.Navigation("Orders");

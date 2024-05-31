@@ -4,6 +4,7 @@ using API.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(DBGenSparkMinirojectContext))]
-    partial class DBGenSparkMinirojectContextModelSnapshot : ModelSnapshot
+    [Migration("20240531043436_alter_payment_handle")]
+    partial class alter_payment_handle
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -297,9 +299,6 @@ namespace API.Migrations
 
                     b.Property<decimal>("TotalOrderPrice")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime>("UpdateAt")
-                        .HasColumnType("datetime2");
 
                     b.HasKey("OrderId");
 

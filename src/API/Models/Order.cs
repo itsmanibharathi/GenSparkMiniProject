@@ -10,6 +10,7 @@ namespace API.Models
         public int RestaurantId { get; set; }
         public int? EmployeeId { get; set; }
         public DateTime OrderDate { get; set; } = DateTime.Now;
+        public DateTime UpdateAt { get; set; }
         public DateTime DeliveryDate { get; set; }
         public OrderStatus OrderStatus { get; set; }
         public PaymentMethod PaymentMethod { get; set; }
@@ -31,9 +32,9 @@ namespace API.Models
                 TotalAmount = _totalOrderPrice + calPercentage(TaxRat) + ShippingPrice - calPercentage(DiscountRat) ;
             }
         }
-        public int OnlinePaymentId { get; set; }
+        public int? OnlinePaymentId { get; set; }
         public OnlinePayment? OnlinePayment { get; set; }
-        public int CashPaymentId { get; set; }
+        public int? CashPaymentId { get; set; }
         public CashPayment? CashPayment { get; set; }
         public Customer? Customer { get; set; }
         public CustomerAddress CustomerAddress { get; set; }

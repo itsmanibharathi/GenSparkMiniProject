@@ -60,12 +60,14 @@ namespace API.Services
             }));
 
             var orderGroup = orderProducts.GroupBy(x => x.product.RestaurantId).Select(x => new { restaurantId = x.Key, products = x.ToList() });
+
             var orders = orderGroup
                 .Select(x => 
                 new Order { 
                     CustomerId = customer.CustomerId, 
                     RestaurantId = x.restaurantId,
                     DiscountRat =0,
+                    OrderStatus = OrderStatus.Create,
                     TaxRat = 0.05m,
                     CustomerAddressId = createCustomerOrderDto.ShippingAddressId,
                     ShippingPrice = calShipingPrice(_restaurantRepository.Get(x.restaurantId).Result.AddressCode , customerAddressCode  ),
@@ -92,14 +94,69 @@ namespace API.Services
 
         public async Task<IEnumerable<ReturnCreateCustomerOrderDto>> GetAllOrders(int customerId)
         {
-            var res= await _customerOrderRepository.GetAll(customerId);
+            var res= await _customerOrderRepository.Get(customerId);
             return _mapper.Map<IEnumerable<ReturnCreateCustomerOrderDto>>(res);
         }
-
         public async Task<ReturnCreateCustomerOrderDto> GetOrder(int customerId, int orderId)
         {
             var res = await _customerOrderRepository.Get(customerId, orderId);
             return _mapper.Map<ReturnCreateCustomerOrderDto>(res);
+        }
+
+        public async Task<ReturnOrderPaymentDto> CreatePayment(OrderPaymentDto orderPaymentDto)
+        {
+            try
+            {
+                var orders = await Task.WhenAll(orderPaymentDto.Orders
+                    .Select(async o =>
+                    {
+                        var order = await _customerOrderRepository.Get(orderPaymentDto.CustomerId, o);
+                        if (order.OrderStatus != OrderStatus.Create)
+                        {
+                            throw new InvalidOrderException(order.OrderId, order.OrderStatus.ToString());
+                        }
+                        order.UpdateAt = DateTime.Now;
+                        order.PaymentMethod = orderPaymentDto.PaymentMethod;
+                        order.OrderStatus = OrderStatus.Place;
+                        return order;
+                    }));
+
+                var totalAmount = orders.Sum(x => x.TotalAmount);
+                if(totalAmount <= 0)
+                {
+                    throw new InvalidOrderException();
+                }
+                if (orderPaymentDto.PaymentMethod == PaymentMethod.Online)
+                {
+                    var onlinePayment = new OnlinePayment
+                    {
+                        CustomerId = orderPaymentDto.CustomerId,
+                        PaymentDate = DateTime.Now,
+                        PaymentStatus = PaymentStatus.Paid,
+                        PaymentRef = Guid.NewGuid().ToString(),
+                        PaymentAmount = totalAmount,
+                        Orders = orders
+                    };
+                    await _customerOrderRepository.AddOnlinePayment(onlinePayment);
+                    return _mapper.Map<ReturnOrderPaymentDto>(onlinePayment);
+                }
+                else
+                {
+                    var cashPayment = new CashPayment
+                    {
+                        PaymentDate = DateTime.Now,
+                        PaymentStatus = PaymentStatus.Pending,
+                        PaymentAmount = totalAmount,
+                        Orders = orders
+                    };
+                    await _customerOrderRepository.AddCashPayment(cashPayment);
+                    return _mapper.Map<ReturnOrderPaymentDto>(cashPayment);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

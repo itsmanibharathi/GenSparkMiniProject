@@ -22,12 +22,10 @@ namespace API.Context
         public DbSet<EmployeeAuth> EmployeeAuths { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
-        public DbSet<OnlinePayment> Payments { get; set; }
+        public DbSet<OnlinePayment> OnlinePayments { get; set; }
         public DbSet<CashPayment> CashPayments { get; set; }
 
         #endregion
-
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Customer Entity Configuration
@@ -240,11 +238,18 @@ namespace API.Context
                 .HasMany(p => p.Orders)
                 .WithOne(o => o.OnlinePayment)
                 .HasForeignKey(o => o.OnlinePaymentId);
+
+            modelBuilder.Entity<OnlinePayment>()
+                .HasOne(p => p.Customer)
+                .WithMany(c => c.OnlinePayments)
+                .HasForeignKey(p => p.CustomerId);
+
+
             #endregion
 
             #region Properties
             modelBuilder.Entity<OnlinePayment>()
-                .Property(p => p.PayAmount)
+                .Property(p => p.PaymentAmount)
                 .HasColumnType("decimal(18,2)");
             #endregion
             #endregion
@@ -259,11 +264,15 @@ namespace API.Context
                 .HasMany(p => p.Orders)
                 .WithOne(o => o.CashPayment)
                 .HasForeignKey(o => o.CashPaymentId);
+            modelBuilder.Entity<CashPayment>()
+                .HasOne(p => p.Employee)
+                .WithMany(e => e.CashPayments)
+                .HasForeignKey(p => p.ReceiveBy);
             #endregion
 
             #region Properties
             modelBuilder.Entity<CashPayment>()
-                .Property(p => p.PayAmount)
+                .Property(p => p.PaymentAmount)
                 .HasColumnType("decimal(18,2)");
             #endregion
             #endregion

@@ -14,7 +14,7 @@ namespace API.Models
         public DateTime CreateAt { get; set; } = DateTime.Now;
         public DateTime UpdateAt { get; set; }
         public EmployeeAuth? EmployeeAuth { get; set; }
-        public ICollection<Order> Orders { get; set; }
-
+        public ICollection<Order>? Orders { get; set; }
+        public ICollection<CashPayment>? CashPayments { get; internal set; }
     }
 }

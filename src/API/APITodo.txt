@@ -1,6 +1,9 @@
 
 
-doto 
+doto
+
+  - Create the order payment 
+  - check the updata method in product service
   - product Update duplicat product name and category
 
 

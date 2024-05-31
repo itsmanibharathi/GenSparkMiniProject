@@ -27,6 +27,34 @@ namespace API.Repositories
             }
         }
 
+        public Task AddCashPayment(CashPayment cashPayment)
+        {
+            try
+            {
+                _context.CashPayments.Add(cashPayment);
+                var res = _context.SaveChangesAsync();
+                return res.Result > 0 ? Task.CompletedTask : throw new UnableToDoActionException("Unable to insert");
+            }
+            catch (Exception ex)
+            {
+                throw new UnableToDoActionException("Unable to Insert the new Cash Payment", ex);
+            }
+        }
+
+        public Task AddOnlinePayment(OnlinePayment onlinePayment)
+        {
+            try
+            {
+                _context.OnlinePayments.Add(onlinePayment);
+                var res = _context.SaveChangesAsync();
+                return res.Result > 0 ? Task.CompletedTask : throw new UnableToDoActionException("Unable to insert");
+            }
+                catch (Exception ex)
+            {
+                throw new UnableToDoActionException("Unable to Insert the new Online Payment", ex);
+            }
+        }
+
         public async Task<Order> Get(int customerId, int orderId)
         {
             try
@@ -45,7 +73,7 @@ namespace API.Repositories
 
         }
 
-        public async Task<IEnumerable<Order>> GetAll(int customerId)
+        public async Task<IEnumerable<Order>> Get(int customerId)
         {
             try
             {
@@ -59,6 +87,20 @@ namespace API.Repositories
             catch (Exception ex)
             {
                 throw new UnableToDoActionException("Unable to get the Orders", ex);
+            }
+        }
+
+        public Task<Order> Update(Order order)
+        {
+            try
+            {
+                _context.Orders.Update(order);
+                var res = _context.SaveChangesAsync();
+                return res.Result > 0 ? Task.FromResult(order) : throw new UnableToDoActionException("Unable to update");
+            }
+            catch (Exception ex)
+            {
+                throw new UnableToDoActionException("Unable to update the Order", ex);
             }
         }
     }

@@ -109,5 +109,35 @@ namespace API.Controllers.CustomerControllers
             }
         }
 
+
+        [HttpPost("payment")]
+        [ProducesResponseType(typeof(ReturnOrderPaymentDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult> CreatePayment(OrderPaymentDto orderPaymentDto)
+        {
+            try
+            {
+                orderPaymentDto.CustomerId = int.Parse(User.FindFirst("Id").Value);
+                _logger.LogInformation("Creating payment");
+                return Ok(await _customerOrderService.CreatePayment(orderPaymentDto));
+            }
+            catch (OrderNotFoundException ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest(new ErrorDto(StatusCodes.Status400BadRequest, ex.Message));
+            }
+            catch (InvalidOrderException ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest(new ErrorDto(StatusCodes.Status400BadRequest, ex.Message));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return NotFound(new ErrorDto(StatusCodes.Status500InternalServerError, ex.Message));
+            }
+        }
+
     }
 }
