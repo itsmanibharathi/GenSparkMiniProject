@@ -48,6 +48,8 @@ namespace API.Utility
             CreateMap<Product, ReturnRestaurantProductDto>();
             CreateMap<ReturnRestaurantProductDto, RestaurantProductDto>();
 
+            // Restaurant Order
+            CreateMap<Order, ReturnRestaurantOrderDto>();
             // Employee Register
             CreateMap<EmployeeRegisterDto, Employee>();
             CreateMap<Employee, ReturnEmployeeRegisterDto>();

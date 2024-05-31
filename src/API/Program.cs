@@ -139,6 +139,7 @@ namespace API
             builder.Services.AddScoped<IProductSearchRepository, ProductRepository>();
             builder.Services.AddScoped<ICustomerAddressRepository, CustomerAddressRepository>();
             builder.Services.AddScoped<ICustomerOrderRepository, CustomerOrderRepository>();
+            builder.Services.AddScoped<IRestaurantOrderRepository, RestaurantOrderRepository>();
             #endregion
 
             #region Services
@@ -155,6 +156,7 @@ namespace API
             builder.Services.AddScoped<IEmployeeAuthService, EmployeeAuthService>();
             builder.Services.AddScoped<IProductSerivce, ProductService>();
             builder.Services.AddScoped<IRestaurantProductService, RestaurantProductService>();
+            builder.Services.AddScoped<IRestaurantOrderService, RestaurantOrderService>();
             #endregion
 
 
