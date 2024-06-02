@@ -1,126 +1,139 @@
-﻿//using API.Exceptions;
-//using API.Models;
-//using API.Models.DTOs.RestaurantDto;
-//using API.Repositories.Interfaces;
-//using API.Services.Interfaces;
-//using AutoMapper;
-//using System.Security.Cryptography.X509Certificates;
+﻿using API.Exceptions;
+using API.Models;
+using API.Models.DTOs.RestaurantDto;
+using API.Repositories;
+using API.Repositories.Interfaces;
+using API.Services.Interfaces;
+using AutoMapper;
+using System.Security.Cryptography.X509Certificates;
 
-//namespace API.Services
-//{
-//    public class RestaurantProductService : IRestaurantProductService
-//    {
-//        private readonly IRepository1<int, Product> _repository;
-//        private readonly IMapper _mapper;
+namespace API.Services
+{
+    public class RestaurantProductService : IRestaurantProductService
+    {
+        private readonly IRestaurantProductRepository _restaurantProductRepository;
+        private readonly IMapper _mapper;
 
-//        public RestaurantProductService(IRepository1<int, Product> repository , IMapper mapper)
-//        {
-//            _repository = repository;
-//            _mapper = mapper;
-//        }
-//        public async Task<ReturnRestaurantProductDto> Add(RestaurantProductDto restaurantProductDto)
-//        {
-//            Product product = _mapper.Map<Product>(restaurantProductDto);
-//            product = await _repository.Add(product);
-//            return _mapper.Map<ReturnRestaurantProductDto>(product);
-//        }
-//        public async Task<ReturnRestaurantProductDto> Get(int restaurantId, int productId)
-//        {
-//            var res = await _repository.Get(productId);
-//            if(res.RestaurantId == restaurantId)
-//            {
-//                return _mapper.Map<ReturnRestaurantProductDto>(res);
-//            }
-//            throw new ProductNotFoundException(productId);
-//        }
+        public RestaurantProductService(IRestaurantProductRepository restaurantProductRepository , IMapper mapper)
+        {
+            _restaurantProductRepository = restaurantProductRepository;
+            _mapper = mapper;
+        }
+        public async Task<ReturnRestaurantProductDto> Add(RestaurantProductDto restaurantProductDto)
+        {
+            Product product = _mapper.Map<Product>(restaurantProductDto);
+            product = await _restaurantProductRepository.AddAsync(product);
+            return _mapper.Map<ReturnRestaurantProductDto>(product);
+        }
+        public async Task<ReturnRestaurantProductDto> Get(int restaurantId, int productId)
+        {
+            var res = await _restaurantProductRepository.GetAsync(productId);
+            if (res.RestaurantId == restaurantId)
+            {
+                return _mapper.Map<ReturnRestaurantProductDto>(res);
+            }
+            throw new ProductNotFoundException(productId);
+        }
 
-//        public async Task<ReturnRestaurantProductDto> Available(int restaurantId, int productId)
-//        {
-//            try
-//            {
-//                var res = await Get(restaurantId, productId);
-//                if (res.ProductAvailable)
-//                {
-//                    throw new AlreadyUptoDateException(productId);
-//                }
-//                res.ProductAvailable = true;
-//                return await Update(_mapper.Map<RestaurantProductDto>(res));
-//            }
-//            catch (AlreadyUptoDateException)
-//            {
-//                throw;
-//            }
-//            catch (ProductNotFoundException)
-//            {
-//                throw;
-//            }
-//            catch (Exception)
-//            {
-//                throw new UnableToDoActionException("Unable to make product available");
-//            }
-//        }
+        public async Task<ReturnRestaurantProductDto> Available(int restaurantId, int productId)
+        {
+            try
+            {
+                var product = await _restaurantProductRepository.GetAsync(productId);
+                if (product.RestaurantId != restaurantId)
+                {
+                    throw new ProductNotFoundException(productId);
+                }
+                if (product.ProductAvailable)
+                {
+                    throw new AlreadyUptoDateException($"The Product {productId} is Already Available ");
+                }
+                product.ProductAvailable = true;
+                var res = await _restaurantProductRepository.UpdateAsync(product);
+                return _mapper.Map<ReturnRestaurantProductDto>(res);
+            }
+            catch (EntityNotFoundException<Product>)
+            {
+                throw;
+            }
+            catch (ProductNotFoundException)
+            {
+                throw;
+            }
+            catch (AlreadyUptoDateException)
+            {
+                throw;
+            }
+            catch (Exception)
+            {
+                throw new UnableToDoActionException("Unable to make product Available");
+            }
+        }
 
-//        public async Task<bool> Delete(int restaurantId, int productId)
-//        {
-//            var res = await _repository.Get(productId);
-//            return await _repository.Delete(productId);
-//        }
+        public async Task<bool> Delete(int restaurantId, int productId)
+        {
+            var res = await Get(restaurantId, productId);
+            return await _restaurantProductRepository.DeleteAsync(productId);
+            
+        }
 
 
-//        public async Task<IEnumerable<ReturnRestaurantProductDto>> GetAll(int restaurantId)
-//        {
-//            var res = await _repository.Get();
-//            return res.Where(x => x.RestaurantId == restaurantId).Select(x => _mapper.Map<ReturnRestaurantProductDto>(x));
-//        }
+        public async Task<IEnumerable<ReturnRestaurantProductDto>> GetAll(int restaurantId)
+        {
+            var res = await _restaurantProductRepository.GetByRestaurantIdAsync(restaurantId);
+            return res.Where(x => x.RestaurantId == restaurantId).Select(x => _mapper.Map<ReturnRestaurantProductDto>(x));
+        }
 
-//        public async Task<ReturnRestaurantProductDto> UnAvailable(int restaurantId, int productId)
-//        {
-//            try
-//            {
-//                var res = await Get(restaurantId, productId);
-//                if (!res.ProductAvailable)
-//                {
-//                    throw new AlreadyUptoDateException($"The Product {productId} is Already in UnAvailable ");
-//                }
-//                res.ProductAvailable = false;
-//                return await Update(_mapper.Map<RestaurantProductDto>(res));
-//            }
-//            catch (AlreadyUptoDateException)
-//            {
-//                throw;
-//            }
-//            catch (ProductNotFoundException)
-//            {
-//                throw;
-//            }
-//            catch (Exception)
-//            {
-//                throw new UnableToDoActionException("Unable to make product Unavailable");
-//            }
-//        }
+        public async Task<ReturnRestaurantProductDto> UnAvailable(int restaurantId, int productId)
+        {
+            try
+            {
+                var product = await _restaurantProductRepository.GetAsync(productId);
+                if (product.RestaurantId != restaurantId)
+                {
+                    throw new ProductNotFoundException(productId);
+                }
+                if (!product.ProductAvailable)
+                {
+                    throw new AlreadyUptoDateException($"The Product {productId} is Already UnAvailable ");
+                }
+                product.ProductAvailable = false;
+                var res = await _restaurantProductRepository.UpdateAsync(product);
+                return _mapper.Map<ReturnRestaurantProductDto>(res);
+            }
+            catch (EntityNotFoundException<Product>)
+            {
+                throw;
+            }
+            catch (ProductNotFoundException)
+            {
+                throw;
+            }
+            catch (AlreadyUptoDateException)
+            {
+                throw;
+            }
+            catch (Exception)
+            {
+                throw new UnableToDoActionException("Unable to make product Available");
+            }
+        }
 
-//        public async Task<ReturnRestaurantProductDto> Update(RestaurantProductDto restaurantProductDto)
-//        {
-//            try
-//            {
-//                var product = await Get(restaurantProductDto.RestaurantId,restaurantProductDto.ProductId);
-//                product.ProductName = restaurantProductDto.ProductName;
-//                product.ProductDescription = restaurantProductDto.ProductDescription;
-//                product.ProductPrice = restaurantProductDto.ProductPrice;
-//                product.ProductCategories = restaurantProductDto.ProductCategories;
-//                product.ProductAvailable = restaurantProductDto.ProductAvailable;
-//                product.UpdateAt = DateTime.Now;
-//                var res = await _repository.Update(_mapper.Map<Product>(product));
-//                return _mapper.Map<ReturnRestaurantProductDto>(res);
-//            }
-//            catch (ProductNotFoundException)
-//            {
-//                throw;
-//            }
-//            catch (Exception)
-//            {
-//                throw new UnableToDoActionException("Unable to update the product");
-//            }
-//        }
-//    }
-//}
+        public async Task<ReturnRestaurantProductDto> Update(RestaurantProductDto restaurantProductDto)
+        {
+            try
+            {
+                var res = await _restaurantProductRepository.UpdateAsync(_mapper.Map<Product>(restaurantProductDto));
+                return _mapper.Map<ReturnRestaurantProductDto>(res);
+            }
+            catch (EntityNotFoundException<Product>)
+            {
+                throw;
+            }
+            catch (Exception)
+            {
+                throw new UnableToDoActionException("Unable to update the product");
+            }
+        }
+    }
+}

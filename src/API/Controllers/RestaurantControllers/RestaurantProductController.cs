@@ -1,4 +1,5 @@
 ﻿using API.Exceptions;
+using API.Models;
 using API.Models.DTOs;
 using API.Models.DTOs.RestaurantDto;
 using API.Services.Interfaces;
@@ -35,7 +36,7 @@ namespace API.Controllers.RestaurantControllers
                 _logger.LogInformation("Adding product");
                 return Ok(await _restaurantProductService.Add(restaurantProductDto));
             }
-            catch (DataDuplicateException ex)
+            catch (EntityAlreadyExistsException<Product> ex)
             {
                 _logger.LogWarning(ex.Message);
                 return NotFound(new ErrorDto(StatusCodes.Status409Conflict, ex.Message));
@@ -59,7 +60,7 @@ namespace API.Controllers.RestaurantControllers
                 _logger.LogInformation("Updating product");
                 return Ok(await _restaurantProductService.Update(restaurantProductDto));
             }
-            catch (DataDuplicateException ex)
+            catch (EntityNotFoundException<Product> ex)
             {
                 _logger.LogWarning(ex.Message);
                 return NotFound(new ErrorDto(StatusCodes.Status409Conflict, ex.Message));
@@ -83,7 +84,7 @@ namespace API.Controllers.RestaurantControllers
                 _logger.LogInformation("Getting product");
                 return Ok(await _restaurantProductService.Get(restaurantId, productId));
             }
-            catch (ProductNotFoundException ex)
+            catch (EntityNotFoundException<Product> ex)
             {
                 _logger.LogWarning(ex.Message);
                 return NotFound(new ErrorDto(StatusCodes.Status404NotFound, ex.Message));
@@ -107,7 +108,7 @@ namespace API.Controllers.RestaurantControllers
                 _logger.LogInformation("Getting all products");
                 return Ok(await _restaurantProductService.GetAll(restaurantId));
             }
-            catch (ProductNotFoundException ex)
+            catch (EntityNotFoundException<Product> ex)
             {
                 _logger.LogWarning(ex.Message);
                 return NotFound(new ErrorDto(StatusCodes.Status404NotFound, ex.Message));
@@ -131,7 +132,7 @@ namespace API.Controllers.RestaurantControllers
                 _logger.LogInformation("Making product available");
                 return Ok(await _restaurantProductService.Available(restaurantId, productId));
             }
-            catch (ProductNotFoundException ex)
+            catch (EntityNotFoundException<Product> ex)
             {
                 _logger.LogWarning(ex.Message);
                 return NotFound(new ErrorDto(StatusCodes.Status404NotFound, ex.Message));
@@ -160,7 +161,7 @@ namespace API.Controllers.RestaurantControllers
                 _logger.LogInformation("Making product unavailable");
                 return Ok(await _restaurantProductService.UnAvailable(restaurantId, productId));
             }
-            catch (ProductNotFoundException ex)
+            catch (EntityNotFoundException<Product> ex)
             {
                 _logger.LogWarning(ex.Message);
                 return NotFound(new ErrorDto(StatusCodes.Status404NotFound, ex.Message));
@@ -190,7 +191,7 @@ namespace API.Controllers.RestaurantControllers
                 var res=  await _restaurantProductService.Delete(restaurantId, productId);
                 return Ok(new SuccessDto("Product Deleted successfully"));
             }
-            catch (ProductNotFoundException ex)
+            catch (EntityNotFoundException<Product> ex)
             {
                 _logger.LogWarning(ex.Message);
                 return NotFound(new ErrorDto(StatusCodes.Status404NotFound, ex.Message));

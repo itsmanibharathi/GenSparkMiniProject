@@ -136,24 +136,37 @@ namespace API
             builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
             builder.Services.AddScoped<ICustomerAddressRepository, CustomerAddressRespository>();
             builder.Services.AddScoped<ICustomerOrderRepository, CustomerOrderRepository>();
+
             builder.Services.AddScoped<IRestaurantRepository, RestaurantRepository>();
+            builder.Services.AddScoped<IRestaurantProductRepository, RestaurantProductRepository>();
+            builder.Services.AddScoped<IRestaurantOrderRepository, RestaurantOrderRepository>();
+
             builder.Services.AddScoped<IProductRepository, ProductRepository>();
-            builder.Services.AddScoped<IOnlinePaymentRepository, OnlinePaymentRepository>();
-            builder.Services.AddScoped<ICashPaymentRepository, CashPaymentRepository>();
+
             builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             builder.Services.AddScoped<IEmployeeOrderRepository, EmployeeOrderRepository>();
+            
+            builder.Services.AddScoped<IOnlinePaymentRepository, OnlinePaymentRepository>();
+            builder.Services.AddScoped<ICashPaymentRepository, CashPaymentRepository>();
 
             #endregion
 
             #region Services
             builder.Services.AddScoped<IPasswordHashService, PasswordHashService>();
+
             builder.Services.AddScoped<ITokenService<Customer>, CustomerTokenService>();
             builder.Services.AddScoped<ICustomerService, CustomerService>();
             builder.Services.AddScoped<ICustomerAddressService, CustomerAddressService>();
             builder.Services.AddScoped<ICustomerOrderService, CustomerOrderService>();
+
             builder.Services.AddScoped<ITokenService<Employee>, EmployeeTokenService>();
             builder.Services.AddScoped<IEmployeeService, EmployeeService>();
             builder.Services.AddScoped<IEmployeeOrderService, EmployeeOrderService>();
+
+            builder.Services.AddScoped<ITokenService<Restaurant>, RestaurantTokenService>();
+            builder.Services.AddScoped<IRestaurantAuthService, RestaurantAuthService>();
+            builder.Services.AddScoped<IRestaurantProductService, RestaurantProductService>();
+            builder.Services.AddScoped<IRestaurantOrderService, RestaurantOrderService>();
             #endregion
 
 
