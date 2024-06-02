@@ -13,7 +13,7 @@ namespace API.Utility
                 model.Enum.Clear();
                 Enum.GetNames(context.Type)
                     .ToList()
-                    .ForEach(name => model.Enum.Add(new OpenApiString($"{Convert.ToInt64(Enum.Parse(context.Type, name))} - {name}")));
+                    .ForEach(name => model.Enum.Add(new OpenApiString(name)));
             }
         }
     }

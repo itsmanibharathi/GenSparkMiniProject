@@ -26,7 +26,7 @@ namespace UnitTest.Repositories.ProductRepositoryTest
         [Test, Order(1)]
         public async Task SearchProduct()
         {
-            CustomerSearchProductDto productSearchDto = new CustomerSearchProductDto()
+            CustomerProductSearchDto productSearchDto = new CustomerProductSearchDto()
             {
                 ProductPrice = 100
             };
