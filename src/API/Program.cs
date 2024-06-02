@@ -140,6 +140,8 @@ namespace API
             builder.Services.AddScoped<IProductRepository, ProductRepository>();
             builder.Services.AddScoped<IOnlinePaymentRepository, OnlinePaymentRepository>();
             builder.Services.AddScoped<ICashPaymentRepository, CashPaymentRepository>();
+            builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            builder.Services.AddScoped<IEmployeeOrderRepository, EmployeeOrderRepository>();
 
             #endregion
 
@@ -149,6 +151,9 @@ namespace API
             builder.Services.AddScoped<ICustomerService, CustomerService>();
             builder.Services.AddScoped<ICustomerAddressService, CustomerAddressService>();
             builder.Services.AddScoped<ICustomerOrderService, CustomerOrderService>();
+            builder.Services.AddScoped<ITokenService<Employee>, EmployeeTokenService>();
+            builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+            builder.Services.AddScoped<IEmployeeOrderService, EmployeeOrderService>();
             #endregion
 
 

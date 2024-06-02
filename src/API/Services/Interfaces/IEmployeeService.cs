@@ -2,7 +2,7 @@
 
 namespace API.Services.Interfaces
 {
-    public interface IEmployeeAuthService
+    public interface IEmployeeService
     {
         public Task<ReturnEmployeeLoginDto> Login(EmployeeLoginDto employeeLoginDto);
         public Task<ReturnEmployeeRegisterDto> Register(EmployeeRegisterDto employeeRegisterDto);
