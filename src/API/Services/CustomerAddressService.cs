@@ -5,7 +5,7 @@ using API.Models.DTOs.CustomerDto;
 using API.Repositories.Interfaces;
 using API.Services.Interfaces;
 using AutoMapper;
-using System.Security.Cryptography.X509Certificates;
+using log4net.Util;
 
 namespace API.Services
 {
@@ -21,30 +21,36 @@ namespace API.Services
         }
         public async Task<ReturnCustomerAddressDto> Add(CustomerAddressDto addCustomerAddressDto)
         {
-            var res= await _repository.Add(_mapper.Map<CustomerAddress>(addCustomerAddressDto));
+            var res= await _repository.AddAsync(_mapper.Map<CustomerAddress>(addCustomerAddressDto));
             return _mapper.Map<ReturnCustomerAddressDto>(res);
         }
 
         public async Task<SuccessDto> Delete(int CustomerId, int CustomerAddressId)
         {
-            var res = await _repository.Delete(CustomerId , CustomerAddressId);
-            if (!res)
-            {
-                throw new UnableToDoActionException("Unable to Delete the Address");
-            }
-            return _mapper.Map<SuccessDto>(res);
+            var res = await _repository.DeleteAsync(CustomerId,CustomerAddressId);
+            return res ? new SuccessDto("Address Deleted Successfully") : throw new EntityNotFoundException<CustomerAddress>(CustomerAddressId);
         }
 
         public async Task<IEnumerable<ReturnCustomerAddressDto>> Get(int CustomerId)
         {
-            var res = await _repository.Get(CustomerId);
+            var res = await _repository.GetByCustomerIdAsync(CustomerId);
             return _mapper.Map<IEnumerable<ReturnCustomerAddressDto>>(res);
         }
-
         public async Task<ReturnCustomerAddressDto> Get(int CustomerId, int CustomerAddressId)
         {
-            var res = await _repository.Get(CustomerId, CustomerAddressId);
-            return _mapper.Map<ReturnCustomerAddressDto>(res);
+            try
+            {
+                var res = await _repository.GetAsync(CustomerAddressId);
+                if (res.CustomerId != CustomerId)
+                {
+                    throw new EntityNotFoundException<CustomerAddress>(CustomerAddressId);
+                }
+                return _mapper.Map<ReturnCustomerAddressDto>(res);
+            }
+            catch(Exception)
+            {
+                throw;
+            }
         }
     }
 }

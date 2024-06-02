@@ -8,30 +8,29 @@ using AutoMapper;
 
 namespace API.Services
 {
-    public class CustomerAuthService : ICustomerAuthService
+    public class CustomerService : ICustomerService
     {
-        private readonly ICustomerAuthRepository _customerAuthRepository;
-        private readonly IRepository<int, Customer> _customerRepository;
+        private readonly ICustomerRepository _customerRepository;
         private readonly IPasswordHashService _passwordHashService;
         private readonly ITokenService<Customer> _tokenService;
         private readonly IMapper _mapper;
 
-        public CustomerAuthService(
-            ICustomerAuthRepository customerAuthRepository ,
-            IRepository<int,Customer> customerRepository ,
+        public CustomerService(
+            ICustomerRepository customerRepository,
             IPasswordHashService passwordHashServices,
             ITokenService<Customer> tokenService ,
             IMapper mapper)
         {
-            _customerAuthRepository = customerAuthRepository;
             _customerRepository = customerRepository;
             _passwordHashService = passwordHashServices;
             _tokenService = tokenService;
             _mapper = mapper;
         }
+
+
         public async Task<ReturnCustomerLoginDto> Login(CustomerLoginDto customerLoginDto)
         {
-            var customer = await _customerAuthRepository.Get(customerLoginDto.CustomerEmail);
+            var customer = await _customerRepository.GetByEmailId(customerLoginDto.CustomerEmail);
             if (_passwordHashService.Verify(customerLoginDto.CustomerPassword, customer.CustomerAuth.Password))
             {
                 var res = _mapper.Map<ReturnCustomerLoginDto>(customer);
@@ -48,8 +47,43 @@ namespace API.Services
             {
                 Password = _passwordHashService.Hash(customerRegisterDto.CustomerPassword)
             };
-            var res = await _customerRepository.Add(customer);
+            var res = await _customerRepository.AddAsync(customer);
             return _mapper.Map<ReturnCustomerRegisterDto>(res);
+        }
+
+        public async Task<ReturnCustomerDto> UpdatePhone(int customerId, string phone)
+        {
+            try
+            {
+                var customer = await _customerRepository.GetAsync(customerId);
+                customer.CustomerPhone = phone;
+                var res = await _customerRepository.UpdateAsync(customer);
+                return _mapper.Map<ReturnCustomerDto>(res);
+            }
+            catch (EntityNotFoundException<Customer>)
+            {
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        public async Task<ReturnCustomerDto> Get(int customerId)
+        {
+            try
+            {
+                var customer = await _customerRepository.GetAsync(customerId);
+                return _mapper.Map<ReturnCustomerDto>(customer);
+            }
+            catch (EntityNotFoundException<Customer>)
+            {
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using API.Exceptions;
+using API.Models;
 using API.Models.DTOs;
 using API.Models.DTOs.CustomerDto;
 using API.Services.Interfaces;
@@ -43,7 +44,7 @@ namespace API.Controllers.CustomerControllers
                 _logger.LogWarning(ex, "Error in Add Customer Address");
                 return BadRequest(new ErrorDto(StatusCodes.Status400BadRequest, ex.Message));
             }
-            catch (DataDuplicateException ex)
+            catch (EntityAlreadyExistsException<CustomerAddress> ex)
             {
                 _logger.LogWarning(ex, "Error in Add Customer Address");
                 return BadRequest(new ErrorDto(StatusCodes.Status409Conflict, ex.Message));
@@ -56,6 +57,11 @@ namespace API.Controllers.CustomerControllers
         }
 
         [HttpGet]
+
+        [ProducesResponseType(typeof(ReturnCustomerAddressDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status409Conflict)]
+        [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status500InternalServerError)]
+
         public async Task<IActionResult> Get()
         {
             try
@@ -63,6 +69,11 @@ namespace API.Controllers.CustomerControllers
                 int CustomerId = int.Parse(User.FindFirst("Id").Value);
                 var result = await _customerAddressService.Get(CustomerId);
                 return Ok(result);
+            }
+            catch (EntityNotFoundException<CustomerAddress> ex)
+            {
+                _logger.LogWarning(ex, "Error in Get Customer Address");
+                return BadRequest(new ErrorDto(StatusCodes.Status409Conflict, ex.Message));
             }
             catch (Exception ex)
             {
@@ -72,6 +83,9 @@ namespace API.Controllers.CustomerControllers
         }
 
         [HttpGet("{CustomerAddressId}")]
+        [ProducesResponseType(typeof(ReturnCustomerAddressDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status409Conflict)]
+        [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Get( int CustomerAddressId)
         {
             try
@@ -80,6 +94,11 @@ namespace API.Controllers.CustomerControllers
                 var result = await _customerAddressService.Get(CustomerId, CustomerAddressId);
                 return Ok(result);
             }
+            catch (EntityNotFoundException<CustomerAddress> ex)
+            {
+                _logger.LogWarning(ex, "Error in Get Customer Address");
+                return BadRequest(new ErrorDto(StatusCodes.Status404NotFound, ex.Message));
+            }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error in Get Customer Address");
@@ -87,14 +106,22 @@ namespace API.Controllers.CustomerControllers
             }
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        [HttpDelete("{CustomerAddressId}")]
+        [ProducesResponseType(typeof(ReturnCustomerAddressDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status409Conflict)]
+        [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> Delete(int CustomerAddressId)
         {
             try
             {
                 int CustomerId = int.Parse(User.FindFirst("Id").Value);
-                var result = await _customerAddressService.Delete(CustomerId,id);
+                var result = await _customerAddressService.Delete(CustomerId, CustomerAddressId);
                 return Ok(result);
+            }
+            catch (EntityNotFoundException<CustomerAddress> ex)
+            {
+                _logger.LogWarning(ex, "Error in Delete Customer Address");
+                return BadRequest(new ErrorDto(StatusCodes.Status404NotFound, ex.Message));
             }
             catch (Exception ex)
             {

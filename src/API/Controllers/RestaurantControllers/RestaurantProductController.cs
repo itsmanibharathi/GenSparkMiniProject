@@ -95,7 +95,7 @@ namespace API.Controllers.RestaurantControllers
             }
         }
 
-        [HttpGet("get")]
+        [HttpGet("all")]
         [ProducesResponseType(typeof(IEnumerable<ReturnRestaurantProductDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status500InternalServerError)]
@@ -136,6 +136,11 @@ namespace API.Controllers.RestaurantControllers
                 _logger.LogWarning(ex.Message);
                 return NotFound(new ErrorDto(StatusCodes.Status404NotFound, ex.Message));
             }
+            catch(AlreadyUptoDateException ex)
+            {
+                _logger.LogWarning(ex.Message);
+                return NotFound(new ErrorDto(StatusCodes.Status409Conflict, ex.Message));
+            }
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
@@ -159,6 +164,11 @@ namespace API.Controllers.RestaurantControllers
             {
                 _logger.LogWarning(ex.Message);
                 return NotFound(new ErrorDto(StatusCodes.Status404NotFound, ex.Message));
+            }
+            catch (AlreadyUptoDateException ex)
+            {
+                _logger.LogWarning(ex.Message);
+                return NotFound(new ErrorDto(StatusCodes.Status409Conflict, ex.Message));
             }
             catch (Exception ex)
             {

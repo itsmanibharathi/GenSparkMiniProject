@@ -1,4 +1,5 @@
 ﻿using API.Exceptions;
+using API.Models;
 using API.Models.DTOs;
 using API.Models.DTOs.CustomerDto;
 using API.Services.Interfaces;
@@ -12,12 +13,12 @@ namespace API.Controllers.CustomerControllers
     [ApiController]
     public class CustomerController : ControllerBase
     {
-        private readonly ICustomerAuthService _customerAuthService;
+        private readonly ICustomerService _customerAuthService;
         private readonly ILogger _logger;
 
-        public CustomerController(ICustomerAuthService customerAuthService, ILogger<CustomerController> logger)
+        public CustomerController(ICustomerService customerService, ILogger<CustomerController> logger)
         {
-            _customerAuthService = customerAuthService;
+            _customerAuthService = customerService;
             _logger = logger;
         }
 
@@ -32,7 +33,7 @@ namespace API.Controllers.CustomerControllers
                 _logger.LogInformation("Registering customer");
                 return Ok(await _customerAuthService.Register(customerRegisterDto));
             }
-            catch (DataDuplicateException ex)
+            catch (EntityAlreadyExistsException<Customer> ex)
             {
                 _logger.LogWarning(ex.Message);
                 return NotFound(new ErrorDto(StatusCodes.Status409Conflict, ex.Message));
