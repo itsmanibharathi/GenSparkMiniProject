@@ -135,18 +135,11 @@ namespace API
             #region Repositories
             builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
             builder.Services.AddScoped<ICustomerAddressRepository, CustomerAddressRespository>();
-            //builder.Services.AddScoped<ICustomerOrderRepository, CustomerOrderRepository>();
-
-            //builder.Services.AddScoped<IRepository1<int, Restaurant>, RestaurantRepository>();
-            //builder.Services.AddScoped<IRestaurantAuthRepository,  RestaurantAuthRepository>();
-            //builder.Services.AddScoped<IRestaurantOrderRepository, RestaurantOrderRepository>();
-
-            //builder.Services.AddScoped<IRepository1<int, Product>, ProductRepository>();
-            //builder.Services.AddScoped<IProductSearchRepository, ProductRepository>();
-
-            //builder.Services.AddScoped<IRepository1<int,Employee>, EmployeeRepository>();
-            //builder.Services.AddScoped<IEmployeeAuthRepository, EmployeeAuthRepository>();
-            //builder.Services.AddScoped<IEmployeeOrderRepository, EmployeeOrderRepository>();
+            builder.Services.AddScoped<ICustomerOrderRepository, CustomerOrderRepository>();
+            builder.Services.AddScoped<IRestaurantRepository, RestaurantRepository>();
+            builder.Services.AddScoped<IProductRepository, ProductRepository>();
+            builder.Services.AddScoped<IOnlinePaymentRepository, OnlinePaymentRepository>();
+            builder.Services.AddScoped<ICashPaymentRepository, CashPaymentRepository>();
 
             #endregion
 
@@ -155,19 +148,7 @@ namespace API
             builder.Services.AddScoped<ITokenService<Customer>, CustomerTokenService>();
             builder.Services.AddScoped<ICustomerService, CustomerService>();
             builder.Services.AddScoped<ICustomerAddressService, CustomerAddressService>();
-            //builder.Services.AddScoped<ICustomerOrderService, CustomerOrderService>();
-
-            //builder.Services.AddScoped<IRestaurantAuthService, RestaurantAuthService>();
-            //builder.Services.AddScoped<ITokenService<Restaurant>, RestaurantTokenService>();
-            //builder.Services.AddScoped<IRestaurantProductService, RestaurantProductService>();
-            //builder.Services.AddScoped<IRestaurantOrderService, RestaurantOrderService>();
-            
-            //builder.Services.AddScoped<IProductSerivce, ProductService>();
-            
-            //builder.Services.AddScoped<IEmployeeAuthService, EmployeeAuthService>();
-            //builder.Services.AddScoped<ITokenService<Employee>, EmployeeTokenService>();
-            //builder.Services.AddScoped<IEmployeeOrderService, EmployeeOrderService>();
-
+            builder.Services.AddScoped<ICustomerOrderService, CustomerOrderService>();
             #endregion
 
 

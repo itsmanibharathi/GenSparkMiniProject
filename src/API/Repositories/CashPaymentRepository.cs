@@ -1,0 +1,18 @@
+﻿using API.Context;
+using API.Models;
+using API.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
+
+namespace API.Repositories
+{
+    public class CashPaymentRepository : Repository<int, CashPayment>, ICashPaymentRepository
+    {
+        public CashPaymentRepository(DBGenSparkMinirojectContext context) : base(context)
+        {
+        }
+        public override Task<bool> IsDuplicate(CashPayment entity)
+        {
+            return _context.CashPayments.AnyAsync(x => x.OrderId == entity.OrderId);
+        }
+    }
+}

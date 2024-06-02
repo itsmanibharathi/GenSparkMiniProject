@@ -3,7 +3,7 @@
     public class OrderNotFoundException : Exception
     {
         string message;
-        public OrderNotFoundException()
+        public OrderNotFoundException(int orderId)
         {
             message = "Order not found";
         }

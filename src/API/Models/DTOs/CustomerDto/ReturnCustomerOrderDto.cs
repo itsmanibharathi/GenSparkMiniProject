@@ -4,6 +4,7 @@ namespace API.Models.DTOs.CustomerDto
 {
     public class ReturnCustomerOrderDto
     {
+        public int CustomerId { get; set; }
         public int OrderId { get; set; }
         public int RestaurantId { get; set; }
         public decimal TotalOrderPrice { get; set; }

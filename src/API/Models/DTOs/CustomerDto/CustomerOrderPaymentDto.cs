@@ -15,9 +15,6 @@ namespace API.Models.DTOs.CustomerDto
         [Required(ErrorMessage = "order ids is required")]
         [MinLength(1, ErrorMessage = "Order ids must be at least 1")]
         public ICollection<int> Orders { get; set; }
-
-        [Required(ErrorMessage = "Payment method is required")]
-        [EnumDataType(typeof(PaymentMethod), ErrorMessage = "Invalid payment method")]
         public PaymentMethod PaymentMethod { get; set; }
     }
 }

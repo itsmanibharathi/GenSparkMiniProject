@@ -14,7 +14,7 @@ namespace UnitTest.Repositories.RestaurantRepositoriesTest
     [TestFixture]
     internal class RestaurantRepositoryTest : RepositoryTestBase
     {
-        private IRepository<int,Restaurant> _repository;
+        private IRepository1<int,Restaurant> _repository;
 
         [SetUp]
         public async Task Setup()

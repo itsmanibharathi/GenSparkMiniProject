@@ -261,9 +261,9 @@ namespace API.Context
 
             #region Relations
             modelBuilder.Entity<CashPayment>()
-                .HasMany(p => p.Orders)
+                .HasOne(p => p.Order)
                 .WithOne(o => o.CashPayment)
-                .HasForeignKey(o => o.CashPaymentId);
+                .HasForeignKey<Order>(o => o.CashPaymentId);
             modelBuilder.Entity<CashPayment>()
                 .HasOne(p => p.Employee)
                 .WithMany(e => e.CashPayments)

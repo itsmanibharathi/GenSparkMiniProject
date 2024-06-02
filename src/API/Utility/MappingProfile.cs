@@ -28,8 +28,8 @@ namespace API.Utility
             CreateMap<Order, ReturnCustomerOrderDto>();
 
             // Customer Order Payment
-            CreateMap<OnlinePayment, ReturnOrderPaymentDto>();
-            CreateMap<CashPayment,ReturnOrderPaymentDto>();
+            CreateMap<OnlinePayment, ReturnOrderOnlinePaymentDto>();
+            CreateMap<CashPayment,ReturnOrderCashPaymentDto>();
 
             // Restaurant Register
             CreateMap<RestaurantRegisterDto, Restaurant>();
