@@ -98,7 +98,7 @@ namespace API.Controllers.EmployeeControllers
             try
             {
                 var EmployeeId = int.Parse(User.FindFirst("Id").Value);
-                return Ok(await _employeeOrderService.Accept(EmployeeId, orderId));
+                return Ok(await _employeeOrderService.AcceptOrder(EmployeeId, orderId));
             }
             catch (OrderNotFoundException ex)
             {
@@ -123,7 +123,7 @@ namespace API.Controllers.EmployeeControllers
             try
             {
                 var EmployeeId = int.Parse(User.FindFirst("Id").Value);
-                return Ok(await _employeeOrderService.UpdateOrder(EmployeeId, orderId,OrderStatus.PickedUp)); // ask this
+                return Ok(await _employeeOrderService.PicUpOrder(EmployeeId, orderId)); // ask this
             }
             catch (OrderNotFoundException ex)
             {
@@ -143,12 +143,12 @@ namespace API.Controllers.EmployeeControllers
         [ProducesResponseType(typeof(ReturnEmployeeOrderDto), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult> DeliverOrder(int orderId)
+        public async Task<ActionResult> DeliverOrder(int orderId,decimal? amount)
         {
             try
             {
                 var EmployeeId = int.Parse(User.FindFirst("Id").Value);
-                return Ok(await _employeeOrderService.UpdateOrder(EmployeeId, orderId, OrderStatus.Delivered)); // ask this
+                return Ok(await _employeeOrderService.DeliverOrder(EmployeeId, orderId,amount)); // ask this
             }
             catch (OrderNotFoundException ex)
             {

@@ -83,17 +83,17 @@ namespace API.Services
             return _mapper.Map<IEnumerable<ReturnEmployeeOrderDto>>(res.OrderByDescending(o => o.OrderDate).ThenBy(o => o.OrderStatus));
         }
 
-        public async Task<ReturnEmployeeOrderDto> UpdateOrder(int employeeId, int orderId, OrderStatus orderStatus)
+        
+        public async Task<ReturnEmployeeOrderDto> AcceptOrder(int employeeId, int orderID)
         {
             try
             {
-                var order = await _repository.Get(orderId);
-                if (order.EmployeeId != employeeId)
+                var order = await _repository.Get(orderID);
+                if (order.EmployeeId != null)
                 {
                     throw new OrderNotFoundException();
                 }
-                order.OrderStatus = orderStatus;
-
+                order.EmployeeId = employeeId;
                 var res = await _repository.UpdateOrder(order);
                 return _mapper.Map<ReturnEmployeeOrderDto>(res);
             }
@@ -107,16 +107,49 @@ namespace API.Services
             }
         }
 
-        public async Task<ReturnEmployeeOrderDto> Accept(int employeeId, int orderID)
+        public async Task<ReturnEmployeeOrderDto> DeliverOrder(int employeeId, int orderId, decimal? amount)
         {
             try
             {
-                var order = await _repository.Get(orderID);
-                if (order.EmployeeId != null)
+                var order = await _repository.Get(orderId);
+                if (order.EmployeeId != employeeId)
                 {
                     throw new OrderNotFoundException();
                 }
-                order.EmployeeId = employeeId;
+                if (order.PaymentMethod == PaymentMethod.COD)
+                {
+                    if (amount != null && amount != order.TotalAmount)
+                    {
+                        throw new UnableToDoActionException("Amount is not correct");
+                    }
+                    order.Employee.Balance += amount ?? 0;
+                }
+                order.OrderStatus = OrderStatus.Delivered;
+                order.DeliveryDate = DateTime.Now;
+
+                var res = await _repository.UpdateOrder(order);
+                return _mapper.Map<ReturnEmployeeOrderDto>(res);
+            }
+            catch (OrderNotFoundException)
+            {
+                throw;
+            }
+            catch (Exception e)
+            {
+                throw new UnableToDoActionException("Unable to Preparing order", e);
+            }
+        }
+        public async Task<ReturnEmployeeOrderDto> PicUpOrder(int employeeId, int orderId)
+        {
+            try
+            {
+                var order = await _repository.Get(orderId);
+                if (order.EmployeeId != employeeId)
+                {
+                    throw new OrderNotFoundException();
+                }
+                order.OrderStatus = OrderStatus.PickedUp;
+
                 var res = await _repository.UpdateOrder(order);
                 return _mapper.Map<ReturnEmployeeOrderDto>(res);
             }
