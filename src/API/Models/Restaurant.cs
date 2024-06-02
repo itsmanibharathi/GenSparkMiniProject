@@ -2,6 +2,7 @@
 
 namespace API.Models
 {
+    
     public class Restaurant
     {
         public int RestaurantId { get; set; }

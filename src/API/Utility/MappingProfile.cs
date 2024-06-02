@@ -57,6 +57,9 @@ namespace API.Utility
             // Employee Login
             CreateMap<EmployeeLoginDto, Employee>();
             CreateMap<Employee, ReturnEmployeeLoginDto>();
+
+            // Employee Order
+            CreateMap<Order, ReturnEmployeeOrderDto>();
         }
     }
 }

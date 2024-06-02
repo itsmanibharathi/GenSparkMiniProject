@@ -32,7 +32,7 @@ namespace API.Services
             return _mapper.Map<ReturnCustomerSearchProductDto>(res);
         }
 
-        public async Task<IEnumerable<ReturnCustomerSearchProductDto>> Search(CustomerSearchProductDto productSearchDto)
+        public async Task<IEnumerable<ReturnCustomerSearchProductDto>> Search(CustomerProductSearchDto productSearchDto)
         {
             var res = await _productSearch.Search(productSearchDto);
             if (res.Any())

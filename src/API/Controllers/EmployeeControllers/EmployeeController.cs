@@ -5,7 +5,7 @@ using API.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace API.Controllers
+namespace API.Controllers.EmployeeControllers
 {
     [Route("api/[controller]")]
     [ApiController]

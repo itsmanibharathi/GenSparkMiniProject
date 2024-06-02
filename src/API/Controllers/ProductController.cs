@@ -25,7 +25,7 @@ namespace API.Controllers
         [ProducesResponseType(typeof(IEnumerable<ReturnCustomerSearchProductDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Search([FromQuery] CustomerSearchProductDto productSearchDto)
+        public async Task<IActionResult> Search([FromQuery] CustomerProductSearchDto productSearchDto)
         {
             try
             {

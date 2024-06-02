@@ -5,7 +5,7 @@ namespace API.Repositories.Interfaces
 {
     public interface IProductSearchRepository
     {
-        public Task<IEnumerable<Product>> Search(CustomerSearchProductDto productSearchDto);
+        public Task<IEnumerable<Product>> Search(CustomerProductSearchDto productSearchDto);
 
     }
 }

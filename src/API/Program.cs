@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace API
 {
@@ -26,14 +27,18 @@ namespace API
 
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers()
+                .AddJsonOptions(options =>
+                {
+                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            });
 
             builder.Services.AddAutoMapper(typeof(MappingProfile));
 
             builder.Services.AddLogging(l => l.AddLog4Net());
 
             builder.Services.AddEndpointsApiExplorer();
-            
+
             #region Swagger
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -130,33 +135,40 @@ namespace API
             #region Repositories
             builder.Services.AddScoped<IRepository<int, Customer>, CustomerRepository>();
             builder.Services.AddScoped<ICustomerAuthRepository, CustomerAuthRepository>();
-            builder.Services.AddScoped<IRepository<int, Restaurant>, RestaurantRepository>();
-            builder.Services.AddScoped<IRestaurantAuthRepository,  RestaurantAuthRepository>();
-            builder.Services.AddScoped<IRepository<int,Employee>, EmployeeRepository>();
-
-            builder.Services.AddScoped<IEmployeeAuthRepository, EmployeeAuthRepository>();
-            builder.Services.AddScoped<IRepository<int, Product>, ProductRepository>();
-            builder.Services.AddScoped<IProductSearchRepository, ProductRepository>();
             builder.Services.AddScoped<ICustomerAddressRepository, CustomerAddressRepository>();
             builder.Services.AddScoped<ICustomerOrderRepository, CustomerOrderRepository>();
+
+            builder.Services.AddScoped<IRepository<int, Restaurant>, RestaurantRepository>();
+            builder.Services.AddScoped<IRestaurantAuthRepository,  RestaurantAuthRepository>();
             builder.Services.AddScoped<IRestaurantOrderRepository, RestaurantOrderRepository>();
+            
+            builder.Services.AddScoped<IRepository<int, Product>, ProductRepository>();
+            builder.Services.AddScoped<IProductSearchRepository, ProductRepository>();
+            
+            builder.Services.AddScoped<IRepository<int,Employee>, EmployeeRepository>();
+            builder.Services.AddScoped<IEmployeeAuthRepository, EmployeeAuthRepository>();
+            builder.Services.AddScoped<IEmployeeOrderRepository, EmployeeOrderRepository>();
+
             #endregion
 
             #region Services
             builder.Services.AddScoped<IPasswordHashService, PasswordHashService>();
             builder.Services.AddScoped<ITokenService<Customer>, CustomerTokenService>();
-            builder.Services.AddScoped<ITokenService<Restaurant>, RestaurantTokenService>();
-            builder.Services.AddScoped<ITokenService<Employee>, EmployeeTokenService>();
-
             builder.Services.AddScoped<ICustomerAuthService, CustomerAuthService>();
             builder.Services.AddScoped<ICustomerAddressService, CustomerAddressService>();
             builder.Services.AddScoped<ICustomerOrderService, CustomerOrderService>();
-            
+
             builder.Services.AddScoped<IRestaurantAuthService, RestaurantAuthService>();
-            builder.Services.AddScoped<IEmployeeAuthService, EmployeeAuthService>();
-            builder.Services.AddScoped<IProductSerivce, ProductService>();
+            builder.Services.AddScoped<ITokenService<Restaurant>, RestaurantTokenService>();
             builder.Services.AddScoped<IRestaurantProductService, RestaurantProductService>();
             builder.Services.AddScoped<IRestaurantOrderService, RestaurantOrderService>();
+            
+            builder.Services.AddScoped<IProductSerivce, ProductService>();
+            
+            builder.Services.AddScoped<IEmployeeAuthService, EmployeeAuthService>();
+            builder.Services.AddScoped<ITokenService<Employee>, EmployeeTokenService>();
+            builder.Services.AddScoped<IEmployeeOrderService, EmployeeOrderService>();
+
             #endregion
 
 

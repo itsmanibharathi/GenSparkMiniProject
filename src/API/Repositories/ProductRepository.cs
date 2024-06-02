@@ -123,7 +123,7 @@ namespace API.Repositories
             }
         }
 
-        public async Task<IEnumerable<Product>> Search(CustomerSearchProductDto productSearchDto)
+        public async Task<IEnumerable<Product>> Search(CustomerProductSearchDto productSearchDto)
         {
             try
             {
@@ -134,8 +134,8 @@ namespace API.Repositories
                     query = query.Where(p => p.ProductName.Contains(productSearchDto.ProductName));
                 if (productSearchDto.ProductPrice.HasValue)
                     query = query.Where(p => p.ProductPrice == productSearchDto.ProductPrice);
-                if (productSearchDto.ProductCategories != null)
-                    query = query.Where(p => productSearchDto.ProductCategories.Contains(p.ProductCategories));
+                //if (productSearchDto.ProductCategories != null)
+                //    query = query.Where(p => productSearchDto.ProductCategories.Contains(p.ProductCategories));
                 if (!string.IsNullOrEmpty(productSearchDto.RestaurantName))
                     query = query.Where(p => p.Restaurant.Name.Contains(productSearchDto.RestaurantName));
                 if (!string.IsNullOrEmpty(productSearchDto.RestaurantBranch))

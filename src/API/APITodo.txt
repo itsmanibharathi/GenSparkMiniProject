@@ -4,6 +4,7 @@ doto
 
   - Alter the restaurant product add/edite Dtos 	
   - product Update duplicat product name and category
+  - handle the enums in product category at searchproduct
 
 
 
