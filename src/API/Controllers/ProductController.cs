@@ -23,65 +23,74 @@ namespace API.Controllers
 
 
         [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<ReturnCustomerSearchProductDto>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(typeof(ApiResponse<IEnumerable<ReturnCustomerSearchProductDto>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
+
         public async Task<IActionResult> Search([FromQuery] CustomerProductSearchDto productSearchDto)
         {
             try
             {
                 var res = await _productService.Search(productSearchDto);
-                return Ok(res);
+                var response = new ApiResponse<IEnumerable<ReturnCustomerSearchProductDto>>(StatusCodes.Status200OK, res);
+                return Ok(response);
+
             }
             catch (EntityNotFoundException<Product> ex)
             {
                 _logger.LogWarning(ex.Message);
-                return StatusCode(StatusCodes.Status404NotFound, ex.Message);
+                var response = new ApiResponse(StatusCodes.Status404NotFound, ex.Message);
+                return StatusCode(StatusCodes.Status404NotFound, response);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+                var response = new ApiResponse(StatusCodes.Status500InternalServerError, ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
             }
         }
 
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(ReturnCustomerSearchProductDto), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(typeof(ApiResponse<ReturnCustomerSearchProductDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Get(int id)
         {
             try
             {
                 var res = await _productService.Get(id);
-                return Ok(res);
+                var response = new ApiResponse<ReturnCustomerSearchProductDto>(StatusCodes.Status200OK, res);
+                return Ok(response);
             }
             catch (EntityNotFoundException<Product> ex)
             {
                 _logger.LogWarning(ex.Message);
-                return StatusCode(StatusCodes.Status404NotFound, ex.Message);
+                var response = new ApiResponse(StatusCodes.Status404NotFound,ex.Message);
+                return StatusCode(StatusCodes.Status404NotFound, response);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+                var response = new ApiResponse(StatusCodes.Status500InternalServerError, ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
             }
         }
 
         [HttpGet("all")]
-        [ProducesResponseType(typeof(IEnumerable<ReturnCustomerSearchProductDto>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(typeof(ApiResponse<IEnumerable<ReturnCustomerSearchProductDto>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Get()
         {
             try
             {
                 var res = await _productService.Get();
-                return Ok(res);
+                var response = new ApiResponse<IEnumerable<ReturnCustomerSearchProductDto>>(StatusCodes.Status200OK, res);
+                return Ok(response);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+                var response = new ApiResponse(StatusCodes.Status500InternalServerError, ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
             }
         }
     }

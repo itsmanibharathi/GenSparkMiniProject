@@ -25,10 +25,10 @@ namespace API.Services
             return _mapper.Map<ReturnCustomerAddressDto>(res);
         }
 
-        public async Task<SuccessDto> Delete(int CustomerId, int CustomerAddressId)
+        public async Task<string> Delete(int CustomerId, int CustomerAddressId)
         {
             var res = await _repository.DeleteAsync(CustomerId,CustomerAddressId);
-            return res ? new SuccessDto("Address Deleted Successfully") : throw new EntityNotFoundException<CustomerAddress>(CustomerAddressId);
+            return res ? "Address Deleted Successfully" : throw new EntityNotFoundException<CustomerAddress>(CustomerAddressId);
         }
 
         public async Task<IEnumerable<ReturnCustomerAddressDto>> Get(int CustomerId)

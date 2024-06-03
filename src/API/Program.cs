@@ -12,6 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 using System.Text.Json.Serialization;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace API
 {
@@ -24,8 +25,11 @@ namespace API
             XmlConfigurator.Configure(logRepository, new System.IO.FileInfo("log4net.config"));
             #endregion
 
+            #region Builder Configuration
 
             var builder = WebApplication.CreateBuilder(args);
+
+            #region Base Configuration
 
             builder.Services.AddControllers()
                 .AddJsonOptions(options =>
@@ -33,11 +37,14 @@ namespace API
                 options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
             });
 
+
             builder.Services.AddAutoMapper(typeof(MappingProfile));
 
             builder.Services.AddLogging(l => l.AddLog4Net());
 
             builder.Services.AddEndpointsApiExplorer();
+
+            #endregion
 
             #region Swagger
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -170,6 +177,9 @@ namespace API
             builder.Services.AddScoped<IRestaurantOrderService, RestaurantOrderService>();
             #endregion
 
+            #endregion
+
+            #region App Configuration
 
             var app = builder.Build();
 
@@ -186,6 +196,7 @@ namespace API
             app.MapControllers();
 
             app.Run();
+            #endregion
         }
     }
 }
