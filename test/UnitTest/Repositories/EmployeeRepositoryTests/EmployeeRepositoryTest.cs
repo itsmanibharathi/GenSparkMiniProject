@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UnitTest.Repositories.EmployeeRepositoryTest
+namespace UnitTest.Repositories.EmployeeRepositoryTests
 {
     [TestFixture]
     internal class EmployeeRepositoryTest : RepositoryTestBase
