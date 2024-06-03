@@ -34,11 +34,11 @@ namespace API.Services
                 var res = await _employeeOrderRepository.SearchOrderAsync(employeeRange);
                 return _mapper.Map<IEnumerable<ReturnEmployeeOrderDto>>(res);
             }
-            catch (EmployeeNotFoundException)
+            catch ( EntityNotFoundException<Employee> )
             {
                 throw;
             }
-            catch (OrderNotFoundException)
+            catch (EntityNotFoundException<Order>)
             {
                 throw;
             }
