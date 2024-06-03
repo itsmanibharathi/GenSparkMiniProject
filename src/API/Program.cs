@@ -158,6 +158,7 @@ namespace API
             builder.Services.AddScoped<ICustomerService, CustomerService>();
             builder.Services.AddScoped<ICustomerAddressService, CustomerAddressService>();
             builder.Services.AddScoped<ICustomerOrderService, CustomerOrderService>();
+            builder.Services.AddScoped<IProductSerivce, ProductService>();
 
             builder.Services.AddScoped<ITokenService<Employee>, EmployeeTokenService>();
             builder.Services.AddScoped<IEmployeeService, EmployeeService>();
