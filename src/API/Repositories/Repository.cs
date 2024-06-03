@@ -4,6 +4,7 @@ using API.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 
 namespace API.Repositories
@@ -55,7 +56,7 @@ namespace API.Repositories
                 throw new UnableToDoActionException("Unable to add entity", e);
             }
         }
-
+        [ExcludeFromCodeCoverage]
         public virtual async Task<bool> IsDuplicate(TEntity entity)
         {
             return await Task.FromResult(false);

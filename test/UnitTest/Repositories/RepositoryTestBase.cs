@@ -18,17 +18,26 @@ namespace UnitTest.Repositories
             var optionsBuilder = new DbContextOptionsBuilder<DBGenSparkMinirojectContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
             _context = new DBGenSparkMinirojectContext(optionsBuilder.Options);
-            await SeedCustomerData();
         }
 
-        private async Task SeedCustomerData()
+        public async Task CustomerSeedData()
         {
             _context.Customers.AddRange(SeedDatas.Customers);
-            _context.Restaurants.AddRange(SeedDatas.Restaurants);
-            _context.Employees.AddRange(SeedDatas.Employees);
-
             await _context.SaveChangesAsync();
         }
+        public async Task RestaurantSeedData()
+        {
+            _context.Restaurants.AddRange(SeedDatas.Restaurants);
+            await _context.SaveChangesAsync();
+        }
+        public async Task EmployeeSeedData()
+        {
+            _context.Employees.AddRange(SeedDatas.Employees);
+            await _context.SaveChangesAsync();
+        }
+
+
+
 
         [TearDown]
         public async Task TearDown()

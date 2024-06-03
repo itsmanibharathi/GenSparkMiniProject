@@ -3,7 +3,7 @@
 namespace API.Exceptions
 {
     [Serializable]
-    internal class EntityNotFoundException<Entity> : Exception
+    public class EntityNotFoundException<Entity> : Exception
     {
         string message;
         public EntityNotFoundException()

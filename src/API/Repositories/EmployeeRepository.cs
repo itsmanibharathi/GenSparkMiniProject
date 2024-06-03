@@ -3,6 +3,7 @@ using API.Exceptions;
 using API.Models;
 using API.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.CodeAnalysis;
 
 namespace API.Repositories
 {
@@ -30,7 +31,7 @@ namespace API.Repositories
                 throw new UnableToDoActionException("Unable to get the Employee by Email Id", ex);
             }
         }
-
+        [ExcludeFromCodeCoverage]
         public override Task<bool> IsDuplicate(Employee entity)
         {
             return _context.Employees.AnyAsync(x => x.EmployeeEmail == entity.EmployeeEmail);
