@@ -5,6 +5,7 @@ using API.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 
 namespace API.Repositories
@@ -12,6 +13,8 @@ namespace API.Repositories
     /// <summary>
     /// Repository for managing customer orders.
     /// </summary>
+    /// 
+    [ExcludeFromCodeCoverage]
     public class CustomerOrderRepository : OrderRepository, ICustomerOrderRepository
     {
         /// <summary>

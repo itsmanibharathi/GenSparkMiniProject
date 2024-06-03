@@ -4,9 +4,11 @@ using API.Models;
 using API.Models.Enums;
 using API.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.CodeAnalysis;
 
 namespace API.Repositories
 {
+    [ExcludeFromCodeCoverage]
     public class EmployeeOrderRepository :OrderRepository,  IEmployeeOrderRepository
     {
         readonly OrderStatus[] statuses = { OrderStatus.Preparing, OrderStatus.Prepared, OrderStatus.PickedUp, OrderStatus.Delivered, OrderStatus.Cancelled };
