@@ -2,9 +2,11 @@
 using API.Models;
 using API.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.CodeAnalysis;
 
 namespace API.Repositories
 {
+    [ExcludeFromCodeCoverage]
     public class CashPaymentRepository : Repository<int, CashPayment>, ICashPaymentRepository
     {
         public CashPaymentRepository(DBGenSparkMinirojectContext context) : base(context)

@@ -3,9 +3,11 @@ using API.Exceptions;
 using API.Models;
 using API.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.CodeAnalysis;
 
 namespace API.Repositories
 {
+    [ExcludeFromCodeCoverage]
     public class RestaurantProductRepository : ProductRepository, IRestaurantProductRepository
     {
         public RestaurantProductRepository(DBGenSparkMinirojectContext context) : base(context)
