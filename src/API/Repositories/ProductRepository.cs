@@ -22,7 +22,8 @@ namespace API.Repositories
             {
                 var query = _context.Products.Include(p => p.Restaurant).AsQueryable();
 
-                query = query.Where(p => p.ProductAvailable == productSearchDto.ProductAvailable);
+                if (productSearchDto.ProductAvailable.HasValue && productSearchDto.ProductAvailable.Value)
+                    query = query.Where(p => p.ProductAvailable == productSearchDto.ProductAvailable.Value);
                 if (!string.IsNullOrEmpty(productSearchDto.ProductName))
                     query = query.Where(p => p.ProductName.Contains(productSearchDto.ProductName));
                 if (productSearchDto.ProductPrice.HasValue)

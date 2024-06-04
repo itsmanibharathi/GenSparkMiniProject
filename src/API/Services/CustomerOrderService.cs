@@ -51,19 +51,18 @@ namespace API.Services
                 //    qty = x.Quantity
                 //}));
 
-                var orderProducts = await Task.WhenAll(createCustomerOrderDto.OrderItemIds.Select(async x =>
+                var orderProducts = new List<(Product product, int qty)>();
+
+                foreach (var orderItem in createCustomerOrderDto.OrderItemIds)
                 {
-                    var product = await _productRepository.GetAsync(x.ProductId);
+                    var product = await _productRepository.GetAsync(orderItem.ProductId);
                     if (product == null || !product.ProductAvailable)
                     {
-                        throw new ProductUnAvailableException(product.ProductName);
+                        throw new ProductUnAvailableException(product?.ProductName ?? "Unknown Product");
                     }
-                    return new
-                    {
-                        product,
-                        qty = x.Quantity
-                    };
-                }));
+                    orderProducts.Add((product, orderItem.Quantity));
+                }
+
 
                 var orderGroup = orderProducts.GroupBy(x => x.product.RestaurantId).Select(x => new { restaurantId = x.Key, products = x.ToList() });
 
