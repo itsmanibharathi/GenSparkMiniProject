@@ -5,6 +5,7 @@ using API.Models.Enums;
 using API.Repositories.Interfaces;
 using API.Services.Interfaces;
 using AutoMapper;
+using System.Collections.Generic;
 
 namespace API.Services
 {
@@ -51,18 +52,18 @@ namespace API.Services
                 //    qty = x.Quantity
                 //}));
 
-                var orderProducts = new List<(Product product, int qty)>();
 
-                foreach (var orderItem in createCustomerOrderDto.OrderItemIds)
+                IEnumerable<(Product product, int qty)> orderProducts = new List<(Product product, int qty)>();
+
+                foreach (var item in createCustomerOrderDto.OrderItemIds)
                 {
-                    var product = await _productRepository.GetAsync(orderItem.ProductId);
+                    var product = await _productRepository.GetAsync(item.ProductId);
                     if (product == null || !product.ProductAvailable)
                     {
                         throw new ProductUnAvailableException(product?.ProductName ?? "Unknown Product");
                     }
-                    orderProducts.Add((product, orderItem.Quantity));
+                    orderProducts = orderProducts.Append((product, item.Quantity));
                 }
-
 
                 var orderGroup = orderProducts.GroupBy(x => x.product.RestaurantId).Select(x => new { restaurantId = x.Key, products = x.ToList() });
 
@@ -90,8 +91,8 @@ namespace API.Services
                 foreach (var order in orders)
                 {
                     await _customerOrderRepository.AddAsync(order);
+                 
                 }
-
                 return _mapper.Map<IEnumerable<ReturnCustomerOrderDto>>(orders);
             }
             catch (Exception ex)

@@ -2,6 +2,7 @@
 
 doto
 
+  - Check the Update Exceptioni service level
   - add Order duplicat checker 
   - Alter the restaurant product add/edite Dtos 	
   - product Update duplicat product name and category

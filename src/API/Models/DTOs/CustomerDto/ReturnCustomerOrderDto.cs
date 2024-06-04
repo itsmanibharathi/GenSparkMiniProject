@@ -15,6 +15,7 @@ namespace API.Models.DTOs.CustomerDto
         public OrderStatus OrderStatus { get; set; }
         public PaymentMethod? PaymentMethod { get; set; }
         public PaymentStatus PaymentStatus { get; set; }
+        public IEnumerable<ReturnCustomerOrderItemDto>? OrderItems { get; set; }
         public DateTime OrderDate { get; set; } 
         public DateTime DeliveryDate { get; set; }
     }

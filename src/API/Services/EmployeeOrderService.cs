@@ -54,7 +54,7 @@ namespace API.Services
             List<AddressCode> result = new List<AddressCode>();
             int totalAddresses = Enum.GetValues(typeof(AddressCode)).Length;
             int currentIndex = (int)employee.AddressCode;
-            int range = 10;
+            int range = 5;
             for (int i = -range; i <= range; i++)
             {
                 int index = (currentIndex + i + totalAddresses) % totalAddresses;
@@ -110,20 +110,16 @@ namespace API.Services
             }
         }
 
-        public async Task<ReturnEmployeeOrderDto> DeliverOrder(int employeeId, int orderId, decimal? amount)
+        public async Task<ReturnEmployeeOrderDto> DeliverOrder(int employeeId, int orderId)
         {
             try
             {
                 var order = await _employeeOrderRepository.GetAsync(orderId);
-                if (order.EmployeeId == employeeId && order.OrderStatus == OrderStatus.PickedUp)
+                if (order.EmployeeId == employeeId && order.OrderStatus  == OrderStatus.PickedUp )
                 {
                     if (order.PaymentMethod == PaymentMethod.COD)
                     {
-                        if (amount != null && amount != order.TotalAmount)
-                        {
-                            throw new UnableToDoActionException("Amount is not correct");
-                        }
-                        order.Employee.Balance += amount ?? 0;
+                        order.Employee.Balance += order.TotalAmount;
                         order.CashPayment.ReceiveBy = employeeId;
                         order.CashPayment.PaymentStatus = PaymentStatus.Paid;
                         order.CashPayment.PaymentDate = DateTime.Now;

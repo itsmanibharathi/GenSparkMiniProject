@@ -26,6 +26,7 @@ namespace API.Utility
             // Customer Order Create
             CreateMap<CustomerOrderDto, Order>();
             CreateMap<Order, ReturnCustomerOrderDto>();
+            CreateMap<OrderItem, ReturnCustomerOrderItemDto>();
 
             // Customer Order Payment
             CreateMap<OnlinePayment, ReturnOrderOnlinePaymentDto>();
