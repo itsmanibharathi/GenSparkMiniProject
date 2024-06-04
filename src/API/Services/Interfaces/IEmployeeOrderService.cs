@@ -10,7 +10,7 @@ namespace API.Services.Interfaces
         public Task<ReturnEmployeeOrderDto> Get(int employeeId, int orderId);
         public Task<IEnumerable<ReturnEmployeeOrderDto>> GetByEmpId(int employeeId);
         public Task<IEnumerable<ReturnEmployeeOrderDto>> GetAllByEmpId(int employeeId);
-        public Task<ReturnEmployeeOrderDto> DeliverOrder(int employeeId, int orderId, decimal? amount);
+        public Task<ReturnEmployeeOrderDto> DeliverOrder(int employeeId, int orderId);
         public Task<ReturnEmployeeOrderDto> AcceptOrder(int employeeId,int orderID);
         public Task<ReturnEmployeeOrderDto> PicUpOrder(int employeeId, int orderID);
     }

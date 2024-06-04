@@ -13,7 +13,7 @@ namespace API.Models
         public DateTime UpdateAt { get; set; }
         public DateTime DeliveryDate { get; set; }
         public OrderStatus OrderStatus { get; set; }
-        public PaymentMethod PaymentMethod { get; set; }
+        public PaymentMethod? PaymentMethod { get; set; }
         public PaymentStatus PaymentStatus { get; set; }
         public decimal ShippingPrice { get; set; }
         public decimal TotalAmount { get; set; }

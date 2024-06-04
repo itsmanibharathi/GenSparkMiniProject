@@ -16,7 +16,7 @@ namespace API.Models.DTOs.CustomerDto
         [Range(0.01, double.MaxValue, ErrorMessage = "Product price must be greater than 0.")]
         public decimal? ProductPrice { get; set; }
 
-        public bool ProductAvailable { get; set; } = true;
+        public bool? ProductAvailable { get; set; } 
 
         [EnumDataType(typeof(ProductCategory), ErrorMessage = "Invalid product category.")]
         public ICollection<ProductCategory>? ProductCategories { get; set; }

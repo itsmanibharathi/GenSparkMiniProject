@@ -108,7 +108,7 @@ namespace API.Controllers.EmployeeControllers
             try
             {
                 var EmployeeId = int.Parse(User.FindFirst("Id").Value);
-                var result = await _employeeOrderService.GetAllByEmpId(EmployeeId);
+                var result = await _employeeOrderService.Search(EmployeeId);
                 var response = new ApiResponse<IEnumerable<ReturnEmployeeOrderDto>>(StatusCodes.Status200OK, result);
                 return StatusCode(StatusCodes.Status200OK, response);
             }
@@ -201,12 +201,12 @@ namespace API.Controllers.EmployeeControllers
         [ProducesResponseType(typeof(ApiResponse<ReturnEmployeeOrderDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult> DeliverOrder(int orderId, decimal? amount)
+        public async Task<ActionResult> DeliverOrder(int orderId)
         {
             try
             {
                 var EmployeeId = int.Parse(User.FindFirst("Id").Value);
-                var result= await _employeeOrderService.DeliverOrder(EmployeeId, orderId, amount);
+                var result= await _employeeOrderService.DeliverOrder(EmployeeId, orderId);
                 var response = new ApiResponse<ReturnEmployeeOrderDto>(StatusCodes.Status200OK, result);
                 return StatusCode(StatusCodes.Status200OK, response);
             }
