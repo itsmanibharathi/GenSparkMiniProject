@@ -197,6 +197,7 @@ namespace API.Services
         /// </summary>
         /// <param name="orderPaymentDto">The DTO containing data for the payment.</param>
         /// <returns>The DTO of the created online payment.</returns>
+        /// <exception cref="UnauthorizedAccessException" >Thrown when the user does not belong to the order.</exception>
         /// <exception cref="EntityNotFoundException{Order}">Thrown when an order is not found.</exception>
         /// <exception cref="InvalidOrderException">Thrown when an order is not valid for payment.</exception>
         /// <exception cref="UnableToDoActionException">Thrown when unable to perform the action.</exception>
@@ -208,6 +209,10 @@ namespace API.Services
                 foreach (var o in orderPaymentDto.Orders)
                 {
                     var order = await _customerOrderRepository.GetAsync(o);
+                    if (order.CustomerId != orderPaymentDto.CustomerId)
+                    {
+                        throw new UnauthorizedAccessException($"User {orderPaymentDto.CustomerId} does not belong to this Order {order.OrderId}");
+                    }
                     if (order.OrderStatus != OrderStatus.Create)
                     {
                         throw new InvalidOrderException($"This Order Id {order.OrderId} is already paid");
@@ -236,6 +241,10 @@ namespace API.Services
                 onlinePayment = await _onlinePaymentsRepository.AddAsync(onlinePayment);
                 return _mapper.Map<ReturnOrderOnlinePaymentDto>(onlinePayment);
             }
+            catch (UnauthorizedAccessException)
+            {
+                throw;
+            }
             catch (EntityNotFoundException<Order>)
             {
                 throw;
@@ -255,6 +264,7 @@ namespace API.Services
         /// </summary>
         /// <param name="orderPaymentDto">The DTO containing data for the payment.</param>
         /// <returns>A collection of DTOs for the created cash payments.</returns>
+        /// <exception cref="UnauthorizedAccessException" >Thrown when the user does not belong to the order.</exception>
         /// <exception cref="EntityNotFoundException{Order}">Thrown when an order is not found.</exception>
         /// <exception cref="InvalidOrderException">Thrown when an order is not valid for payment.</exception>
         /// <exception cref="UnableToDoActionException">Thrown when unable to perform the action.</exception>
@@ -266,6 +276,10 @@ namespace API.Services
                 foreach (var o in orderPaymentDto.Orders)
                 {
                     var order = await _customerOrderRepository.GetAsync(o);
+                    if (order.CustomerId != orderPaymentDto.CustomerId)
+                    {
+                        throw new UnauthorizedAccessException($"User {orderPaymentDto.CustomerId} does not belong to this Order {order.OrderId}");
+                    }
                     if (order.OrderStatus != OrderStatus.Create)
                     {
                         throw new InvalidOrderException($"This Order Id {order.OrderId} is already paid");
@@ -295,6 +309,10 @@ namespace API.Services
                     cashPayments.Add(cashPayment);
                 }
                 return _mapper.Map<IEnumerable<ReturnOrderCashPaymentDto>>(cashPayments);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                throw;
             }
             catch (EntityNotFoundException<Order>)
             {

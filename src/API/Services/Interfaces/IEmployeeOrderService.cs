@@ -56,6 +56,9 @@ namespace API.Services.Interfaces
         /// <exception cref="EntityNotFoundException{Order}">Thrown when the order is not found.</exception>
         /// <exception cref="UnauthorizedAccessException">Thrown when the order is already assigned to another employee.</exception>
         /// <exception cref="UnableToDoActionException">Thrown when unable to perform the action.</exception>
+
+        /// <exception cref="UnauthorizedAccessException">Thrown when the order does not belong to the employee.</exception>
+        /// <exception cref="InvalidOrderException">Thrown when the order is not ready for delivery.</exception>
         public Task<ReturnEmployeeOrderDto> AcceptOrder(int employeeId, int orderID);
 
         /// <summary>
@@ -67,6 +70,9 @@ namespace API.Services.Interfaces
         /// <exception cref="EntityNotFoundException{Order}">Thrown when the order is not found.</exception>
         /// <exception cref="InvalidOrderException">Thrown when the order is not ready for delivery.</exception>
         /// <exception cref="UnableToDoActionException">Thrown when unable to perform the action.</exception>
+
+        /// <exception cref="UnauthorizedAccessException">Thrown when the order does not belong to the employee.</exception>
+        /// <exception cref="InvalidOrderException">Thrown when the order is not ready for delivery.</exception>
         public Task<ReturnEmployeeOrderDto> DeliverOrder(int employeeId, int orderId);
 
         /// <summary>
@@ -78,6 +84,9 @@ namespace API.Services.Interfaces
         /// <exception cref="EntityNotFoundException{Order}">Thrown when the order is not found.</exception>
         /// <exception cref="InvalidOrderException">Thrown when the order is not ready for pickup.</exception>
         /// <exception cref="UnableToDoActionException">Thrown when unable to perform the action.</exception>
+
+        /// <exception cref="UnauthorizedAccessException">Thrown when the order does not belong to the employee.</exception>
+        /// <exception cref="InvalidOrderException">Thrown when the order is not ready for delivery.</exception>
         public Task<ReturnEmployeeOrderDto> PickUpOrder(int employeeId, int orderId);
     }
 }

@@ -186,6 +186,9 @@ namespace API.Services
         /// <exception cref="EntityNotFoundException{Order}">Thrown when the order is not found.</exception>
         /// <exception cref="UnauthorizedAccessException">Thrown when the order is already assigned to another employee.</exception>
         /// <exception cref="UnableToDoActionException">Thrown when unable to perform the action.</exception>
+        
+        /// <exception cref="UnauthorizedAccessException">Thrown when the order does not belong to the employee.</exception>
+        /// <exception cref="InvalidOrderException">Thrown when the order is not ready for delivery.</exception>
         public async Task<ReturnEmployeeOrderDto> AcceptOrder(int employeeId, int orderID)
         {
             try
@@ -195,9 +198,21 @@ namespace API.Services
                 {
                     throw new UnauthorizedAccessException($"Order {orderID} is already assigned to another employee");
                 }
+                if (order.OrderStatus != OrderStatus.Prepared || order.OrderStatus != OrderStatus.Preparing)
+                {
+                    throw new InvalidOrderException($"Order {orderID} is not ready for Accept or invalid order");
+                }
                 order.EmployeeId = employeeId;
                 var res = await _employeeOrderRepository.UpdateAsync(order);
                 return _mapper.Map<ReturnEmployeeOrderDto>(res);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                throw;
+            }
+            catch (InvalidOrderException)
+            {
+                throw;
             }
             catch (EntityNotFoundException<Order>)
             {
@@ -218,26 +233,40 @@ namespace API.Services
         /// <exception cref="EntityNotFoundException{Order}">Thrown when the order is not found.</exception>
         /// <exception cref="InvalidOrderException">Thrown when the order is not ready for delivery.</exception>
         /// <exception cref="UnableToDoActionException">Thrown when unable to perform the action.</exception>
+        /// <exception cref="UnauthorizedAccessException">Thrown when the order does not belong to the employee.</exception>
+        /// <exception cref="InvalidOrderException">Thrown when the order is not ready for delivery.</exception>
         public async Task<ReturnEmployeeOrderDto> DeliverOrder(int employeeId, int orderId)
         {
             try
             {
                 var order = await _employeeOrderRepository.GetAsync(orderId);
-                if (order.EmployeeId == employeeId && order.OrderStatus == OrderStatus.PickedUp)
+                if (order.EmployeeId != employeeId)
                 {
-                    if (order.PaymentMethod == PaymentMethod.COD)
-                    {
-                        order.Employee.Balance += order.TotalAmount;
-                        order.CashPayment.ReceiveBy = employeeId;
-                        order.CashPayment.PaymentStatus = PaymentStatus.Paid;
-                        order.CashPayment.PaymentDate = DateTime.Now;
-                    }
-                    order.OrderStatus = OrderStatus.Delivered;
-                    order.DeliveryDate = DateTime.Now;
-                    var res = await _employeeOrderRepository.UpdateAsync(order);
-                    return _mapper.Map<ReturnEmployeeOrderDto>(res);
+                    throw new UnauthorizedAccessException($"Order {orderId} does not belong to employee {employeeId}");
                 }
-                throw new InvalidOrderException($"Order {orderId} is not ready for delivery");
+                if(order.OrderStatus != OrderStatus.PickedUp)
+                {
+                    throw new InvalidOrderException($"Order {orderId} is not ready for delivery");
+                }
+                if (order.PaymentMethod == PaymentMethod.COD)
+                {
+                    order.Employee.Balance += order.TotalAmount;
+                    order.CashPayment.ReceiveBy = employeeId;
+                    order.CashPayment.PaymentStatus = PaymentStatus.Paid;
+                    order.CashPayment.PaymentDate = DateTime.Now;
+                }
+                order.OrderStatus = OrderStatus.Delivered;
+                order.DeliveryDate = DateTime.Now;
+                var res = await _employeeOrderRepository.UpdateAsync(order);
+                return _mapper.Map<ReturnEmployeeOrderDto>(res);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                throw;
+            }
+            catch (InvalidOrderException)
+            {
+                throw;
             }
             catch (EntityNotFoundException<Order>)
             {
@@ -258,18 +287,32 @@ namespace API.Services
         /// <exception cref="EntityNotFoundException{Order}">Thrown when the order is not found.</exception>
         /// <exception cref="InvalidOrderException">Thrown when the order is not ready for pickup.</exception>
         /// <exception cref="UnableToDoActionException">Thrown when unable to perform the action.</exception>
+        /// <exception cref="UnauthorizedAccessException">Thrown when the order does not belong to the employee.</exception>
+        /// <exception cref="InvalidOrderException">Thrown when the order is not ready for delivery.</exception>
         public async Task<ReturnEmployeeOrderDto> PickUpOrder(int employeeId, int orderId)
         {
             try
             {
                 var order = await _employeeOrderRepository.GetAsync(orderId);
-                if (order.EmployeeId == employeeId && order.OrderStatus == OrderStatus.Prepared)
+                if (order.EmployeeId != employeeId)
                 {
-                    order.OrderStatus = OrderStatus.PickedUp;
-                    var res = await _employeeOrderRepository.UpdateAsync(order);
-                    return _mapper.Map<ReturnEmployeeOrderDto>(res);
+                    throw new UnauthorizedAccessException($"Order {orderId} does not belong to employee {employeeId}");
                 }
-                throw new InvalidOrderException($"Order {orderId} is not ready for pickup");
+                if(order.OrderStatus != OrderStatus.Prepared)
+                {
+                    throw new InvalidOrderException($"Order {orderId} is not ready for pickup");
+                }
+                order.OrderStatus = OrderStatus.PickedUp;
+                var res = await _employeeOrderRepository.UpdateAsync(order);
+                return _mapper.Map<ReturnEmployeeOrderDto>(res);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                throw;
+            }
+            catch (InvalidOrderException)
+            {
+                throw;
             }
             catch (EntityNotFoundException<Order>)
             {

@@ -133,6 +133,8 @@ namespace API.Controllers.RestaurantControllers
         /// <response code="500">If there is a server error.</response>
         [HttpPost("{orderId}/Preparing")]
         [ProducesResponseType(typeof(ApiResponse<ReturnRestaurantOrderDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> PreparingOrder(int orderId)
@@ -143,6 +145,14 @@ namespace API.Controllers.RestaurantControllers
                 var result = await _restaurantOrderService.PreparingOrder(restaurantId, orderId);
                 var response = new ApiResponse<ReturnRestaurantOrderDto>(StatusCodes.Status200OK, result);
                 return StatusCode(StatusCodes.Status200OK, response);
+            }
+            catch (InvalidOrderException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, new ApiResponse(StatusCodes.Status400BadRequest, ex.Message));
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return StatusCode(StatusCodes.Status401Unauthorized, new ApiResponse(StatusCodes.Status401Unauthorized, ex.Message));
             }
             catch (EntityNotFoundException<Order> ex)
             {
@@ -163,9 +173,10 @@ namespace API.Controllers.RestaurantControllers
         /// <response code="404">If the order is not found.</response>
         /// <response code="500">If there is a server error.</response>
         [HttpPost("{orderId}/prepared")]
-        [ProducesResponseType(typeof( ApiResponse<ReturnRestaurantOrderDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse<ReturnRestaurantOrderDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> PreparedOrder(int orderId)
         {
             try
@@ -174,6 +185,14 @@ namespace API.Controllers.RestaurantControllers
                 var result = await _restaurantOrderService.PreparedOrder(restaurantId, orderId);
                 var response = new ApiResponse<ReturnRestaurantOrderDto>(StatusCodes.Status200OK, result);
                 return StatusCode(StatusCodes.Status200OK, response);
+            }
+            catch (InvalidOrderException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, new ApiResponse(StatusCodes.Status400BadRequest, ex.Message));
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return StatusCode(StatusCodes.Status401Unauthorized, new ApiResponse(StatusCodes.Status401Unauthorized, ex.Message));
             }
             catch (EntityNotFoundException<Order> ex)
             {

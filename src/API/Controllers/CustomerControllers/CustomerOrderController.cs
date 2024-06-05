@@ -107,10 +107,12 @@ namespace API.Controllers.CustomerControllers
         /// <returns>The order details.</returns>
         /// <response code="200">Returns the order details.</response>
         /// <response code="404">If the order is not found.</response>
+        /// <response code="401">Order id is not belogs to user.</response>
         /// <response code="500">If there is a server error.</response>
         [HttpGet("{orderId}")]
         [ProducesResponseType(typeof(ApiResponse<ReturnCustomerOrderDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> GetOrder(int orderId)
         {
@@ -127,6 +129,12 @@ namespace API.Controllers.CustomerControllers
                 _logger.LogError(ex.Message);
                 var response = new ApiResponse(StatusCodes.Status404NotFound, ex.Message);
                 return StatusCode(StatusCodes.Status404NotFound, response);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                _logger.LogWarning(ex.Message);
+                var response = new ApiResponse(StatusCodes.Status401Unauthorized, ex.Message);
+                return StatusCode(StatusCodes.Status401Unauthorized, response);
             }
             catch (Exception ex)
             {
@@ -179,10 +187,12 @@ namespace API.Controllers.CustomerControllers
         /// <response code="200">Returns the created online payment details.</response>
         /// <response code="400">If the order is invalid.</response>
         /// <response code="404">If the order is not found.</response>
+        /// <response code="401">Order id is not belogs to user.</response>
         /// <response code="500">If there is a server error.</response>
         [HttpPost("payment/online")]
         [ProducesResponseType(typeof(ApiResponse<ReturnOrderOnlinePaymentDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> CreateOnlinePayment(CustomerOrderPaymentDto orderPaymentDto)
@@ -195,6 +205,12 @@ namespace API.Controllers.CustomerControllers
                 var result = await _customerOrderService.CreateOnlinePayment(orderPaymentDto);
                 var response = new ApiResponse<ReturnOrderOnlinePaymentDto>(StatusCodes.Status200OK, result);
                 return StatusCode(StatusCodes.Status200OK, response);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                _logger.LogWarning(ex.Message);
+                var response = new ApiResponse(StatusCodes.Status401Unauthorized, ex.Message);
+                return StatusCode(StatusCodes.Status401Unauthorized, response);
             }
             catch (EntityNotFoundException<Order> ex)
             {
@@ -223,10 +239,12 @@ namespace API.Controllers.CustomerControllers
         /// <returns>The created COD payment details.</returns>
         /// <response code="200">Returns the created COD payment details.</response>
         /// <response code="400">If the order is invalid.</response>
+        /// <response code="401">Order id is not belogs to user.</response>
         /// <response code="404">If the order is not found.</response>
         /// <response code="500">If there is a server error.</response>
         [HttpPost("payment/COD")]
         [ProducesResponseType(typeof(ApiResponse<IEnumerable<ReturnOrderCashPaymentDto>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse),StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
@@ -240,6 +258,12 @@ namespace API.Controllers.CustomerControllers
                 var result = await _customerOrderService.CreateCashPayment(orderPaymentDto);
                 var response = new ApiResponse<IEnumerable<ReturnOrderCashPaymentDto>>(StatusCodes.Status200OK, result);
                 return StatusCode(StatusCodes.Status200OK, response);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                _logger.LogWarning(ex.Message);
+                var response = new ApiResponse(StatusCodes.Status401Unauthorized, ex.Message);
+                return StatusCode(StatusCodes.Status401Unauthorized, response);
             }
             catch (EntityNotFoundException<Order> ex)
             {

@@ -14,7 +14,7 @@ namespace API.Services
     /// <summary>
     /// Service for managing product operations.
     /// </summary>
-    public class ProductService : IProductSerivce
+    public class ProductService : IProductService
     {
         private readonly IProductRepository _repository;
         private readonly IMapper _mapper;
