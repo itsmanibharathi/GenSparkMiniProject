@@ -23,6 +23,9 @@ namespace API.Utility
             CreateMap<CustomerAddressDto, CustomerAddress>();
             CreateMap<CustomerAddress, ReturnCustomerAddressDto>();
 
+            // Customer Get
+            CreateMap<Customer, ReturnCustomerDto>();
+
             // Customer Order Create
             CreateMap<CustomerOrderDto, Order>();
             CreateMap<Order, ReturnCustomerOrderDto>();
