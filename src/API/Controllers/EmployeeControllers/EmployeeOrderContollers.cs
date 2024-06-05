@@ -170,7 +170,7 @@ namespace API.Controllers.EmployeeControllers
             try
             {
                 var EmployeeId = int.Parse(User.FindFirst("Id").Value);
-                var result = await _employeeOrderService.PicUpOrder(EmployeeId, orderId);
+                var result = await _employeeOrderService.PickUpOrder(EmployeeId, orderId);
                 var response = new ApiResponse<ReturnEmployeeOrderDto>(StatusCodes.Status200OK, result);
                 return StatusCode(StatusCodes.Status200OK, response);
             }

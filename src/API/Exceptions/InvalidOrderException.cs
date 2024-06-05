@@ -18,13 +18,13 @@ namespace API.Exceptions
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="InvalidOrderException"/> class with the specified order ID and status.
+        /// Initializes a new instance of the <see cref="InvalidOrderException"/> class with the specified message.
         /// </summary>
-        /// <param name="orderId">The ID of the order that is invalid.</param>
-        /// <param name="status">The status of the order that is invalid.</param>
-        public InvalidOrderException(int orderId, string status)
+        /// <param name="message">The message that describes the exception.</param> 
+
+        public InvalidOrderException(string message)
         {
-            message = $"Order {orderId} is in {status} status";
+            this.message = message;
         }
 
         public override string Message => message;

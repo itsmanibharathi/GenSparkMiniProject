@@ -210,7 +210,7 @@ namespace API.Services
                     var order = await _customerOrderRepository.GetAsync(o);
                     if (order.OrderStatus != OrderStatus.Create)
                     {
-                        throw new InvalidOrderException(order.OrderId, order.OrderStatus.ToString());
+                        throw new InvalidOrderException($"This Order Id {order.OrderId} is already paid");
                     }
                     order.UpdateAt = DateTime.Now;
                     order.PaymentMethod = orderPaymentDto.PaymentMethod;
@@ -268,7 +268,7 @@ namespace API.Services
                     var order = await _customerOrderRepository.GetAsync(o);
                     if (order.OrderStatus != OrderStatus.Create)
                     {
-                        throw new InvalidOrderException(order.OrderId, order.OrderStatus.ToString());
+                        throw new InvalidOrderException($"This Order Id {order.OrderId} is already paid");
                     }
                     order.UpdateAt = DateTime.Now;
                     order.PaymentMethod = orderPaymentDto.PaymentMethod;
