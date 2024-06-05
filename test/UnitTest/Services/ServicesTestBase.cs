@@ -23,6 +23,8 @@ namespace UnitTest.Services
         public IRestaurantRepository _restaurantRepository;
         public IPasswordHashService _passwordHashService;
         public ITokenService<Restaurant> _restaurantTokenService;
+        public IEmployeeRepository _employeeRepository;
+        public ITokenService<Employee> _employeeTokenService;
         public IMapper _mapper;
 
         [SetUp]
@@ -47,9 +49,20 @@ namespace UnitTest.Services
             configuration.Setup(x => x["Jwt:RestaurantSecret"]).Returns("This is the dummy key which has to be a bit long for the 512. which should be even more longer for the passing");
             _restaurantTokenService = new RestaurantTokenService(configuration.Object);
         }
+        public void SetupEmployeeTokenService()
+        {
+            var configuration = new Mock<IConfiguration>();
+            configuration.Setup(x => x["Jwt:EmployeeSecret"]).Returns("This is the dummy key which has to be a bit long for the 512. which should be even more longer for the passing");
+            _employeeTokenService = new EmployeeTokenService(configuration.Object);
+        }
         public void SetupRestaurantRepository()
         {
             _restaurantRepository = new RestaurantRepository(_context);
+        }
+
+        public void SetupEmployeeRepository()
+        {
+            _employeeRepository = new EmployeeRepository(_context);
         }
 
         [TearDown]
