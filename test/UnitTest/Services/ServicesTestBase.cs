@@ -25,6 +25,10 @@ namespace UnitTest.Services
         public ITokenService<Restaurant> _restaurantTokenService;
         public IEmployeeRepository _employeeRepository;
         public ITokenService<Employee> _employeeTokenService;
+
+        public ICustomerRepository _customerRepository;
+        public ITokenService<Customer> _customerTokenService;
+
         public IMapper _mapper;
 
         [SetUp]
@@ -46,15 +50,22 @@ namespace UnitTest.Services
         public void SetupRestaurantTokenService()
         {
             var configuration = new Mock<IConfiguration>();
-            configuration.Setup(x => x["Jwt:RestaurantSecret"]).Returns("This is the dummy key which has to be a bit long for the 512. which should be even more longer for the passing");
+            configuration.Setup(x => x["Jwt:RestaurantSecret"]).Returns(" Restaurant This is the dummy key which has to be a bit long for the 512. which should be even more longer for the passing");
             _restaurantTokenService = new RestaurantTokenService(configuration.Object);
         }
         public void SetupEmployeeTokenService()
         {
             var configuration = new Mock<IConfiguration>();
-            configuration.Setup(x => x["Jwt:EmployeeSecret"]).Returns("This is the dummy key which has to be a bit long for the 512. which should be even more longer for the passing");
-            _employeeTokenService = new EmployeeTokenService(configuration.Object);
+            configuration.Setup(x => x["Jwt:EmployeeSecret"]).Returns(" Employee This  is the dummy key which has to be a bit long for the 512. which should be even more longer for the passing");
         }
+
+        public void SetupCustomerTokenService()
+        {
+            var configuration = new Mock<IConfiguration>();
+            configuration.Setup(x => x["JWT:CustomerSecret"]).Returns("Customer This is the dummy key which has to be a bit long for the 512. which should be even more longer for the passing");
+            _customerTokenService = new CustomerTokenService(configuration.Object);
+        }
+
         public void SetupRestaurantRepository()
         {
             _restaurantRepository = new RestaurantRepository(_context);
@@ -63,6 +74,11 @@ namespace UnitTest.Services
         public void SetupEmployeeRepository()
         {
             _employeeRepository = new EmployeeRepository(_context);
+        }
+
+        public void SetupCustomerRepository()
+        {
+            _customerRepository = new CustomerRepository(_context);
         }
 
         [TearDown]
