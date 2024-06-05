@@ -30,14 +30,29 @@ namespace API.Services
 
         public async Task<ReturnCustomerLoginDto> Login(CustomerLoginDto customerLoginDto)
         {
-            var customer = await _customerRepository.GetByEmailId(customerLoginDto.CustomerEmail);
-            if (_passwordHashService.Verify(customerLoginDto.CustomerPassword, customer.CustomerAuth.Password))
+            try
             {
-                var res = _mapper.Map<ReturnCustomerLoginDto>(customer);
-                res.Token = _tokenService.GenerateToken(customer);
-                return res;
+                var customer = await _customerRepository.GetByEmailId(customerLoginDto.CustomerEmail);
+                if (_passwordHashService.Verify(customerLoginDto.CustomerPassword, customer.CustomerAuth.Password))
+                {
+                    var res = _mapper.Map<ReturnCustomerLoginDto>(customer);
+                    res.Token = _tokenService.GenerateToken(customer);
+                    return res;
+                }
+                throw new InvalidUserCredentialException();
             }
-            throw new InvalidUserCredentialException();
+            catch (EntityNotFoundException<Customer>)
+            {
+                throw new InvalidUserCredentialException();
+            }
+            catch (InvalidUserCredentialException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new UnableToDoActionException("Unable to login", ex);
+            }
         }
 
         public async Task<ReturnCustomerRegisterDto> Register(CustomerRegisterDto customerRegisterDto)
