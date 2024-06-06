@@ -71,8 +71,9 @@ namespace API.Controllers.EmployeeControllers
         /// <response code="500">If there is a server error.</response>
         [HttpGet("{orderId}")]
         [ProducesResponseType(typeof(ApiResponse<ReturnEmployeeOrderDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> Get(int orderId)
         {
             try
@@ -81,6 +82,10 @@ namespace API.Controllers.EmployeeControllers
                 var result = await _employeeOrderService.Get(EmployeeId, orderId);
                 var response = new ApiResponse<ReturnEmployeeOrderDto>(StatusCodes.Status200OK, result);
                 return StatusCode(StatusCodes.Status200OK, response);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return StatusCode(StatusCodes.Status401Unauthorized, new ApiResponse(StatusCodes.Status401Unauthorized, ex.Message));
             }
             catch (EntityNotFoundException<Order> ex)
             {
@@ -132,8 +137,10 @@ namespace API.Controllers.EmployeeControllers
         /// <response code="500">If there is a server error.</response>
         [HttpPut("accept/{orderId}")]
         [ProducesResponseType(typeof(ApiResponse<ReturnEmployeeOrderDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
+
         public async Task<ActionResult> AcceptOrder(int orderId)
         {
             try
@@ -146,6 +153,14 @@ namespace API.Controllers.EmployeeControllers
             catch (EntityNotFoundException<Order> ex)
             {
                 return StatusCode(StatusCodes.Status404NotFound, new ApiResponse(StatusCodes.Status404NotFound, ex.Message));
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return StatusCode(StatusCodes.Status401Unauthorized, new ApiResponse(StatusCodes.Status401Unauthorized, ex.Message));
+            }
+            catch (InvalidOrderException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, new ApiResponse(StatusCodes.Status400BadRequest, ex.Message));
             }
             catch (Exception ex)
             {
@@ -163,29 +178,36 @@ namespace API.Controllers.EmployeeControllers
         /// <response code="500">If there is a server error.</response>
         [HttpPut("pickup/{orderId}")]
         [ProducesResponseType(typeof(ApiResponse<ReturnEmployeeOrderDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
+
         public async Task<ActionResult> PickUpOrder(int orderId)
         {
             try
             {
                 var EmployeeId = int.Parse(User.FindFirst("Id").Value);
-                var result = await _employeeOrderService.PicUpOrder(EmployeeId, orderId);
+                var result = await _employeeOrderService.PickUpOrder(EmployeeId, orderId);
                 var response = new ApiResponse<ReturnEmployeeOrderDto>(StatusCodes.Status200OK, result);
                 return StatusCode(StatusCodes.Status200OK, response);
-            }
-            catch (AlreadyUptoDateException ex)
-            {
-                return StatusCode(StatusCodes.Status200OK, new ApiResponse(StatusCodes.Status200OK, ex.Message));
             }
             catch (EntityNotFoundException<Order> ex)
             {
                 return StatusCode(StatusCodes.Status404NotFound, new ApiResponse(StatusCodes.Status404NotFound, ex.Message));
             }
+            catch (UnauthorizedAccessException ex)
+            {
+                return StatusCode(StatusCodes.Status401Unauthorized, new ApiResponse(StatusCodes.Status401Unauthorized, ex.Message));
+            }
+            catch (InvalidOrderException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, new ApiResponse(StatusCodes.Status400BadRequest, ex.Message));
+            }
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(StatusCodes.Status500InternalServerError, ex.Message));
-            }
+            }   
+
         }
 
         /// <summary>
@@ -199,8 +221,9 @@ namespace API.Controllers.EmployeeControllers
         /// <response code="500">If there is a server error.</response>
         [HttpPut("deliver/{orderId}")]
         [ProducesResponseType(typeof(ApiResponse<ReturnEmployeeOrderDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> DeliverOrder(int orderId)
         {
             try
@@ -213,6 +236,14 @@ namespace API.Controllers.EmployeeControllers
             catch (EntityNotFoundException<Order> ex)
             {
                 return StatusCode(StatusCodes.Status404NotFound, new ApiResponse(StatusCodes.Status404NotFound, ex.Message));
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return StatusCode(StatusCodes.Status401Unauthorized, new ApiResponse(StatusCodes.Status401Unauthorized, ex.Message));
+            }
+            catch (InvalidOrderException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, new ApiResponse(StatusCodes.Status400BadRequest, ex.Message));
             }
             catch (Exception ex)
             {

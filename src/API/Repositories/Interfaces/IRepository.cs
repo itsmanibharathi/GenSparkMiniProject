@@ -12,6 +12,7 @@
         /// </summary>
         /// <param name="entity">The entity to add.</param>
         /// <returns>The added entity.</returns>
+        /// <exception cref="EntityAlreadyExistsException{Enetity}">Throw when Enetity Already Exists</exception>
         /// <exception cref="UnableToDoActionException">Thrown when unable to add the entity.</exception>
         Task<TEntity> AddAsync(TEntity entity);
 
@@ -20,7 +21,9 @@
         /// </summary>
         /// <param name="id">The ID of the entity to delete.</param>
         /// <returns>True if the delete operation was successful, false otherwise.</returns>
+        /// <exception cref="EntityNotFoundException{TEntity}">Thrown when No Entity found.</exception>
         /// <exception cref="UnableToDoActionException">Thrown when unable to delete the entity.</exception>
+
         Task<bool> DeleteAsync(Tkey id);
 
         /// <summary>
@@ -28,14 +31,16 @@
         /// </summary>
         /// <param name="id">The ID of the entity to retrieve.</param>
         /// <returns>The entity if found; otherwise, throws an <see cref="EntityNotFoundException"/>.</returns>
-        /// <exception cref="UnableToDoActionException">Thrown when unable to retrieve the entity.</exception>
+        /// <exception cref="EntityNotFoundException{TEntity}">Thrown when No Entity found.</exception>
+        /// <exception cref="UnableToDoActionException">Thrown when unable to delete the entity.</exception>
         Task<TEntity> GetAsync(Tkey id);
 
         /// <summary>
         /// Retrieves all entities of type <typeparamref name="TEntity"/>.
         /// </summary>
         /// <returns>A collection of entities.</returns>
-        /// <exception cref="UnableToDoActionException">Thrown when unable to retrieve entities.</exception>
+        /// <exception cref="UnableToDoActionException">Thrown when unable to delete the entity.</exception>
+
         Task<IEnumerable<TEntity>> GetAsync();
 
         /// <summary>

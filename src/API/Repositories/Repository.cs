@@ -135,7 +135,6 @@ namespace API.Repositories
         /// </summary>
         /// <param name="entity">The entity to update.</param>
         /// <returns>The updated entity.</returns>
-        /// <exception cref="EntityNotFoundException{TEntity}">Thrown when No Entity found.</exception>
         /// <exception cref="UnableToDoActionException">Thrown when unable to update the entity.</exception>
         public virtual async Task<TEntity> UpdateAsync(TEntity entity)
         {

@@ -43,9 +43,13 @@ namespace API.Services
             {
                 throw new InvalidUserCredentialException();
             }
-            catch(Exception)
+            catch(InvalidUserCredentialException)
             {
                 throw;
+            }
+            catch (Exception ex)
+            {
+                throw new UnableToDoActionException($"Unable to login restaurant with email {restaurantLoginDto.Email}",ex);
             }
 
 
@@ -53,13 +57,24 @@ namespace API.Services
 
         public async Task<ReturnRestaurantRegisterDto> Register(RestaurantRegisterDto restaurantRegisterDto)
         {
-            Restaurant restaurant = _mapper.Map<Restaurant>(restaurantRegisterDto);
-            restaurant.RestaurantAuth = new RestaurantAuth
+            try
             {
-                Password = _passwordHashService.Hash(restaurantRegisterDto.Password)
-            };
-            var res = await _restaurantRepository.AddAsync(restaurant);
-            return _mapper.Map<ReturnRestaurantRegisterDto>(res);
+                Restaurant restaurant = _mapper.Map<Restaurant>(restaurantRegisterDto);
+                restaurant.RestaurantAuth = new RestaurantAuth
+                {
+                    Password = _passwordHashService.Hash(restaurantRegisterDto.Password)
+                };
+                var res = await _restaurantRepository.AddAsync(restaurant);
+                return _mapper.Map<ReturnRestaurantRegisterDto>(res);
+            }
+            catch (EntityAlreadyExistsException<Restaurant>)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new UnableToDoActionException("Unable to register restaurant", ex);
+            }
         }
     }
 }

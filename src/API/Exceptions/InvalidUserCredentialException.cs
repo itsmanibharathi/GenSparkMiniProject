@@ -1,15 +1,18 @@
-﻿namespace API.Exceptions
+﻿using System;
+
+namespace API.Exceptions
 {
+    /// <summary>
+    /// Represents an exception that is thrown when user credentials are invalid.
+    /// </summary>
     public class InvalidUserCredentialException : Exception
     {
-        string message;
+        private readonly string message;
 
+        /// <summary>
+        /// Invalid User Credential Exception Constructor
+        /// </summary>
         public InvalidUserCredentialException()
-        {
-            message = "Invalid User Credential";
-        }
-
-        public InvalidUserCredentialException(Exception ex) : base(null,ex)
         {
             message = "Invalid User Credential";
         }
