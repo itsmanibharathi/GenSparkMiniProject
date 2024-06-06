@@ -29,6 +29,8 @@ namespace UnitTest.Services
         public ICustomerRepository _customerRepository;
         public ITokenService<Customer> _customerTokenService;
 
+        public ICustomerAddressRepository _customerAddressRepository;
+
         public IMapper _mapper;
 
         [SetUp]
@@ -79,6 +81,11 @@ namespace UnitTest.Services
         public void SetupCustomerRepository()
         {
             _customerRepository = new CustomerRepository(_context);
+        }
+
+        public void SetupCustomerAddressRepository()
+        {
+            _customerAddressRepository = new CustomerAddressRespository(_context);
         }
 
         [TearDown]
