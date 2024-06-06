@@ -30,6 +30,7 @@ namespace UnitTest.Services
         public ITokenService<Customer> _customerTokenService;
 
         public ICustomerAddressRepository _customerAddressRepository;
+        public IRestaurantProductRepository _restaurantProductRepository;
 
         public IMapper _mapper;
 
@@ -46,7 +47,7 @@ namespace UnitTest.Services
         }
         public void SetupPasswordHashServices()
         {
-            _passwordHashService = new PasswordHashService();
+            _passwordHashService = new PasswordHashService();   
         }
 
         public void SetupRestaurantTokenService()
@@ -86,6 +87,11 @@ namespace UnitTest.Services
         public void SetupCustomerAddressRepository()
         {
             _customerAddressRepository = new CustomerAddressRespository(_context);
+        }
+
+        public void SetupRestaurantProductRepository()
+        {
+            _restaurantProductRepository = new RestaurantProductRepository(_context);
         }
 
         [TearDown]
