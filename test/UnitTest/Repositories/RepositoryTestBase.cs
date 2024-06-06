@@ -55,7 +55,7 @@ namespace UnitTest.Repositories
                 _context.CustomerAddresses.RemoveRange(_context.CustomerAddresses);
                 await _context.SaveChangesAsync();
             }
-            catch
+            catch (Exception)
             {
                 // ignored
             }

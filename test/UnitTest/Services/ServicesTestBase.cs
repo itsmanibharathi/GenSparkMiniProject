@@ -32,6 +32,13 @@ namespace UnitTest.Services
         public ICustomerAddressRepository _customerAddressRepository;
         public IRestaurantProductRepository _restaurantProductRepository;
 
+        public ICustomerOrderRepository _customerOrderRepository;
+        public IProductRepository _productRepository;
+        public IOnlinePaymentRepository _onlinePaymentsRepository;
+        public ICashPaymentRepository _cashPaymentRepository;
+        public ICustomerOrderService _customerOrderService;
+
+
         public IMapper _mapper;
 
         [SetUp]
@@ -93,6 +100,32 @@ namespace UnitTest.Services
         {
             _restaurantProductRepository = new RestaurantProductRepository(_context);
         }
+
+        public void SetupProductRepository()
+        {
+            _productRepository = new ProductRepository(_context);
+        }
+
+        public void SetupCustomerOrderRepository()
+        {
+            _customerOrderRepository = new CustomerOrderRepository(_context);
+        }
+
+        public void SetupOnlinePaymentRepository()
+        {
+            _onlinePaymentsRepository = new OnlinePaymentRepository(_context);
+        }
+
+        public void SetupCashPaymentRepository()
+        {
+            _cashPaymentRepository = new CashPaymentRepository(_context);
+        }
+
+        public void SetupRestaurantOrderRepository()
+        {
+            _restaurantOrderRepository = new RestaurantOrderRepository(_context);
+        }
+
 
         [TearDown]
         public async Task TearDown()

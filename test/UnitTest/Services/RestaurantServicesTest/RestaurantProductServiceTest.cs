@@ -45,7 +45,7 @@ namespace UnitTest.Services.RestaurantServicesTest
             };
             var response = await _restaurantProductService.Add(product);
             Assert.IsNotNull(response);
-            Assert.IsTrue(response.ProductId == 3);
+            Assert.IsTrue(response.ProductId == 4);
         }
         //[Test]
         //public async Task AddProductRestaurantNotFound()

@@ -84,7 +84,16 @@ namespace UnitTest
                             ProductName = "Chicken Rise",
                             ProductDescription = "Chicken",
                             ProductPrice = 100,
-                            ProductCategories = ProductCategory.Food
+                            ProductCategories = ProductCategory.Food,
+                            ProductAvailable = true,
+                        },
+                        new Product
+                        {
+                            ProductName = "Pizza",
+                            ProductDescription = "Chicken",
+                            ProductPrice = 100,
+                            ProductCategories = ProductCategory.Food,
+                            ProductAvailable = false
                         }
                     }
                 },
@@ -112,7 +121,8 @@ namespace UnitTest
                             ProductName = "Pizza",
                             ProductDescription = "Pizza",
                             ProductPrice = 100,
-                            ProductCategories = ProductCategory.Food
+                            ProductCategories = ProductCategory.Food,
+                            ProductAvailable = true
                         }
                     }
                 }

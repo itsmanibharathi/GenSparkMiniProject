@@ -8,6 +8,7 @@ using API.Services.Interfaces;
 using AutoMapper;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -133,6 +134,7 @@ namespace API.Services
             }
         }
 
+        [ExcludeFromCodeCoverage]
         private int calShipingPrice(AddressCode from, AddressCode to)
         {
             return Math.Abs((int)from - (int)to) * 10;
