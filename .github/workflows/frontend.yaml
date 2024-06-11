@@ -10,27 +10,30 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
+      - name: Checkout main
         uses: actions/checkout@v2
+        with:
+          ref: main
 
-      - name: Setup Git
+      - name: Copy HTML and CSS files
         run: |
-          git config --global user.email "github-actions@github.com"
-          git config --global user.name "GitHub Actions"
+          mkdir gh-pages
+          cp src/frontend/*.html gh-pages/
+          cp src/frontend/*.css gh-pages/
+          cp -R src/frontend/assets gh-pages/assets
 
-      - name: Deploy to GitHub Pages
+      - name: Checkout gh-pages
+        uses: actions/checkout@v2
+        with:
+          ref: gh-pages
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Commit changes
         run: |
-
-          git checkout --orphan gh-pages
-
-          git rm -rf .
-
-          cp -r src/Frontend/*.html .
-          cp -r src/Frontend/assets/** .
-
+          cp -R gh-pages/* .
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ github.actor }}@users.noreply.github.com"
           git add .
-          git commit -m "Deploy to GitHub Pages"
-
-          git push -u origin gh-pages
+          git commit -m "Deploy latest HTML and CSS to gh-pages"
+          git push
