@@ -19,6 +19,8 @@ jobs:
       - name: Copy HTML and CSS files
         run: |
           mkdir gh-pages
+          ls
+          pwd
           cp src/Frontend/*.html gh-pages/
           cp -R src/Frontend/assets gh-pages/assets
 
