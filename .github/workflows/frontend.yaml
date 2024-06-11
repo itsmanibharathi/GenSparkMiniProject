@@ -19,9 +19,9 @@ jobs:
       - name: Copy HTML and CSS files
         run: |
           mkdir gh-pages
-          cp src/frontend/*.html gh-pages/
-          cp src/frontend/*.css gh-pages/
-          cp -R src/frontend/assets gh-pages/assets
+          cp src/Frontend/*.html gh-pages/
+          cp src/Frontend/*.css gh-pages/
+          cp -R src/Frontend/assets gh-pages/assets
 
       - name: Checkout gh-pages
         uses: actions/checkout@v2
