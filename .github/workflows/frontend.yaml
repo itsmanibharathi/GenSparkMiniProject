@@ -15,12 +15,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Deploy to GitHub Pages
+      - name: Setup Git
         run: |
           git config --global user.email "github-actions@github.com"
           git config --global user.name "GitHub Actions"
 
-          git checkout -B gh-pages
+      - name: Deploy to GitHub Pages
+        run: |
+
+          git checkout --orphan gh-pages
+
+          git rm -rf .
 
           cp -r src/Frontend/*.html .
           cp -r src/Frontend/assets/** .
