@@ -5,8 +5,8 @@ on:
   push:
     branches:
       - main
-    paths:
-      - "src/Frontend/**"
+    # paths:
+    #   - "src/Frontend/**"
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -20,7 +20,6 @@ jobs:
         run: |
           mkdir gh-pages
           cp src/Frontend/*.html gh-pages/
-          cp src/Frontend/*.css gh-pages/
           cp -R src/Frontend/assets gh-pages/assets
 
       - name: Checkout gh-pages
