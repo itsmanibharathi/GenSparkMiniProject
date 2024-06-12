@@ -1,6 +1,10 @@
+#API
+
 # Build Folders (you can keep bin if you'd like, to store dlls and pdbs)
 [Bb]in/
 [Oo]bj/
+
+
 
 # Logs
 Logs/
@@ -117,3 +121,9 @@ src/.vs/config/applicationhost.config
 
 # JetBrains Rider's auto generated files
 .idea/
+
+
+
+# Front-end
+node_modules/
+
