@@ -1,3 +1,5 @@
+@import "colorvars";
+
 * {
   margin: 0;
   padding: 0;
@@ -5,8 +7,8 @@
 }
 
 body {
-  font-family: "Roboto", sans-serif;
-  background-color: #fefaf6;
+  font-family: 'Roboto', sans-serif;
+  background-color: $color-light;
 }
 
 .container {
@@ -20,14 +22,14 @@ body {
 
 .navbar {
   display: flex;
-  justify-content: flex-end;
+  justify-content:flex-end;
   padding: 20px 0;
 }
 
 .navbar ul {
   display: flex;
   list-style: none;
-  flex-direction: row;
+  flex-direction:row;
 }
 
 .navbar ul li {
@@ -36,16 +38,16 @@ body {
 
 .navbar ul li a {
   text-decoration: none;
-  color: #2b2b2b;
+  color: $color-secondary;
 }
 
 .navbar ul li a:hover {
-  color: #f55951;
+  color: $color-primary;
 }
 
 .home-img {
   width: 100%;
-  object-fit: fill;
+  object-fit:fill;
 }
 
 .home-img img {
@@ -53,5 +55,3 @@ body {
   height: 70%;
   object-fit: cover;
 }
-
-/*# sourceMappingURL=main.css.map */
