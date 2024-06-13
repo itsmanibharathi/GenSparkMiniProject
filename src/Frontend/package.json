@@ -3,18 +3,22 @@
   "version": "1.0.0",
   "main": "tailwind.config.js",
   "scripts": {
-    "build:css": "tailwindcss -i ./src/input.css -o ./dist/assets/css/output.css",
-    "dev": "tailwindcss -i ./src/input.css -o ./dist/assets/css/output.css --watch"
+    "dev": "parcel public/index.html --port 3000 --open",
+    "build": "parcel build src/index.html"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
-  "dependencies": {
+  "devDependencies": {
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8.4.38",
+    "prettier": "^3.3.2",
+    "prettier-plugin-tailwindcss": "^0.6.3",
     "tailwindcss": "^3.4.4"
   },
-  "devDependencies": {
-    "prettier": "^3.3.2",
-    "prettier-plugin-tailwindcss": "^0.6.3"
+  "dependencies": {
+    "jquery": "^3.7.1",
+    "parcel": "^2.12.0"
   }
 }
