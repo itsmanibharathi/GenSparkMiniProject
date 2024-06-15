@@ -1,0 +1,153 @@
+@import "tailwindcss/base";
+
+@layer base {
+    .auth-container {
+        @apply shadow-lg relative overflow-hidden;
+        border-radius: 90px;
+        width: 768px;
+        max-width: 100%;
+        min-height: 480px;
+        transition: 333ms;
+    }
+
+
+    .form-container form {
+        background: #fff;
+        display: flex;
+        flex-direction: column;
+        padding: 0 50px;
+        height: 100%;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    .form-container input {
+        background: #eee;
+        border: none;
+        border-radius: 50px;
+        padding: 12px 15px;
+        margin: 8px 0;
+        width: 100%;
+    }
+
+    .form-container input:hover {
+        transform: scale(101%);
+    }
+
+    .auth-container h1 {
+        @apply text-3xl font-bold;
+    }
+
+    .auth-container p {
+        @apply text-sm font-light leading-5 tracking-wider my-5;
+    }
+
+    .auth-container button {
+        @apply shadow-md border-2 bg-button hover:bg-button-hover text-white font-bold uppercase py-4 px-10 rounded-full text-sm tracking-wider;
+    }
+
+    .auth-container button:active {
+        transform: scale(.95);
+    }
+
+    .auth-container button:focus {
+        outline: none;
+    }
+
+    .auth-container button.ghost {
+        background: transparent;
+        border-color: #fff;
+    }
+
+    .form-container {
+        position: absolute;
+        top: 0;
+        height: 100%;
+        transition: all .6s ease-in-out;
+    }
+
+    .sign-in-container {
+        left: 0;
+        width: 50%;
+        z-index: 2;
+    }
+
+    .sign-up-container {
+        left: 0;
+        width: 50%;
+        z-index: 1;
+        opacity: 0;
+    }
+
+    .overlay-container {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        width: 50%;
+        height: 100%;
+        overflow: hidden;
+        transition: transform .6s ease-in-out;
+        z-index: 100;
+    }
+
+    .overlay {
+        @apply bg-secondary text-white relative;
+        left: -100%;
+        height: 100%;
+        width: 200%;
+        transform: translateY(0);
+        transition: transform .6s ease-in-out;
+    }
+
+    .overlay-panel {
+        position: absolute;
+        top: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 0 40px;
+        height: 100%;
+        width: 50%;
+        text-align: center;
+        transform: translateY(0);
+        transition: transform .6s ease-in-out;
+    }
+
+    .overlay-right {
+        right: 0;
+        transform: translateY(0);
+    }
+
+    .overlay-left {
+        transform: translateY(-20%);
+    }
+
+    .auth-container.right-panel-active .sign-in-container {
+        transform: translateY(100%);
+    }
+
+    .auth-container.right-panel-active .overlay-container {
+        transform: translateX(-100%);
+    }
+
+    .auth-container.right-panel-active .sign-up-container {
+        transform: translateX(100%);
+        opacity: 1;
+        z-index: 5;
+    }
+
+    .auth-container.right-panel-active .overlay {
+        transform: translateX(50%);
+    }
+
+    .auth-container.right-panel-active .overlay-left {
+        transform: translateY(0);
+    }
+
+    .auth-container.right-panel-active .overlay-right {
+        transform: translateY(20%);
+    }
+
+}

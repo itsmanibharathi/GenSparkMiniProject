@@ -1,0 +1,45 @@
+<section class="m-auto flex items-center justify-center ">
+    <div class="auth-container" id="auth-container">
+        <div class="form-container sign-up-container">
+            <form action="#">
+                <h1>Sign Up</h1>
+                <label>
+                    <input type="text" placeholder="Name" />
+                </label>
+                <label>
+                    <input type="email" placeholder="Email" />
+                </label>
+                <label>
+                    <input type="password" placeholder="Password" />
+                </label>
+                <button style="margin-top: 9px">Sign Up</button>
+            </form>
+        </div>
+        <div class="form-container sign-in-container">
+            <form action="#">
+                <h1>Sign in</h1>
+                <label>
+                    <input type="email" placeholder="Email" />
+                </label>
+                <label>
+                    <input type="password" placeholder="Password" />
+                </label>
+                <button>Sign In</button>
+            </form>
+        </div>
+        <div class="overlay-container">
+            <div class="overlay">
+                <div class="overlay-panel overlay-left">
+                    <h1>Log in</h1>
+                    <p>Sign in here if you already have an account </p>
+                    <button class="ghost mt-5" id="signIn" onclick="signInPage()">Sign In</button>
+                </div>
+                <div class="overlay-panel overlay-right">
+                    <h1>Create, Account!</h1>
+                    <p>Sign up if you still don't have an account ... </p>
+                    <button class="ghost" id="signUp" onclick="signUpPage()">Sign Up</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
