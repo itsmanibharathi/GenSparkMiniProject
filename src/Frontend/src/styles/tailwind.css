@@ -1,3 +1,18 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+
+
+.clock::after{
+    content: "\f1da"; 
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    margin-left: 5px;
+}
+
+.rupee::after{
+    content: "\f156"; 
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    margin-left: 5px;
+}
