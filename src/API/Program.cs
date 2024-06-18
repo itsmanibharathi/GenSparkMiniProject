@@ -13,6 +13,7 @@ using Microsoft.OpenApi.Models;
 using System.Text;
 using System.Text.Json.Serialization;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using System.Reflection;
 
 namespace API
 {
@@ -177,6 +178,17 @@ namespace API
             builder.Services.AddScoped<IRestaurantOrderService, RestaurantOrderService>();
             #endregion
 
+
+            #region CORS
+            builder.Services.AddCors(opts =>
+            {
+                opts.AddPolicy("AllowAll", options =>
+                {
+                    options.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
+                });
+            });
+            #endregion
+
             #endregion
 
             #region App Configuration
@@ -188,6 +200,8 @@ namespace API
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
+            app.UseCors("AllowAll");
 
             app.UseAuthentication();
             app.UseAuthorization();
