@@ -8,14 +8,14 @@
 
 <div id="main-content" class="container mx-auto p-4 text-center flex-grow">
     <h1 class="text-4xl font-bold mb-8">Welcome to Our Food Delivery System</h1>
-    <div class="justify-center flex flex-col gap-3 md:flex-row ">
+    <nav class="justify-center flex flex-col gap-3 md:flex-row ">
         <div class="card bg-white shadow-lg p-6 rounded-lg">
             <h2 class="text-2xl font-semibold mb-4">Customer</h2>
             <p class="mb-4 text-gray-500">Order delicious food from your favorite restaurants.</p>
             <div
                 class="bg-button text-white py-2 px-4 rounded hover:bg-button-hover inline-flex items-center space-x-2">
                 <i class="fa-solid fa-user"></i>
-                <a href="#" data-target="customer-register" class="">Go to Customer</a>
+                <a id="cus" href="Customer">Go to Customer</a>
             </div>
         </div>
         <div class="card bg-white shadow-lg p-6 rounded-lg">
@@ -24,7 +24,7 @@
             <div
                 class="bg-button text-white py-2 px-4 rounded hover:bg-button-hover inline-flex items-center space-x-2">
                 <i class="fa-solid fa-shop"></i>
-                <a href="#" data-target="customer-register" class="">Go to Shop</a>
+                <a href="restaurant" data-target="customer-register" class="">Go to Shop</a>
             </div>
         </div>
         <div class="card bg-white shadow-lg p-6 rounded-lg">
@@ -33,10 +33,10 @@
             <div
                 class="bg-button text-white py-2 px-4 rounded hover:bg-button-hover inline-flex items-center space-x-2">
                 <i class="fa-solid fa-person-military-pointing"></i>
-                <a href="#" data-target="customer-register" class="">Go to Employee</a>
+                <a href="employee" data-target="customer-register" class="">Go to Employee</a>
             </div>
         </div>
-    </div>
+    </nav>
 </div>
 
 <!-- footer -->

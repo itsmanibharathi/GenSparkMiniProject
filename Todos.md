@@ -4,6 +4,7 @@
 - [X] Design home page
 - [X] Design signup and login template
 - [X] Design Produt and order card design
+- [X] Implement url routing
 - [ ] Setup signup and login
 - [ ] Config the JWT
 - [ ] Design restaurant dashbord
