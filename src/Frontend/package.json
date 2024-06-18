@@ -1,10 +1,9 @@
 {
   "name": "frontend",
   "version": "1.0.0",
-  "main": "tailwind.config.js",
   "scripts": {
-    "dev": "parcel public/index.html --port 3000 --open",
-    "build": "parcel build src/index.html"
+    "dev": " parcel public/index.html --port 3000 --open ",
+    "build": "parcel build public/index.html --dist-dir dist --public-url ./"
   },
   "keywords": [],
   "author": "",
@@ -12,6 +11,7 @@
   "description": "",
   "devDependencies": {
     "autoprefixer": "^10.4.19",
+    "loglevel": "^1.9.1",
     "postcss": "^8.4.38",
     "prettier": "^3.3.2",
     "prettier-plugin-tailwindcss": "^0.6.3",
