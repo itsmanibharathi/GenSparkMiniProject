@@ -4,6 +4,7 @@ using API.Models.DTOs;
 using API.Models.DTOs.CustomerDto;
 using API.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -16,6 +17,7 @@ namespace API.Controllers.CustomerControllers
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("MyCors")]
     public class CustomerController : ControllerBase
     {
         private readonly ICustomerService _customerAuthService;
