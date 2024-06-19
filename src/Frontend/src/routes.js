@@ -1,15 +1,18 @@
 import $ from 'jquery';
 
-import home from './Components/Home/index.html';
-import customer from './Components/Customer/index.html';
-import Employee from './Components/Employee/index.html';
-import Restaurant from './Components/Restaurant/index.html';
+// load html
+import home from './modules/home/index.html';
+import customer from './modules/customer/index.html';
+import Employee from './modules/employee/index.html';
+import Restaurant from './modules/restaurant/index.html';
+
+// load js
 
 const routePaths = [
-    { path: '/', component: home },
-    { path: '/customer', component: customer },
-    { path: '/employee', component: Employee },
-    { path: '/restaurant', component: Restaurant }
+    { path: '/', html: home },
+    { path: '/customer', html: customer },
+    { path: '/employee', html: Employee },
+    { path: '/restaurant', html: Restaurant }
 
 ];
 
@@ -19,7 +22,7 @@ function loadRoutes() {
         console.log(path);
         const route = routePaths.find(r => r.path === path);
         if (route) {
-            loadComponent('#root', route.component);
+            loadComponent('#root', route.html);
         }
         else {
             $('#root').html('404 - Not Found');
@@ -27,9 +30,9 @@ function loadRoutes() {
     });
 }
 
-function loadComponent(id, component) {
+function loadComponent(id, html) {
     $.ajax({
-        url: component,
+        url: html,
         type: 'GET',
         dataType: 'html',
         success: function (response) {
