@@ -1,33 +1,36 @@
 import $ from 'jquery';
-
-// load html
-import home from './modules/home/index.html';
-import customer from './modules/customer/index.html';
-import Employee from './modules/employee/index.html';
-import Restaurant from './modules/restaurant/index.html';
-
-// load js
+import homeHeader from './components/home-header.html';
+import homeBody from './modules/home/index.html';
+import customerHeader from './components/customer-header.html';
+import customerBody from './modules/customer/index.html';
+import employeeHeader from './components/employee-header.html';
+import employeeBody from './modules/employee/index.html';
+import restaurantHeader from './components/restaurant-header.html';
+import restaurantBody from './modules/restaurant/index.html';
+import footer from './components/footer.html';
 
 const routePaths = [
-    { path: '/', html: home },
-    { path: '/customer', html: customer },
-    { path: '/employee', html: Employee },
-    { path: '/restaurant', html: Restaurant }
-
+    { path: '/', header: homeHeader, body: homeBody, footer: footer },
+    { path: '/customer', header: customerHeader, body: customerBody, footer: footer },
+    { path: '/employee', header: employeeHeader, body: employeeBody, footer: footer },
+    { path: '/restaurant', header: restaurantHeader, body: restaurantBody, footer: footer }
 ];
 
 function loadRoutes() {
-    $(document).ready(() => {
-        const path = window.location.pathname.toLowerCase();
-        console.log(path);
-        const route = routePaths.find(r => r.path === path);
-        if (route) {
-            loadComponent('#root', route.html);
-        }
-        else {
-            $('#root').html('404 - Not Found');
-        }
-    });
+    const path = window.location.pathname.toLowerCase();
+    console.log(path);
+    const route = routePaths.find(r => r.path === path);
+    if (route) {
+
+        loadComponent('#header-placeholder', route.header);
+        loadComponent('#body-placeholder', route.body);
+        loadComponent('#footer-placeholder', route.footer);
+    } else {
+        $('#root').html('404 - Not Found');
+    }
+}
+
+function loadFooter() {
 }
 
 function loadComponent(id, html) {
@@ -48,4 +51,3 @@ module.exports = {
     loadRoutes,
     loadComponent
 };
-
