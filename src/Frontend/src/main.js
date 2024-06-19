@@ -1,6 +1,5 @@
 const $ = require('jquery');
 import fontawesome from '@fortawesome/fontawesome-free/css/all.css';
-
 const routes = require('./routes.js');
 
 
