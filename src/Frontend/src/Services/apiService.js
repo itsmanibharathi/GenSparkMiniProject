@@ -1,49 +1,49 @@
 import log from '../utility/loglevel.js';
-
-const apiService = (function (baseURL, token = null) {
-    const baseURL = 'https://localhost:3000';
-    const token = null;
-    function makeRequest(endpoint, method, data = null) {
-        return $.ajax({
-            url: baseURL + endpoint,
-            type: method,
-            dataType: 'json',
-            data: data,
-            beforeSend: function (xhr) {
-                if (token) {
-                    xhr.setRequestHeader('Authorization', `Bearer ${token}`);
-                }
-                log.debug(`Request is about to be sent to ${baseURL + endpoint}`);
-            }
-        }).then(
-            function (response) {
-                log.debug('Success:', response);
-                return response;
-            },
-            function (xhr, status, error) {
-                log.error('Error:', status, error);
-                log.debug('Response:', xhr.responseText);
-                throw new Error(`Request failed with status: ${status}, error: ${error}`);
-            }
-        ).always(function (xhr, status) {
-            log.debug(`Request completed with status: ${status}`);
-        });
+class apiService {
+    constructor(url, token) {
+        this.url = url;
+        this.token = token;
     }
 
-    return {
-        get: function (endpoint, data = null) {
-            return makeRequest(endpoint, 'GET', data);
-        },
-        post: function (endpoint, data) {
-            return makeRequest(endpoint, 'POST', data);
-        },
-        put: function (endpoint, data) {
-            return makeRequest(endpoint, 'PUT', data);
-        },
-        delete: function (endpoint, data = null) {
-            return makeRequest(endpoint, 'DELETE', data);
+    get = async (endpoint) => {
+        return await this.request('GET', endpoint);
+    }
+
+    post = async (endpoint, data) => {
+        return await this.request('POST', endpoint, data);
+    }
+
+    put = async (endpoint, data) => {
+        return await this.request('PUT', endpoint, data);
+    }
+
+    delete = async (endpoint) => {
+        return await this.request('DELETE', endpoint);
+    }
+
+    request = async (method, endpoint, data) => {
+        const options = {
+            method: method,
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${this.token}`
+            }
+        };
+
+        if (data) {
+            options.body = JSON.stringify(data);
         }
-    };
-})(baseURL, token);
+
+        const response = await fetch(`${this.url}/${endpoint}`, options);
+        const json = await response.json();
+        if (response.status >= 200 && response.status < 300) {
+            log.debug('API Success:', json);
+            return json;
+        } else {
+            log.debug('API Error:', json);
+            return Promise.reject(json);
+        }
+    }
+}
 
 export default apiService;

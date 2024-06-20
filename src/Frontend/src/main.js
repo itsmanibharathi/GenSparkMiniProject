@@ -1,18 +1,18 @@
 const $ = require('jquery');
+import './styles/auth.css';
 import fontawesome from '@fortawesome/fontawesome-free/css/all.css';
-const routes = require('./routes.js');
-
+import loadRoutes from './routes';
 
 $(document).ready(() => {
-  routes.loadRoutes();
+  loadRoutes();
   $(document).on('click', 'nav a', function (e) {
     e.preventDefault();
     const url = $(this).attr('href');
     history.pushState(null, '', url);
-    routes.loadRoutes();
+    loadRoutes();
   })
 
   $(window).on('popstate', function () {
-    routes.loadRoutes();
+    loadRoutes();
   });
 });
