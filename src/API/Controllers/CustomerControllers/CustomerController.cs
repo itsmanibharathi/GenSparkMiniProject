@@ -17,7 +17,6 @@ namespace API.Controllers.CustomerControllers
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
-    [EnableCors("MyCors")]
     public class CustomerController : ControllerBase
     {
         private readonly ICustomerService _customerAuthService;
