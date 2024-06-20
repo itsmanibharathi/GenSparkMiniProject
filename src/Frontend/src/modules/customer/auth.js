@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import AuthPage from './auth.html';
 import { signInPage, signUpPage } from '../../services/authLayoutService.js';
-import showAlert from '../../services/alartService.js';
+import showAlert from '../../services/alertService.js';
 const loadAuthCallback = (api, token) => {
     console.log('Loading Auth Callback');
     $('#signUpPage').on('click', signUpPage);
