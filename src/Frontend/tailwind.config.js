@@ -10,12 +10,6 @@ module.exports = {
         white: '#FFFFFF',
         button: '#F55951',
         'button-hover': '#E53E3E',
-        success: '#38A169',
-        'success-hover': '#2F855A',
-        error: '#E53E3E',
-        'error-hover': '#C53030',
-        info: '#3182CE',
-        'info-hover': '#2B6CB0',
       },
       boxShadow: {
         'md': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
