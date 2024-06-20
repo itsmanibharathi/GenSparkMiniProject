@@ -182,9 +182,11 @@ namespace API
             #region CORS
             builder.Services.AddCors(opts =>
             {
-                opts.AddPolicy("AllowAll", options =>
+                opts.AddDefaultPolicy(option =>
                 {
-                    options.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
+                    option.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
                 });
             });
             #endregion
@@ -201,7 +203,7 @@ namespace API
                 app.UseSwaggerUI();
             }
 
-            app.UseCors("AllowAll");
+            app.UseCors();
 
             app.UseAuthentication();
             app.UseAuthorization();
