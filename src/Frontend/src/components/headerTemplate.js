@@ -1,7 +1,7 @@
 import logo from '../../public/assets/Image/logo.svg'
-const headerTemplate = (data) => {
+const headerTemplate = (data, btn) => {
     return (
-        `<header class="bg-gray-800">
+        `<header class="bg-tertiary">
             <nav class="flex justify-between items-center w-[92%] h-[8%]  mx-auto">
                 <div>
                     <img class="w-16 cursor-pointer" src=${logo} alt="...">
@@ -18,7 +18,7 @@ const headerTemplate = (data) => {
                     </ul>
                 </div>
                 <div class="flex items-center gap-6 my-2">
-                    <button class="bg-button text-white text-lg px-5 py-2 rounded-full hover:bg-button-hover">Sign in</button>
+                    <button onclick="${btn.function}" class="bg-button text-white text-lg px-5 py-2 rounded-full hover:bg-button-hover">${btn.name}</button>
                     <button onclick="onToggleMenu(this)" class="md:hidden"><i name="menu" class="fa-solid fa-bars"></i></button>
                 </div>
             </nav>

@@ -12,6 +12,7 @@
 
 
     .form-container form {
+        
         background: #fff;
         display: flex;
         flex-direction: column;
@@ -23,6 +24,7 @@
     }
 
     .form-container input {
+        @apply focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-opacity-50 text-tertiary placeholder:text-tertiary appearance-none;
         background: #eee;
         border: none;
         border-radius: 50px;
@@ -33,6 +35,10 @@
 
     .form-container input:hover {
         transform: scale(101%);
+    }
+
+    .form-container{
+        @apply  text-tertiary ;
     }
 
     .auth-container h1 {
