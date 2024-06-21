@@ -23,17 +23,17 @@ jobs:
           node-version: 16
 
       - name: Install dependencies
-        working-directory: src/frontend
+        working-directory: src/Frontend
         run: npm install
 
       - name: Build project
-        working-directory: src/frontend
+        working-directory: src/Frontend
         run: npm run build
 
       - name: Upload production-ready build files
         uses: actions/upload-artifact@v2
         with:
-          working-directory: src/frontend
+          working-directory: src/Frontend
           name: production-files
           path: ./dist
 
@@ -47,6 +47,7 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v2
         with:
+          working-directory: src/Frontend
           name: production-files
           path: ./dist
 
