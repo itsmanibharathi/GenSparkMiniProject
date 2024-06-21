@@ -6,7 +6,6 @@ const routes = {
     '/customer': loadCustomer
 };
 
-
 const loadRoutes = () => {
     var path = window.location.pathname.toLocaleLowerCase();
     path = path === '/' ? '/' : path.replace(/\/$/, '');
@@ -17,7 +16,6 @@ const loadRoutes = () => {
     else {
         console.log('404');
     }
-
 };
 
 export default loadRoutes;
