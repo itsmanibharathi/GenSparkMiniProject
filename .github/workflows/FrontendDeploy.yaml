@@ -3,10 +3,9 @@ name : Genspark Mini Project Frontend Deployment
 
 on:
   push:
-    branches:
-      - main
-    paths:
-      - './src/Frontend/**'
+    branches: [ "main" ]
+    # paths:
+    #   - 'src/Frontend'
 jobs:
   build:
     name: Build
