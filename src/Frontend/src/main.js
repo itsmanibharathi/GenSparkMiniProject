@@ -1,7 +1,7 @@
 const $ = require('jquery');
 import './styles/auth.css';
 import fontawesome from '@fortawesome/fontawesome-free/css/all.css';
-import loadRoutes from './routes';
+import loadRoutes from './routes.js';
 
 $(document).ready(() => {
   loadRoutes();
