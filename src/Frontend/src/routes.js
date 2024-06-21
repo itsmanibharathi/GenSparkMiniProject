@@ -5,7 +5,6 @@ const routes = {
     '/': loadHome,
     '/customer': loadCustomer
 };
-
 const loadRoutes = () => {
     var path = window.location.pathname.toLocaleLowerCase();
     path = path === '/' ? '/' : path.replace(/\/$/, '');
