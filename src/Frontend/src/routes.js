@@ -1,6 +1,6 @@
 import $ from 'jquery';
 import loadCustomer from './modules/Customer/index.js';
-import loadHome from './modules/home/inde.js';
+import loadHome from './modules/home/index.js';
 const routes = {
     '/': loadHome,
     '/customer': loadCustomer
