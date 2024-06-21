@@ -12,9 +12,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GENERATE_SOURCEMAP: false
-    defaults:
-      run:
-        working-directory: ./src/Frontend
 
     steps:
       - name: Checkout repo
@@ -26,14 +23,17 @@ jobs:
           node-version: 16
 
       - name: Install dependencies
-        uses: bahmutov/npm-install@v1
+        working-directory: src/frontend
+        run: npm install
 
       - name: Build project
+        working-directory: src/frontend
         run: npm run build
 
       - name: Upload production-ready build files
         uses: actions/upload-artifact@v2
         with:
+          working-directory: src/frontend
           name: production-files
           path: ./dist
 
