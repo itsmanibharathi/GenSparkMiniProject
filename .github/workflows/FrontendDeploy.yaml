@@ -6,7 +6,7 @@ on:
     branches:
       - main
     paths:
-      - 'src/frontend/**'
+      - 'src/Frontend/**'
 jobs:
   build:
     name: Build
