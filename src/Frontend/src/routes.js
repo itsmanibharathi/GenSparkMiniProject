@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import loadCustomer from './modules/Customer/index.js';
+import loadCustomer from './modules/customer/index.js';
 import loadHome from './modules/home/index.js';
 const routes = {
     '/': loadHome,
