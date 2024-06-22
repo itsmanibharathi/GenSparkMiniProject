@@ -4,8 +4,13 @@ name : Genspark Mini Project Frontend Deployment
 on:
   push:
     branches: [ "main" ]
-    # paths:
-    #   - 'src/Frontend'
+    paths:
+      - 'src/Frontend/**'
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - 'src/Frontend/**'
+
 jobs:
   build:
     name: Build
@@ -21,9 +26,13 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 16
+        env:
+          BASE_PATH: '/GenSparkMiniProject'
+        working-directory: src/Frontend
+
 
       - name: Install dependencies
-        working-directory: src/Frontend
+        
         run: npm install
 
       - name: Build project
