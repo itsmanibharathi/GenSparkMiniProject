@@ -18,8 +18,10 @@ jobs:
     env:
       GENERATE_SOURCEMAP: false
       BASE_PATH: '/GenSparkMiniProject'
-    working-directory: src/Frontend
-
+    defaults:
+      run:
+        working-directory: src/Frontend
+        
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
