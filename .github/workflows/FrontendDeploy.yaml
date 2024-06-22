@@ -17,19 +17,17 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GENERATE_SOURCEMAP: false
+      BASE_PATH: '/GenSparkMiniProject'
+    working-directory: src/Frontend
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
     
       - name: Setup Node
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v4
         with:
-          node-version: 16
-        env:
-          BASE_PATH: '/GenSparkMiniProject'
-        working-directory: src/Frontend
-
+          node-version: 20
 
       - name: Install dependencies
         

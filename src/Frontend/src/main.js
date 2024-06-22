@@ -15,7 +15,6 @@ $(document).ready(() => {
     history.pushState(null, '', url);
     loadRoutes();
   })
-
   $(window).on('popstate', function () {
     loadRoutes();
   });
