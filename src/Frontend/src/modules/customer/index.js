@@ -1,11 +1,11 @@
 import $ from 'jquery';
 import log from '../../utility/loglevel.js';
-import loadComponent from '../../services/loadComponent.js';
+import loadComponent from '../../Services/loadComponent.js';
 import headerTemplate from '../../components/headerTemplate.js';
 import Footer from '../../components/footer.html';
 import { AuthPage, loadAuthCallback } from './auth.js';
-import apiService from '../../services/apiService.js';
-import jwtService from '../../services/jwtService.js';
+import apiService from '../../Services/apiService.js';
+import jwtService from '../../Services/jwtService.js';
 
 const token = new jwtService('customer');
 const api = new apiService('http://localhost:5170/api/customer', token.get());
