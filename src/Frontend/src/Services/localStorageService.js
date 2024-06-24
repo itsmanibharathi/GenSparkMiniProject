@@ -7,11 +7,11 @@ class localStorageService {
 
     get = (key) => {
         log.debug('Local storage retrieved');
-        return localStorage.getItem(`${this.moduleName}_${key}`);
+        return JSON.parse(localStorage.getItem(`${this.moduleName}_${key}`));
     }
 
     set = (key, value) => {
-        localStorage.setItem(`${this.moduleName}_${key}`, value);
+        localStorage.setItem(`${this.moduleName}_${key}`, JSON.stringify(value));
         log.debug(`Local storage set: ${key}`);
     }
 

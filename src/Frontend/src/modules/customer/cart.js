@@ -3,115 +3,138 @@ import $ from 'jquery';
 import log from '../../utility/loglevel.js';
 import showAlert from '../../Services/alertService.js';
 
-const cartCallback = async (api) => {
-    loadCart();
-    document.updateQuantity = updateQuantity;
-    document.deleteItem = deleteItem;
-    document.clearCart = clearCart;
-    document.checkout = (e) => checkout(e, api);
-};
-
-const loadCart = () => {
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    const cartItemsContainer = $('#cart-items');
-    cartItemsContainer.empty();
-    cart.forEach((item, index) => {
-        const itemRow = $(`
-            <div class="flex flex-row justify-between items-center border-b py-2">
-                <div class="flex flex-col">
-                    <h2 class="mt-2 mb-2  font-bold">${item.productName} <span class="font-light">${item.restaurantName}</span></h2> 
-                    <span class="text-gray-500">${item.productPrice}</span>
-                </div>
-                <div class="flex flex-row items-center">
-                    <button class="px-2 hover:text-button-hover" onclick="updateQuantity(${index}, -1)"><i class="fa-solid fa-minus"></i></button>
-                    <span class="px-2">${item.quantity} </span>
-                    <button class="px-2 hover:text-button-hover" onclick="updateQuantity(${index}, 1)"><i class="fa-solid fa-plus"></i></button>
-                </div>
-                <button class="px-2 text-button hover:text-button-hover" onclick="deleteItem(${index})"><i class="fa-solid fa-trash-can"></i></button>
-            </div>
-        `);
-        cartItemsContainer.append(itemRow);
-    });
-
-    updateTotal();
-};
-
-const addToCart = (product) => {
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    const existingProductIndex = cart.findIndex(item => item.productId === product.productId);
-
-    if (existingProductIndex !== -1) {
-        cart[existingProductIndex].quantity += 1;
-    } else {
-        product.quantity = 1;
-        cart.push(product);
+class cartCallback {
+    constructor(api, db, document) {
+        this.api = api;
+        this.db = db;
+        this.cartData = this.db.get('cart') || [];
+        this.document = document;
+        this.address = [];
     }
 
-    localStorage.setItem('cart', JSON.stringify(cart));
-    loadCart();
-};
+    async init() {
+        this.loadCart();
+        await this.loadAddress();
 
-const updateQuantity = (index, change) => {
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
-
-    if (cart[index]) {
-        cart[index].quantity += change;
-        if (cart[index].quantity > 10) {
-            alert('You can only add 10 items at a time');
-            cart[index].quantity--;
-        }
-        if (cart[index].quantity <= 0) {
-            cart.splice(index, 1);
-        }
-        localStorage.setItem('cart', JSON.stringify(cart));
-        loadCart();
+        this.document.updateQuantity = this.updateQuantity.bind(this);
+        this.document.deleteItem = this.deleteItem.bind(this);
+        this.document.checkout = this.checkout.bind(this);
+        this.document.clearCart = this.clearCart.bind(this);
     }
-};
+    async loadAddress() {
+        this.address = await this.api.get('Customer/Address').then((res) => res.data);
+        log.info('Customer Address :', this.address);
 
-const deleteItem = (index) => {
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    cart.splice(index, 1);
-    localStorage.setItem('cart', JSON.stringify(cart));
-    loadCart();
-};
+        const addressContainer = $('#customer-address');
+        addressContainer.empty();
+        // create dropdown select box
+        this.address.forEach((address) => {
+            const addressRow = $(`
+                <option value="${address.addressId}">${address.type}</option>
+            `);
+            addressContainer.append(addressRow);
+        });
+    }
+    loadCart() {
+        console.log('Loading Cart');
+        const cartItemsContainer = $('#cart-items');
+        cartItemsContainer.empty();
+        const cartData = this.db.get('cart') || [];
+        cartData.forEach((item, index) => {
+            const itemRow = $(`
+                <div class="flex flex-row justify-between items-center border-b py-2">
+                    <div class="flex flex-col">
+                        <h2 class="mt-2 mb-2 font-bold">${item.productName} <span class="font-light">${item.restaurantName}</span></h2>
+                        <span class="text-gray-500">${item.productPrice}</span>
+                    </div>
+                    <div class="flex flex-row items-center">
+                        <button class="px-2 hover:text-button-hover" onclick="document.updateQuantity(${index}, -1)"><i class="fa-solid fa-minus"></i></button>
+                        <span class="px-2">${item.quantity} </span>
+                        <button class="px-2 hover:text-button-hover" onclick="document.updateQuantity(${index}, 1)"><i class="fa-solid fa-plus"></i></button>
+                    </div>
+                    <button class="px-2 text-button hover:text-button-hover" onclick="document.deleteItem(${index})"><i class="fa-solid fa-trash-can"></i></button>
+                </div>
+            `);
+            cartItemsContainer.append(itemRow);
+        });
+        this.updateTotal();
+    }
 
-const updateTotal = () => {
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    const total = cart.reduce((sum, item) => sum + (item.productPrice * item.quantity), 0);
-    $('#total').text(total);
-};
+    addToCart(product) {
+        const cartData = this.db.get('cart') || [];
+        const existingProductIndex = cartData.findIndex(item => item.productId === product.productId);
 
-const clearCart = () => {
-    localStorage.removeItem('cart');
-    loadCart();
+        if (existingProductIndex !== -1) {
+            cartData[existingProductIndex].quantity += 1;
+        } else {
+            product.quantity = 1;
+            cartData.push(product);
+        }
+
+        this.db.set('cart', cartData);
+        this.loadCart();
+    }
+
+    updateQuantity(index, change) {
+        const cartData = this.db.get('cart') || [];
+        if (cartData[index]) {
+            cartData[index].quantity += change;
+            if (cartData[index].quantity > 10) {
+                alert('You can only add 10 items at a time');
+                cartData[index].quantity--;
+            }
+            if (cartData[index].quantity <= 0) {
+                cartData.splice(index, 1);
+            }
+            this.db.set('cart', cartData);
+            this.loadCart();
+        }
+    }
+
+    deleteItem(index) {
+        const cartData = this.db.get('cart') || [];
+        cartData.splice(index, 1);
+        this.db.set('cart', cartData);
+        this.loadCart();
+    }
+
+    updateTotal() {
+        const cartData = this.db.get('cart') || [];
+        const total = cartData.reduce((sum, item) => sum + (item.productPrice * item.quantity), 0);
+        $('#total').text(total);
+    }
+
+    clearCart() {
+        this.db.remove('cart');
+        this.loadCart();
+    }
+
+    async checkout(e) {
+        const cartData = this.db.get('cart') || [];
+        if (cartData.length === 0) {
+            showAlert('Cart is empty', 'error');
+            return;
+        }
+
+        const order = {
+            shippingAddressId: $('#customer-address').val(),
+            orderItemIds: cartData.map(item => ({
+                productId: item.productId,
+                quantity: item.quantity
+            }))
+        };
+
+        try {
+            const res = await this.api.post('Customer/Order/create', order);
+            showAlert('Order placed successfully', 'success');
+            this.db.remove('cart');
+            this.db.set('order', res.data);
+            this.loadCart();
+        } catch (err) {
+            console.log("Error: ", err);
+            showAlert(err.message, 'error');
+        }
+    }
 }
 
-const checkout = async (e, api) => {
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    if (cart.length === 0) {
-        showAlert('Cart is empty', 'error');
-        return;
-    }
-
-    const order = {
-        orderItemIds: cart.map(item => ({
-            productId: item.productId,
-            quantity: item.quantity
-        }))
-    };
-
-    api.post('Order', order).then(res => {
-        showAlert('Order placed successfully', 'success');
-        localStorage.removeItem('cart');
-        loadCart();
-    }).catch(err => {
-        log.error(err);
-        showAlert('Failed to place order', 'error');
-    });
-}
-
-module.exports = {
-    Cart,
-    cartCallback,
-    addToCart
-};
+export { Cart, cartCallback };

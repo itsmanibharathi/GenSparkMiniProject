@@ -24,14 +24,14 @@ const btn = {
 }
 const localRoutes = [{ "path": "/", "name": "Home" }, { "path": "customer/orders", "name": "Orders" }]
 const loadCustomer = () => {
-
     log.debug('Loading Customer');
     log.debug('Token:', token.get());
 
+    const _cartCallback = new cartCallback(api, localStorage, document);
     $('#header-placeholder').html(headerTemplate(localRoutes, btn.login, 'customer'));
-    loadComponent('body', Cart, cartCallback, api, localStorage);
+    loadComponent('body', Cart, () => _cartCallback.init());
     // loadComponent('#body-placeholder', AuthPage, loadAuthCallback, api, token);
-    loadComponent('#body-placeholder', HomePage, HomeCallback, api);
+    loadComponent('#body-placeholder', HomePage, HomeCallback, api, _cartCallback);
     loadComponent('#footer-placeholder', Footer);
 }
 
