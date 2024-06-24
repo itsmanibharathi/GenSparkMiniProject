@@ -5,7 +5,10 @@ function loadComponent(id, html, callback, ...args) {
         type: 'GET',
         dataType: 'html',
         success: function (response) {
-            $(id).html(response);
+            if (id === 'body')
+                $(id).append(response);
+            else
+                $(id).html(response);
             if (callback) {
                 callback(...args);
             }

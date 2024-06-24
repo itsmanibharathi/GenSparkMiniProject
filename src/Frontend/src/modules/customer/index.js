@@ -2,13 +2,20 @@ import $ from 'jquery';
 import log from '../../utility/loglevel.js';
 import loadComponent from '../../Services/loadComponent.js';
 import headerTemplate from '../../components/headerTemplate.js';
+
 import Footer from '../../components/footer.html';
+
 import { AuthPage, loadAuthCallback } from './auth.js';
+
 import { HomePage, HomeCallback } from './home.js';
+import { Cart, cartCallback } from './cart.js';
+
 import apiService from '../../Services/apiService.js';
 import jwtService from '../../Services/jwtService.js';
+import localStorageService from '../../Services/localStorageService.js';
 
 const token = new jwtService('customer');
+const localStorage = new localStorageService('customer');
 const api = new apiService(process.env.API_URL, token.get());
 
 const btn = {
@@ -17,10 +24,12 @@ const btn = {
 }
 const localRoutes = [{ "path": "/", "name": "Home" }, { "path": "customer/orders", "name": "Orders" }]
 const loadCustomer = () => {
+
     log.debug('Loading Customer');
     log.debug('Token:', token.get());
 
-    $('#header-placeholder').html(headerTemplate(localRoutes, btn.login));
+    $('#header-placeholder').html(headerTemplate(localRoutes, btn.login, 'customer'));
+    loadComponent('body', Cart, cartCallback, api, localStorage);
     // loadComponent('#body-placeholder', AuthPage, loadAuthCallback, api, token);
     loadComponent('#body-placeholder', HomePage, HomeCallback, api);
     loadComponent('#footer-placeholder', Footer);

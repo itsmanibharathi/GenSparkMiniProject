@@ -17,7 +17,7 @@ const ProductTemplate = (product) => {
                 <div class="mt-3 flex items-center">
                     <span class="font-bold text-xl rupee">${product.productPrice}</span>
                 </div>
-                <button class="bg-button text-white text-lg px-5 py-2 rounded-lg hover:bg-button-hover"><i class="fa-solid fa-cart-shopping"></i> Add to Cart</button>
+                <button onclick="addtoCart(${product.productId})" class="bg-button text-white text-lg px-5 py-2 rounded-lg hover:bg-button-hover"><i class="fa-solid fa-cart-shopping"></i> Add to Cart</button>
             </div>
         </div>
     </div>`
