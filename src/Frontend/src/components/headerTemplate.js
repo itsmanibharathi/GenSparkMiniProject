@@ -2,19 +2,16 @@ import logo from '../../public/assets/Image/logo.svg'
 const headerTemplate = (data, btn) => {
     return (
         `<header class="bg-tertiary">
-            <nav class="flex justify-between items-center w-[92%] h-[8%]  mx-auto">
+            <nav class="flex justify-between items-center w-[92%] h-[8%] mx-auto">
                 <div>
-                    <img class="w-16 cursor-pointer" src=${logo} alt="...">
+                    <a href="/">
+                    <img class="w-16 cursor-pointer" src="${logo}" alt="...">
+                    </a>
                 </div>
                 <div
-                    class=" text-white text-lg nav-links duration-500 md:static absolute md:min-h-fit min-h-[60vh] left-0 top-[-100%] md:w-auto  w-full flex items-center px-5">
+                    class="text-white text-lg nav-links duration-500 md:static absolute md:min-h-fit min-h-[60vh] left-0 top-[-100%] md:w-auto w-full flex items-center px-5">
                     <ul class="flex md:flex-row flex-col md:items-center md:gap-[4vw] gap-8">
-                    ${data.map
-            (item => `<li>
-                        <a href='${item.path}' class="hover:text-button">${item.name}</a>
-                    </li>`).join('')
-        }
-
+                    ${data.map((item) => `<li><a href="${item.path}" class="text-white hover:text-button-hover">${item.name}</a></li>`).join('')}
                     </ul>
                 </div>
                 <div class="flex items-center gap-6 my-2">
@@ -24,8 +21,8 @@ const headerTemplate = (data, btn) => {
             </nav>
         </header>
         <script>
-            const navLinks = document.querySelector('.nav-links')
             function onToggleMenu(e) {
+                const navLinks = document.querySelector('.nav-links')
                 e.name = e.name === 'menu' ? 'close' : 'menu'
                 navLinks.classList.toggle('top-[8%]')
             }

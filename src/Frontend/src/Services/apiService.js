@@ -33,7 +33,7 @@ class apiService {
         if (data) {
             options.body = JSON.stringify(data);
         }
-
+        console.debug(`${this.url}/${endpoint}`);
         const response = await fetch(`${this.url}/${endpoint}`, options);
         const json = await response.json();
         if (response.status >= 200 && response.status < 300) {
