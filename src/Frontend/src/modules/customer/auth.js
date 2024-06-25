@@ -14,10 +14,11 @@ const loadAuthCallback = (api, token) => {
             data[item.name] = item.value;
         });
         console.log(data);
-        api.post('login', data)
+        api.post('customer/login', data)
             .then((res) => {
                 token.set(res.data.token);
                 showAlert('Sign In Successful', 'success');
+                window.location.href = '/customer';
             })
             .catch((err) => {
                 console.log(err);

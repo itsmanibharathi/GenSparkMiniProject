@@ -45,7 +45,16 @@ const loadCustomer = (path) => {
             loadComponent('#body-placeholder', OrderPage, OrderCallback, api);
             break;
         case '/customer/login':
+            if (token.exists()) {
+                window.location.href = '/customer';
+            }
             loadComponent('#body-placeholder', AuthPage, loadAuthCallback, api, token);
+            break;
+        case '/customer/logout':
+            token.remove();
+            localStorage.remove('cart');
+            localStorage.remove('order');
+            window.location.href = '/customer';
             break;
         default:
             loadHome();

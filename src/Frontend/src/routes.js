@@ -6,7 +6,8 @@ const routes = {
     '/': loadHome,
     '/customer': loadCustomer,
     '/customer/orders': loadCustomer,
-    '/customer/login': loadCustomer
+    '/customer/login': loadCustomer,
+    '/customer/logout': loadCustomer,
 };
 
 const loadRoutes = () => {
