@@ -16,7 +16,7 @@
                 class="bg-white border border-tertiary focus:outline-none p-2 rounded-lg w-full">
             </select>
             <button class="bg-button hover:bg-button-hover text-white p-2 mt-2 rounded-lg w-full"
-                onclick="checkout(this)">Checkout</button>
+                onclick="checkout(event)">Checkout</button>
         </div>
     </div>
     <div id="payment-container" class="top-3">
@@ -32,7 +32,7 @@
             <option value="cod">COD</option>
         </select>
         <button class="bg-button hover:bg-button-hover text-white p-2 mt-2 rounded-lg w-full"
-            onclick="pay(this)">Pay</button>
+            onclick="payment(event)">Pay</button>
 
     </div>
 </div>

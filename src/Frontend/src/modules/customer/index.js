@@ -14,6 +14,7 @@ import { AuthPage, loadAuthCallback } from './auth.js';
 import apiService from '../../Services/apiService.js';
 import jwtService from '../../Services/jwtService.js';
 import localStorageService from '../../Services/localStorageService.js';
+import showAlert from '../../Services/alertService.js';
 
 const token = new jwtService('customer');
 const localStorage = new localStorageService('customer');
@@ -31,9 +32,13 @@ const loadCustomer = (path) => {
     log.debug('Loading Customer');
     log.debug('Token:', token.get());
 
-    const _cartCallback = new cartCallback(api, localStorage, document);
-    $('#header-placeholder').html(headerTemplate(localRoutes, token.exists(), true));
+    const _cartCallback = new cartCallback(api, localStorage, window, token.exists());
     loadComponent('body', Cart, () => _cartCallback.init());
+    document.updateQuantity = (index, change) => _cartCallback.updateQuantity(index, change);
+    document.deleteItem = (index) => _cartCallback.deleteItem(index);
+    document.checkout = (e) => _cartCallback.checkout(e);
+    document.payment = (e) => _cartCallback.payment(e);
+    $('#header-placeholder').html(headerTemplate(localRoutes, token.exists(), true));
     loadComponent('#footer-placeholder', Footer);
 
     switch (path) {
@@ -42,6 +47,10 @@ const loadCustomer = (path) => {
             loadComponent('#body-placeholder', HomePage, HomeCallback, api, _cartCallback);
             break;
         case '/customer/orders':
+            if (!token.exists()) {
+                window.location.href = '/customer/login';
+                showAlert('Please login to view orders', 'error');
+            }
             loadComponent('#body-placeholder', OrderPage, OrderCallback, api);
             break;
         case '/customer/login':

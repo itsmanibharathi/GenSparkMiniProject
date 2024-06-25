@@ -4,33 +4,28 @@ import log from '../../utility/loglevel.js';
 import showAlert from '../../Services/alertService.js';
 
 class cartCallback {
-    constructor(api, db, document) {
+    constructor(api, db, window, islogin) {
         this.api = api;
         this.db = db;
-        this.cartData = this.db.get('cart') || [];
-        this.orderData = this.db.get('order') || [];
-        this.document = document;
+        this.window = window;
+        this.document = window.document;
         this.address = [];
+        this.islogin = islogin;
     }
 
     async init() {
-        if (this.orderData.length > 0) {
-            this.document.querySelector('#cart-container').classList.add('hidden');
+        const orderData = this.db.get('order') || [];
+        if (orderData.length > 0) {
             this.loadPayment();
         }
         else {
-            this.document.querySelector('#payment-container').classList.add('hidden');
             this.loadCart();
-            await this.loadAddress();
+            if (this.islogin)
+                await this.loadAddress();
         }
-
-        this.document.updateQuantity = this.updateQuantity.bind(this);
-        this.document.deleteItem = this.deleteItem.bind(this);
-        this.document.checkout = this.checkout.bind(this);
-        this.document.clearCart = this.clearCart.bind(this);
     }
     async loadAddress() {
-        this.address = await this.api.get('Customer/Address').then((res) => res.data);
+        this.address = await this.api.get('Customer/Address').then((res) => res.data).catch((err) => showAlert(err.message));
         log.info('Customer Address :', this.address);
 
         const addressContainer = $('#customer-address');
@@ -43,6 +38,8 @@ class cartCallback {
         });
     }
     loadCart() {
+        this.document.querySelector('#payment-container').classList.add('hidden');
+        this.document.querySelector('#cart-container').classList.remove('hidden');
         console.log('Loading Cart');
         const cartItemsContainer = $('#cart-items');
         cartItemsContainer.empty();
@@ -67,6 +64,8 @@ class cartCallback {
         this.updateTotal();
     }
     loadPayment() {
+        this.document.querySelector('#cart-container').classList.add('hidden');
+        this.document.querySelector('#payment-container').classList.remove('hidden');
         console.log('Loading Payment');
         const orderData = this.db.get('order') || [];
         const orderItemsContainer = $('#order-details');
@@ -98,6 +97,11 @@ class cartCallback {
 
     }
     addToCart(product) {
+        const orderData = this.db.get('order') || [];
+        if (orderData.length > 0) {
+            showAlert('You have already placed an order', 'error');
+            return;
+        }
         const cartData = this.db.get('cart') || [];
         const existingProductIndex = cartData.findIndex(item => item.productId === product.productId);
 
@@ -148,6 +152,11 @@ class cartCallback {
     }
 
     async checkout(e) {
+        e.preventDefault();
+        if (!this.islogin) {
+            showAlert('Please login to place order', 'error');
+            return;
+        }
         const cartData = this.db.get('cart') || [];
         if (cartData.length === 0) {
             showAlert('Cart is empty', 'error');
@@ -167,10 +176,55 @@ class cartCallback {
             showAlert('Order placed successfully', 'success');
             this.db.remove('cart');
             this.db.set('order', res.data);
-            this.loadCart();
+            this.loadPayment();
         } catch (err) {
             console.log("Error: ", err);
             showAlert(err.message, 'error');
+        }
+    }
+
+    async payment(e) {
+        e.preventDefault();
+        const orderData = this.db.get('order') || [];
+        if (orderData.length === 0) {
+            showAlert('No order to pay', 'error');
+            return;
+        }
+        const paymentMethod = $('#payment-method').val();
+        if (!paymentMethod) {
+            showAlert('Please select a payment method', 'error');
+            return;
+        }
+
+        var payload = {
+            "orders": orderData.map(order => order.orderId),
+        };
+
+        if (paymentMethod === 'cod') {
+            var res = await this.api.post('Customer/Order/payment/cod', payload)
+                .then((res) => res.data)
+                .catch((err) => showAlert(err.message, 'error'));
+            console.log(res);
+            if (res) {
+                showAlert('Order placed successfully', 'success');
+                this.db.remove('order');
+                this.loadCart();
+                this.document.querySelector('#cart').classList.add('hidden');
+                this.window.href = '/customer/orders';
+            }
+        }
+        else if (paymentMethod === 'online') {
+            var res = await this.api.post('Customer/Order/payment/online', payload)
+                .then((res) => res.data)
+                .catch((err) => showAlert(err.message, 'error'));
+            console.log(res);
+            if (res) {
+                showAlert('Order placed successfully', 'success');
+                this.db.remove('order');
+                this.loadCart();
+                this.document.querySelector('#cart').classList.add('hidden');
+                this.window.href = '/customer/orders';
+            }
         }
     }
 }

@@ -7,6 +7,7 @@ const OrderTemplate = (item) => {
             </div>
             <div class="w-full md:w-1/3">
                 <h2 class="text-xl">${new Date(item.orderDate).toLocaleDateString()}</h2>
+
             </div>
             <div class="w-full md:w-1/3">
                 <h2 class="text-xl ${item.orderStatus.toLowerCase()} text-center m-2">${item.orderStatus}</h2>
@@ -25,7 +26,8 @@ const OrderTemplate = (item) => {
                     <span class="font-semibold">Payment Status:</span> <span>${item.paymentStatus}</span>
                 </div>
                 <div class="flex justify-between">
-                    <span class="font-semibold">Delivery Date:</span> <span>${new Date(item.deliveryDate).toLocaleDateString()}</span>
+                    <span class="font-semibold">Delivery Date:</span> 
+                    <span>  ${new Date(item.deliveryDate).getFullYear() < 2024 ? '--:--:--' : new Date(item.deliveryDate).toLocaleDateString()}</span>
                 </div>
             </div>
         </div>

@@ -2,7 +2,7 @@ import $ from 'jquery';
 import OrderPage from './order.html';
 import showAlert from '../../Services/alertService.js';
 import log from '../../utility/loglevel.js';
-import OrderTemplate from '../../components/order.js';
+import OrderTemplate from '../../components/orderTemplate.js';
 
 var orders = [];
 const OrderCallback = async (api) => {
