@@ -33,7 +33,11 @@ namespace API.Repositories
         {
             try
             {
-                var res = await _context.Orders.Include(o => o.OrderItems).Where(x => x.CustomerId == customerId).ToListAsync();
+                var res = await _context.Orders
+                .Include(o => o.OrderItems)
+                .ThenInclude(oi => oi.Product)
+                .ThenInclude(p => p.Restaurant)
+                .Where(x => x.CustomerId == customerId).ToListAsync();
                 return res.Count > 0 ? res : throw new EntityNotFoundException<Order>();
             }
             catch (EntityNotFoundException<Order>)

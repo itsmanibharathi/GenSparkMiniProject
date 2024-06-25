@@ -220,6 +220,7 @@ namespace API.Services
                     }
                     order.UpdateAt = DateTime.Now;
                     order.PaymentMethod = orderPaymentDto.PaymentMethod;
+                    order.PaymentStatus = PaymentStatus.Paid;
                     order.OrderStatus = OrderStatus.Place;
                     orders.Add(order);
                 }

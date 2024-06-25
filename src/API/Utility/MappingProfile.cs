@@ -29,17 +29,21 @@ namespace API.Utility
             // Customer Order Create
             CreateMap<CustomerOrderDto, Order>();
             CreateMap<Order, ReturnCustomerOrderDto>();
-            CreateMap<OrderItem, ReturnCustomerOrderItemDto>();
+            // CreateMap<OrderItem, ReturnCustomerOrderItemDto>();
+            // customer mapping for order item
+            CreateMap<OrderItem, ReturnCustomerOrderItemDto>()
+                .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product.ProductName))
+                .ForMember(dest => dest.ProductPrice, opt => opt.MapFrom(src => src.Product.ProductPrice));
 
             // Customer Order Payment
             CreateMap<OnlinePayment, ReturnOrderOnlinePaymentDto>();
-            CreateMap<CashPayment,ReturnOrderCashPaymentDto>();
+            CreateMap<CashPayment, ReturnOrderCashPaymentDto>();
 
             // Restaurant Register
             CreateMap<RestaurantRegisterDto, Restaurant>();
             CreateMap<Restaurant, ReturnRestaurantRegisterDto>();
 
-            
+
             // Restaurant Login
             CreateMap<RestaurantLoginDto, Restaurant>();
             CreateMap<Restaurant, ReturnRestaurantLoginDto>();

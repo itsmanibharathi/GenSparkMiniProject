@@ -10,8 +10,8 @@ namespace API.Models
         public int RestaurantId { get; set; }
         public int? EmployeeId { get; set; }
         public DateTime OrderDate { get; set; } = DateTime.Now;
-        public DateTime UpdateAt { get; set; }
-        public DateTime DeliveryDate { get; set; }
+        public DateTime? UpdateAt { get; set; } = null;
+        public DateTime? DeliveryDate { get; set; } = null;
         public OrderStatus OrderStatus { get; set; }
         public PaymentMethod? PaymentMethod { get; set; }
         public PaymentStatus PaymentStatus { get; set; }
@@ -20,16 +20,16 @@ namespace API.Models
         public decimal TaxRat { get; set; }
         public decimal DiscountRat { get; set; }
         public decimal _totalOrderPrice;
-        public decimal TotalOrderPrice 
+        public decimal TotalOrderPrice
         {
             get
             {
                 return _totalOrderPrice;
             }
-            set 
+            set
             {
                 _totalOrderPrice = value;
-                TotalAmount = _totalOrderPrice + calPercentage(TaxRat) + ShippingPrice - calPercentage(DiscountRat) ;
+                TotalAmount = _totalOrderPrice + calPercentage(TaxRat) + ShippingPrice - calPercentage(DiscountRat);
             }
         }
         public int? OnlinePaymentId { get; set; }
@@ -40,7 +40,7 @@ namespace API.Models
         public CustomerAddress CustomerAddress { get; set; }
         public Employee? Employee { get; set; }
         public Restaurant Restaurant { get; set; }
-        public ICollection<OrderItem>? OrderItems { get; set; }        
+        public ICollection<OrderItem>? OrderItems { get; set; }
         decimal calPercentage(decimal percentage)
         {
             if (percentage == 0)
