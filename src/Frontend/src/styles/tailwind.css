@@ -45,9 +45,7 @@
     @apply text-button;
 }
 
-.create, .place, .preparing, .prepared, .pickedUp, .delivered, .cancelled{
-    @apply px-2 py-1 rounded;
-}
+
 
 .create{
     @apply bg-gray-400 text-white;
