@@ -4,20 +4,22 @@ import loadHome from './modules/home/index.js';
 
 const routes = {
     '/': loadHome,
-    '/customer': loadCustomer
+    '/customer': loadCustomer,
+    '/customer/orders': loadCustomer,
+    '/customer/login': loadCustomer
 };
-const loadRoutes = () => {
-    var path = window.location.pathname.toLocaleLowerCase();
-    const base = process.env.BASE_PATH.toLocaleLowerCase();
-    if (path.indexOf(base) === 0) {
-        path = path.replace(base, '');
-        path = path === '' ? '/' : path;
-    }
 
-    if (routes[path]) {
-        routes[path]();
+const loadRoutes = () => {
+    let path = window.location.pathname.toLocaleLowerCase();
+    const base = process.env.BASE_PATH.toLocaleLowerCase() || '';
+
+    if (base && path.startsWith(base)) {
+        path = path.replace(base, '');
     }
-    else {
+    path = path === '/' ? '/' : path.replace(/\/$/, '');
+    if (routes[path]) {
+        routes[path](path);
+    } else {
         console.log('404');
     }
 };

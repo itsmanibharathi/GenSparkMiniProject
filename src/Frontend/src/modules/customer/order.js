@@ -1,12 +1,24 @@
 import $ from 'jquery';
+import OrderPage from './order.html';
+import showAlert from '../../Services/alertService.js';
+import log from '../../utility/loglevel.js';
+import OrderTemplate from '../../components/order.js';
 
-
-const OrderPage = () => {
-    console.log('Loading Orders');
+var orders = [];
+const OrderCallback = async (api) => {
+    orders = await GetOrders(api);
+    log.debug('Orders :', orders);
+    $('#order-container').append(orders.map(order => OrderTemplate(order)).join('')
+    );
 }
 
-const OrderCallback = () => {
-    console.log('Loading Orders Callback');
+const GetOrders = async (api) => {
+    return await api.get('Customer/Order').then(res => {
+        return res.data;
+    }).catch(err => {
+        log.error(err);
+        showAlert('Failed to load orders', 'error');
+    });
 }
 
 module.exports = {
