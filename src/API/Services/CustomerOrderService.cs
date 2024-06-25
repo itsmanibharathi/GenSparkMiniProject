@@ -90,6 +90,7 @@ namespace API.Services
                     {
                         CustomerId = createCustomerOrderDto.CustomerId,
                         RestaurantId = x.restaurantId,
+
                         DiscountRat = 0,
                         OrderStatus = OrderStatus.Create,
                         TaxRat = 0.05m,

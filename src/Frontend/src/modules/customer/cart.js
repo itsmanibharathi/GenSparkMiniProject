@@ -8,13 +8,21 @@ class cartCallback {
         this.api = api;
         this.db = db;
         this.cartData = this.db.get('cart') || [];
+        this.orderData = this.db.get('order') || [];
         this.document = document;
         this.address = [];
     }
 
     async init() {
-        this.loadCart();
-        await this.loadAddress();
+        if (this.orderData.length > 0) {
+            this.document.querySelector('#cart-container').classList.add('hidden');
+            this.loadPayment();
+        }
+        else {
+            this.document.querySelector('#payment-container').classList.add('hidden');
+            this.loadCart();
+            await this.loadAddress();
+        }
 
         this.document.updateQuantity = this.updateQuantity.bind(this);
         this.document.deleteItem = this.deleteItem.bind(this);
@@ -27,7 +35,6 @@ class cartCallback {
 
         const addressContainer = $('#customer-address');
         addressContainer.empty();
-        // create dropdown select box
         this.address.forEach((address) => {
             const addressRow = $(`
                 <option value="${address.addressId}">${address.type}</option>
@@ -59,7 +66,37 @@ class cartCallback {
         });
         this.updateTotal();
     }
+    loadPayment() {
+        console.log('Loading Payment');
+        const orderData = this.db.get('order') || [];
+        const orderItemsContainer = $('#order-details');
+        orderItemsContainer.empty();
+        orderData.forEach((order) => {
+            const orderRow = $(`
+                <div class="flex flex-col border-b py-2">
+                    <div class="flex flex-row justify-between items-center">
+                        <div class="flex flex-col">
+                            <h2 class="mt-2 font-bold">Order Id: #${order.orderId}</h2>
+                            <span class="text-gray-500 -mt-1">${order.restaurantName}</span>
+                        </div>
+                        <span class="text-gray-500">${order.totalAmount}</span>
+                    </div>
+                    <div class="flex flex-col">
+                        ${order.orderItems.map(item => `
+                            <div class="flex flex-row justify-between items-center">
+                                <h2 class="mt-2 mb-2 font-bold">${item.productName}</h2>
+                                <span class="text-gray-500">${item.quantity} x ${item.productPrice}</span>
+                                <span class="text-gray-500">${item.totalPrice}</span>
+                            </div>                            
+                        `).join('')}
+                    </div>
+                </div>
+            `);
+            orderItemsContainer.append(orderRow);
+        });
 
+
+    }
     addToCart(product) {
         const cartData = this.db.get('cart') || [];
         const existingProductIndex = cartData.findIndex(item => item.productId === product.productId);
@@ -73,6 +110,7 @@ class cartCallback {
 
         this.db.set('cart', cartData);
         this.loadCart();
+        this.document.querySelector('#cart').classList.remove('hidden');
     }
 
     updateQuantity(index, change) {

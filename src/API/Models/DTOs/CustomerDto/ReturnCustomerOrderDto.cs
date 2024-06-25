@@ -7,6 +7,7 @@ namespace API.Models.DTOs.CustomerDto
         public int CustomerId { get; set; }
         public int OrderId { get; set; }
         public int RestaurantId { get; set; }
+        public string RestaurantName { get; set; }
         public decimal TotalOrderPrice { get; set; }
         public decimal ShippingPrice { get; set; }
         public decimal TotalAmount { get; set; }

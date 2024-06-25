@@ -40,7 +40,7 @@ namespace API.Models
         public CustomerAddress CustomerAddress { get; set; }
         public Employee? Employee { get; set; }
         public Restaurant Restaurant { get; set; }
-        public ICollection<OrderItem> OrderItems { get; set; }        
+        public ICollection<OrderItem>? OrderItems { get; set; }        
         decimal calPercentage(decimal percentage)
         {
             if (percentage == 0)

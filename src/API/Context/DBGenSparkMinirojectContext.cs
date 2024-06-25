@@ -220,6 +220,17 @@ namespace API.Context
             #region OrderItem
             modelBuilder.Entity<OrderItem>()
                 .HasKey(oi => oi.OrderItemId);
+            #region Relations
+            modelBuilder.Entity<OrderItem>()
+                .HasOne(oi => oi.Order)
+                .WithMany(o => o.OrderItems)
+                .HasForeignKey(oi => oi.OrderId);
+            modelBuilder.Entity<OrderItem>()
+                .HasOne(oi => oi.Product)
+                .WithMany(p => p.OrderItems)
+                .HasForeignKey(oi => oi.ProductId);
+
+            #endregion
 
             #region Properties
             modelBuilder.Entity<OrderItem>()

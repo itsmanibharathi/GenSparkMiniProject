@@ -12,10 +12,22 @@ namespace API.Repositories
         public ProductRepository(DBGenSparkMinirojectContext context) : base(context)
         {
         }
+
+        public override async Task<IEnumerable<Product>> GetAsync()
+        {
+            return await _context.Products.Include(p => p.Restaurant).ToListAsync();
+        }
+
         public override Task<bool> IsDuplicate(Product entity)
         {
             return _context.Products.AnyAsync(x =>x.RestaurantId == entity.RestaurantId && x.ProductCategories == entity.ProductCategories &&  x.ProductName == entity.ProductName);
         }
+
+        public override async Task<Product> GetAsync(int id)
+        {
+            return await _context.Products.Include(p => p.Restaurant).FirstOrDefaultAsync(x => x.ProductId == id)?? throw new EntityNotFoundException<Product>();
+        }
+
         public async Task<IEnumerable<Product>> GetSearchAsync(CustomerProductSearchDto productSearchDto)
         {
             try
@@ -34,7 +46,7 @@ namespace API.Repositories
                     query = query.Where(p => p.Restaurant.Name.Contains(productSearchDto.RestaurantName));
                 if (!string.IsNullOrEmpty(productSearchDto.RestaurantBranch))
                     query = query.Where(p => p.Restaurant.Branch.Contains(productSearchDto.RestaurantBranch));
-                return await query.ToListAsync();
+                return await query.Include(p =>p.Restaurant).ToListAsync();
             }
             catch (Exception ex)
             {

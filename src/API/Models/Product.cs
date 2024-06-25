@@ -14,6 +14,7 @@ namespace API.Models
         public DateTime CreateAt { get; set; } = DateTime.Now;
         public DateTime UpdateAt { get; set; }
         public ICollection<ProductImage>? ProductImages { get; set; }
-        public Restaurant Restaurant { get; set; }
+        public Restaurant? Restaurant { get; set; }
+        public IEnumerable<OrderItem>? OrderItems { get; set; }
     }
 }
