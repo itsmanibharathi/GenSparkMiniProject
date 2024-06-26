@@ -1,4 +1,33 @@
-const OrderTemplate = (item) => {
+const OrderTemplate = (item, module) => {
+    const setBtn = (id, status, module) => {
+        if (module === 'customer') {
+            if (status == 'Delivered') {
+                return `<button class="mt-2 bg-gray-700 text-white px-4 py-2 rounded" onClick="buyAgain(${id})" >Buy Again</button>`;
+            }
+        }
+
+        else if (module === 'restaurant') {
+            if (status == 'Place') {
+                return `<button class="mt-2 bg-green-700 text-white px-4 py-2 rounded" onClick="updateOrder(${id},'Preparing')" >Start Preparing</button>`;
+            }
+            else if (status === 'Preparing') {
+                return `<button class="mt-2 bg-green-700 text-white px-4 py-2 rounded" onClick="updateOrder(${id},'Prepared')" >Prepared Order</button>`;
+            }
+        }
+        else if (module === 'employee') {
+            if (status == 'Place' || status === 'Preparing' || status === 'Prepared') {
+                return `<button class="mt-2 bg-green-700 text-white px-4 py-2 rounded" onClick="updateOrder(${id},'Accepted')" >Accept Order</button>`;
+            }
+            else if (status == 'Accepted') {
+                return `<button class="mt-2 bg-green-700 text-white px-4 py-2 rounded" onClick="updateOrder(${id},'PickedUp')" >PickedUp Order</button>`;
+            }
+            else if (status == 'PickedUp') {
+                return `<button class="mt-2 bg-green-700 text-white px-4 py-2 rounded" onClick="updateOrder(${id},'Delivered')" >Delivered Order</button>`;
+            }
+        }
+        return '';
+    }
+
     const orderItemsHtml = item.orderItems.map(orderItem => `
         <div class="flex flex-col md:flex-row">
             <img src="https://www.foodiesfeed.com/wp-content/uploads/2023/06/burger-with-melted-cheese-768x768.jpg" alt="Product Image"
@@ -15,10 +44,11 @@ const OrderTemplate = (item) => {
     `).join('');
 
     return `
-        <div class="relative max-w-4xl mx-auto bg-white rounded-lg shadow-md p-4 mb-4 hover:shadow-lg">
-            <div class="absolute top-1 right-1 ${item.orderStatus.toLowerCase()} rounded-lg px-2">
-                ${item.orderStatus}
+        <div id="order-${item.orderId}" class="relative max-w-4xl mx-auto bg-white rounded-lg shadow-md p-4 mb-4 hover:shadow-lg">
+            <div class="absolute top-1 right-1">
+            <span class="${item.orderStatus.toLowerCase()} rounded-lg px-2">${item.orderStatus}</span>
             </div>
+
             <div class="flex flex-wrap justify-between items-center">
                 <div class="w-full sm:w-auto mb-2 sm:mb-0">
                     <p class="text-gray-600">ORDER PLACED</p>
@@ -26,7 +56,7 @@ const OrderTemplate = (item) => {
                 </div>
                 <div class="w-full sm:w-auto mb-2 sm:mb-0">
                     <p class="text-gray-600">TOTAL</p>
-                    <p class="font-bold rupee">${item.totalAmount.toFixed(2)}</p>
+                    <p class="font-bold rupee">${item.totalOrderPrice.toFixed(2)}</p>
                 </div>
                 <div class="w-full sm:w-auto mb-2 sm:mb-0">
                     <p class="text-gray-600">SHIP TO</p>
@@ -46,7 +76,7 @@ const OrderTemplate = (item) => {
                         ${orderItemsHtml}
                     </div>
                     <div class="mt-4 md:mt-0 md:ml-auto text-right">
-                        <button class="mt-2 bg-gray-700 text-white px-4 py-2 rounded">Buy Again</button>
+                        ${setBtn(item.orderId, item.orderStatus, module)}
                     </div>
                 </div>
             </div>

@@ -30,7 +30,7 @@ class apiService {
             }
         };
 
-        if (data) {
+        if (data != null) {
             options.body = JSON.stringify(data);
         }
         console.debug(`${this.url}/${endpoint}`);
