@@ -206,7 +206,7 @@ namespace API.Controllers.EmployeeControllers
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(StatusCodes.Status500InternalServerError, ex.Message));
-            }   
+            }
 
         }
 
@@ -229,7 +229,7 @@ namespace API.Controllers.EmployeeControllers
             try
             {
                 var EmployeeId = int.Parse(User.FindFirst("Id").Value);
-                var result= await _employeeOrderService.DeliverOrder(EmployeeId, orderId);
+                var result = await _employeeOrderService.DeliverOrder(EmployeeId, orderId);
                 var response = new ApiResponse<ReturnEmployeeOrderDto>(StatusCodes.Status200OK, result);
                 return StatusCode(StatusCodes.Status200OK, response);
             }

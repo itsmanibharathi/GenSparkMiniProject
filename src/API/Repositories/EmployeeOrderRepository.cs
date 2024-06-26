@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Repositories
 {
-    public class EmployeeOrderRepository :OrderRepository,  IEmployeeOrderRepository
+    public class EmployeeOrderRepository : OrderRepository, IEmployeeOrderRepository
     {
         readonly OrderStatus[] statuses = { OrderStatus.Preparing, OrderStatus.Prepared, OrderStatus.PickedUp, OrderStatus.Delivered, OrderStatus.Cancelled };
         public EmployeeOrderRepository(DBGenSparkMinirojectContext context) : base(context)
@@ -19,6 +19,8 @@ namespace API.Repositories
             try
             {
                 return await _context.Orders
+                    .Include(x => x.OrderItems)
+                    .ThenInclude(x => x.Product)
                     .Include(x => x.Employee)
                     .Include(x => x.CashPayment)
                     .FirstOrDefaultAsync(x => x.OrderId == orderId && statuses.Contains(x.OrderStatus)) ?? throw new EntityNotFoundException<Order>(orderId);
@@ -37,7 +39,12 @@ namespace API.Repositories
         {
             try
             {
-                var res = await _context.Orders.Where(x => x.EmployeeId == employeeId && statuses.Contains(x.OrderStatus)).ToListAsync();
+                var res = await _context.Orders
+                .Include(x => x.OrderItems)
+                .ThenInclude(x => x.Product)
+                .Include(x => x.Employee)
+                .Include(x => x.CashPayment)
+                .Where(x => x.EmployeeId == employeeId && statuses.Contains(x.OrderStatus)).ToListAsync();
                 return res.Count > 0 ? res : throw new EntityNotFoundException<Order>(employeeId);
             }
             catch (EntityNotFoundException<Order>)
@@ -66,7 +73,7 @@ namespace API.Repositories
                 throw new UnableToDoActionException("Unable to get the Orders by Employee Id", ex);
             }
         }
-            
+
         public async Task<IEnumerable<Order>> SearchOrderAsync(List<AddressCode> employeeRange)
         {
             try

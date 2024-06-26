@@ -3,8 +3,9 @@ import Page404 from '../components/404.html';
 import loadMain from '../modules/main/index.js';
 import loadCustomer from '../modules/customer/index.js';
 import loadRestaurant from '../modules/restaurant/index.js';
-import loadComponent from '../Services/loadComponent.js';
+import loadEmployee from '../modules/employee/index.js';
 
+import loadComponent from '../Services/loadComponent.js';
 
 const routes = {
     '/': loadMain,
@@ -19,6 +20,11 @@ const routes = {
     '/restaurant/product': loadRestaurant,
     '/restaurant/auth': loadRestaurant,
     '/restaurant/logout': loadRestaurant,
+    '/employee': loadEmployee,
+    '/employee/orders': loadEmployee,
+    '/employee/orders/all': loadEmployee,
+    '/employee/auth': loadEmployee,
+    '/employee/logout': loadEmployee,
 };
 
 const loadRoutes = () => {

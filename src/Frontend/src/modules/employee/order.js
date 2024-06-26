@@ -27,11 +27,11 @@ const loadOrder = async (orders) => {
     }
     const orderContainer = $('#order-container');
     orderContainer.empty();
-    orderContainer.append(orders.map(order => OrderTemplate(order, 'restaurant')).join(''));
+    orderContainer.append(orders.map(order => OrderTemplate(order, 'employee')).join(''));
 }
 
 const GetOrders = async (api, path) => {
-    return await api.get(`restaurant/Order/${path}`).then(res => {
+    return await api.get(`employee/order/${path}`).then(res => {
         return res.data;
     }).catch(err => {
         log.error(err);
@@ -42,7 +42,7 @@ const GetOrders = async (api, path) => {
 }
 
 const updateOrderStatus = async (id, status, api) => {
-    return await api.put(`restaurant/Order/${status}/${id}`).then(res => res.data)
+    return await api.put(`employee/Order/${status}/${id}`).then(res => res.data)
         .then(data => {
             if (data) {
                 $(`#order-${id}`).replaceWith(OrderTemplate(data, 'restaurant'));

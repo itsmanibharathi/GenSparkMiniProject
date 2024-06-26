@@ -47,7 +47,8 @@ namespace API.Controllers.EmployeeControllers
             {
                 _logger.LogInformation("Registering employee");
                 var result = await _employeeService.Register(employeeRegisterDto);
-                return StatusCode(StatusCodes.Status201Created, result);
+                var response = new ApiResponse<ReturnEmployeeRegisterDto>(StatusCodes.Status201Created, result);
+                return StatusCode(StatusCodes.Status201Created, response);
             }
             catch (EntityAlreadyExistsException<Employee> ex)
             {
@@ -78,7 +79,8 @@ namespace API.Controllers.EmployeeControllers
             {
                 _logger.LogInformation("Logging in employee");
                 var result = await _employeeService.Login(employeeLoginDto);
-                return StatusCode(StatusCodes.Status200OK, result);
+                var response = new ApiResponse<ReturnEmployeeLoginDto>(StatusCodes.Status200OK, result);
+                return StatusCode(StatusCodes.Status200OK, response);
             }
             catch (InvalidUserCredentialException ex)
             {

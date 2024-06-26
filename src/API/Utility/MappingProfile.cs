@@ -75,6 +75,11 @@ namespace API.Utility
 
             // Employee Order
             CreateMap<Order, ReturnEmployeeOrderDto>();
+
+            CreateMap<OrderItem, ReturnEmployeeOrderItemDto>()
+                .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product.ProductName))
+                .ForMember(dest => dest.ProductPrice, opt => opt.MapFrom(src => src.Product.ProductPrice))
+                .ForMember(dest => dest.ProductDescription, opt => opt.MapFrom(src => src.Product.ProductDescription));
         }
     }
 }

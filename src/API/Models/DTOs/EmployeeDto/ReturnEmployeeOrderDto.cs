@@ -8,9 +8,11 @@ namespace API.Models.DTOs.EmployeeDto
         public int RestaurantId { get; set; }
         public decimal ShippingPrice { get; set; }
         public decimal TotalAmount { get; set; }
+        public decimal TotalOrderPrice { get; set; }
+
         public OrderStatus OrderStatus { get; set; }
         public DateTime OrderDate { get; set; }
-        ICollection<OrderItem> OrderItems { get; set; }
+        public IEnumerable<ReturnEmployeeOrderItemDto>? OrderItems { get; set; }
         public DateTime DeliveryDate { get; set; }
     }
 }

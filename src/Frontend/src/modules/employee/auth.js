@@ -3,6 +3,8 @@ import AuthPage from './auth.html';
 import { signInPage, signUpPage } from '../../Services/authLayoutService.js';
 import showAlert from '../../Services/alertService.js';
 import log from '../../utility/loglevel.js';
+import { basePath } from '../../Services/routerService.js';
+
 const loadAuthCallback = (api, token) => {
     $('#signUpPage').on('click', signUpPage);
     $('#signInPage').on('click', signInPage);
@@ -14,11 +16,11 @@ const loadAuthCallback = (api, token) => {
             data[item.name] = item.value;
         });
         log.debug(data);
-        api.post('restaurant/login', data)
+        api.post('employee/login', data)
             .then((res) => {
                 token.set(res.data.token);
                 showAlert('Sign In Successful', 'success');
-                window.location.href = basePath+'/restaurant';
+                window.location.href = basePath + '/employee';
             })
             .catch((err) => {
                 console.log(err);
@@ -34,7 +36,7 @@ const loadAuthCallback = (api, token) => {
             data[item.name] = item.value;
         });
         console.log(data);
-        api.post('Restaurant/register', data)
+        api.post('employee/register', data)
             .then((res) => {
                 showAlert('Sign Up Successful', 'success');
                 signInPage();
