@@ -5,6 +5,8 @@ import headerTemplate from '../../components/headerTemplate.js';
 import Footer from '../../components/footer.html';
 
 import { AuthPage, loadAuthCallback } from './auth.js';
+import { HomePage, loadHomeCallback } from './home.js';
+import { ProductPage, loadProductCallback } from './product.js';
 
 import apiService from '../../Services/apiService.js';
 import jwtService from '../../Services/jwtService.js';
@@ -18,7 +20,8 @@ const api = new apiService(process.env.API_URL, token.get());
 const localRoutes = {
     name: 'restaurant',
     routes: [
-        { path: '/restaurant', name: 'Home', component: AuthPage, callback: loadAuthCallback },
+        { path: '/restaurant', name: 'Home', component: HomePage, callback: loadHomeCallback },
+        { path: '/restaurant/product', name: 'Product', component: ProductPage, callback: loadProductCallback },
         { path: '/restaurant/orders', name: 'Orders', component: AuthPage, callback: loadAuthCallback },
         { path: '/restaurant/auth', name: 'Auth', component: AuthPage, callback: loadAuthCallback },
     ]
@@ -28,6 +31,14 @@ const loadRestaurant = (path) => {
     log.debug('Loading Restaurant');
     $('#header-placeholder').html(headerTemplate(localRoutes, token.exists(), false));
     loadComponent('#footer-placeholder', Footer);
+
+    if (path == '/restaurant/logout') {
+        console.log('Logging out');
+        token.remove();
+        localStorage.clear();
+        window.location.href = '/restaurant/auth';
+        return;
+    }
 
     const route = localRoutes.routes.find(route => route.path === path);
 

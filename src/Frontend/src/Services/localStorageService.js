@@ -6,7 +6,7 @@ class localStorageService {
     }
 
     get = (key) => {
-        log.debug('Local storage retrieved');
+        log.debug(`Local storage get: ${key}`);
         return JSON.parse(localStorage.getItem(`${this.moduleName}_${key}`));
     }
 
@@ -17,7 +17,16 @@ class localStorageService {
 
     remove = (key) => {
         localStorage.removeItem(`${this.moduleName}_${key}`);
-        log.debug('Local storage removed');
+        log.debug(`Local storage remove: ${key}`);
+    }
+
+    clear = () => {
+        Object.keys(localStorage).forEach(key => {
+            if (key.startsWith(this.moduleName)) {
+                localStorage.removeItem(key);
+            }
+        });
+        log.debug('Local storage cleared');
     }
 
     exists = (key) => {
