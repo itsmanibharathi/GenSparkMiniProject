@@ -2,8 +2,8 @@ import $ from 'jquery';
 import AuthPage from './auth.html';
 import { signInPage, signUpPage } from '../../Services/authLayoutService.js';
 import showAlert from '../../Services/alertService.js';
+import log from '../../utility/loglevel.js';
 const loadAuthCallback = (api, token) => {
-    console.log('Loading Auth Callback');
     $('#signUpPage').on('click', signUpPage);
     $('#signInPage').on('click', signInPage);
     $('#signIn').on('submit', function (e) {
@@ -13,12 +13,12 @@ const loadAuthCallback = (api, token) => {
         formData.forEach((item) => {
             data[item.name] = item.value;
         });
-        console.log(data);
-        api.post('customer/login', data)
+        log.debug(data);
+        api.post('restaurant/login', data)
             .then((res) => {
                 token.set(res.data.token);
                 showAlert('Sign In Successful', 'success');
-                window.location.href = '/customer';
+                window.location.href = '/restaurant';
             })
             .catch((err) => {
                 console.log(err);
@@ -34,7 +34,7 @@ const loadAuthCallback = (api, token) => {
             data[item.name] = item.value;
         });
         console.log(data);
-        api.post('customer/register', data)
+        api.post('Restaurant/register', data)
             .then((res) => {
                 showAlert('Sign Up Successful', 'success');
                 signInPage();

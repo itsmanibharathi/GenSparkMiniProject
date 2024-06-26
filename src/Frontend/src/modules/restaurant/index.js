@@ -35,11 +35,10 @@ const loadRestaurant = (path) => {
         if (!token.exists() && path !== '/restaurant/auth') {
             window.location.href = '/restaurant/auth';
         }
-        loadComponent('#body-placeholder', route.component, () => {
-            if (route.callback) {
-                route.callback(api, token);
-            }
-        });
+        else if (token.exists() && path === '/restaurant/auth') {
+            window.location.href = '/restaurant';
+        }
+        loadComponent('#body-placeholder', route.component, route.callback, api, token);
     } else {
         showAlert('Page not found', 'error');
     }

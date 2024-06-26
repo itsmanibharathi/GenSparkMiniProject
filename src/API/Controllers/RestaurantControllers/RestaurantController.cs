@@ -51,7 +51,8 @@ namespace API.Controllers.RestaurantControllers
             {
                 _logger.LogInformation("Registering restaurant");
                 var restaurant = await _restaurantAuthService.Register(restaurantRegisterDto);
-                return StatusCode(StatusCodes.Status201Created, restaurant);
+                var response = new ApiResponse<ReturnRestaurantRegisterDto>(StatusCodes.Status201Created, restaurant);
+                return StatusCode(StatusCodes.Status201Created, response);
             }
             catch (EntityAlreadyExistsException<Restaurant> ex)
             {
@@ -83,7 +84,10 @@ namespace API.Controllers.RestaurantControllers
             {
                 _logger.LogInformation("Logging in restaurant");
                 var restaurant = await _restaurantAuthService.Login(restaurantLoginDto);
-                return StatusCode(StatusCodes.Status200OK, restaurant);
+                var response = new ApiResponse<ReturnRestaurantLoginDto>(StatusCodes.Status200OK, restaurant);
+                return StatusCode(StatusCodes.Status200OK, response);
+
+
             }
             catch (InvalidUserCredentialException ex)
             {
