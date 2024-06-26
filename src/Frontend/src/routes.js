@@ -1,14 +1,15 @@
 import $ from 'jquery';
 import loadCustomer from './modules/customer/index.js';
-import loadHome from './modules/home/index.js';
+import loadMain from './modules/main/index.js';
 import loadComponent from './Services/loadComponent.js';
 import Page404 from './components/404.html';
 const routes = {
-    '/': loadHome,
+    '/': loadMain,
     '/customer': loadCustomer,
     '/customer/orders': loadCustomer,
-    '/customer/login': loadCustomer,
+    '/customer/auth': loadCustomer,
     '/customer/logout': loadCustomer,
+    '/customer/address': loadCustomer,
 };
 
 const loadRoutes = () => {
@@ -22,7 +23,7 @@ const loadRoutes = () => {
     if (routes[path]) {
         routes[path](path);
     } else {
-        loadComponent("#root",Page404);
+        loadComponent("#root", Page404);
     }
 };
 

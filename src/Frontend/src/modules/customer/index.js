@@ -9,7 +9,7 @@ import { Cart, cartCallback } from './cart.js';
 import { HomePage, HomeCallback } from './home.js';
 import { OrderPage, OrderCallback } from './order.js';
 import { AuthPage, loadAuthCallback } from './auth.js';
-
+import { AddressPage, AddressCallback } from './address.js';
 
 import apiService from '../../Services/apiService.js';
 import jwtService from '../../Services/jwtService.js';
@@ -25,6 +25,7 @@ const localRoutes = {
     routes: [
         { path: '/customer/', name: 'Home' },
         { path: '/customer/orders', name: 'Orders' },
+        { path: '/customer/address', name: 'Address' },
     ]
 };
 
@@ -53,7 +54,14 @@ const loadCustomer = (path) => {
             }
             loadComponent('#body-placeholder', OrderPage, OrderCallback, api);
             break;
-        case '/customer/login':
+        case '/customer/address':
+            if (!token.exists()) {
+                window.location.href = '/customer/login';
+                showAlert('Please login to view address', 'error');
+            }
+            loadComponent('#body-placeholder', AddressPage, AddressCallback, api);
+            break;
+        case '/customer/auth':
             if (token.exists()) {
                 window.location.href = '/customer';
             }

@@ -4,11 +4,10 @@ import HomeBody from './index.html'
 import Footer from '../../components/footer.html';
 import loadComponent from '../../Services/loadComponent.js';
 
-const loadHome = () => {
-    console.log('Loading Home');
+const loadMain = () => {
     loadComponent('#header-placeholder', HomeHeader);
     loadComponent('#body-placeholder', HomeBody);
     loadComponent('#footer-placeholder', Footer);
 }
 
-export default loadHome;
+export default loadMain;
