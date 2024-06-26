@@ -6,12 +6,25 @@ import OrderTemplate from '../../components/orderTemplate.js';
 
 var orders = [];
 const loadOrderCallback = async (api) => {
-    orders = await GetOrders(api, 'all');
+    orders = await GetOrders(api, '');
     loadOrder(orders);
     document.updateOrder = async (id, status) => updateOrderStatus(id, status, api);
 }
 
+const loadAllOrderCallback = async (api) => {
+    orders = await GetOrders(api, 'all');
+    loadOrder(orders);
+    document.updateOrder = async (id, status) => showAlert('You can only view all orders', 'warning');
+}
+
 const loadOrder = async (orders) => {
+    if (orders == undefined || orders.length == 0) {
+        showAlert('Today you didn\'t receive any order', 'warning');
+        const orderContainer = $('#order-container');
+        orderContainer.empty();
+        orderContainer.append('<h1>Today you didn\'t receive any order</h1>');
+        return;
+    }
     const orderContainer = $('#order-container');
     orderContainer.empty();
     orderContainer.append(orders.map(order => OrderTemplate(order, 'restaurant')).join(''));
@@ -22,7 +35,9 @@ const GetOrders = async (api, path) => {
         return res.data;
     }).catch(err => {
         log.error(err);
-        showAlert('Failed to load orders', 'error');
+        if (err.status === 500) {
+            showAlert('Internal server error', 'error');
+        }
     });
 }
 
@@ -41,5 +56,6 @@ const updateOrderStatus = async (id, status, api) => {
 
 module.exports = {
     OrderPage,
-    loadOrderCallback
+    loadOrderCallback,
+    loadAllOrderCallback
 }

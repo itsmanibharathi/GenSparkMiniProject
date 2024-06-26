@@ -14,6 +14,7 @@ const routes = {
     '/customer/address': loadCustomer,
     '/restaurant': loadRestaurant,
     '/restaurant/orders': loadRestaurant,
+    '/restaurant/orders/all': loadRestaurant,
     '/restaurant/product': loadRestaurant,
     '/restaurant/auth': loadRestaurant,
     '/restaurant/logout': loadRestaurant,

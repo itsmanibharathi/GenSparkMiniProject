@@ -13,7 +13,7 @@ const headerTemplate = (localRoutes, islogin, addCart) => {
                     <ul class="m-auto flex md:flex-row flex-col md:items-center md:gap-[4vw] gap-8">
                     <li><a href="/" class="nav" >Main</a></li>
                     ${islogin ? `
-                          ${localRoutes.routes.map((item) => `<li><a href="${item.path}" class="text-white hover:text-button-hover">${item.name}</a></li>`).join('')}
+                          ${localRoutes.routes.map((item) => item.hide? '' : `<li><a href="${item.path}" class="text-white hover:text-button-hover">${item.name}</a></li>`).join('')}
                             </ul>
                             </div>
                             <div class="flex items-center gap-6 my-2">

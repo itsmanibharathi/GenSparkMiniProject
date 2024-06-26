@@ -7,7 +7,7 @@ import Footer from '../../components/footer.html';
 import { AuthPage, loadAuthCallback } from './auth.js';
 import { HomePage, loadHomeCallback } from './home.js';
 import { ProductPage, loadProductCallback } from './product.js';
-import { OrderPage, loadOrderCallback } from './order.js';
+import { OrderPage, loadOrderCallback, loadAllOrderCallback } from './order.js';
 
 import apiService from '../../Services/apiService.js';
 import jwtService from '../../Services/jwtService.js';
@@ -24,7 +24,8 @@ const localRoutes = {
         { path: '/restaurant', name: 'Home', component: HomePage, callback: loadHomeCallback },
         { path: '/restaurant/product', name: 'Product', component: ProductPage, callback: loadProductCallback },
         { path: '/restaurant/orders', name: 'Orders', component: OrderPage, callback: loadOrderCallback },
-        { path: '/restaurant/auth', name: 'Auth', component: AuthPage, callback: loadAuthCallback },
+        { path: '/restaurant/orders/all', name: 'AllOrders', component: OrderPage, callback: loadAllOrderCallback },
+        { path: '/restaurant/auth', name: 'Auth', hide:true, component: AuthPage, callback: loadAuthCallback },
     ]
 };
 

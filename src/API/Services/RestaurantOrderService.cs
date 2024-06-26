@@ -87,7 +87,7 @@ namespace API.Services
             }
             catch (EntityNotFoundException<Order>)
             {
-                throw new Exception($"No orders found Today for restaurant {restaurantId}");
+                throw new EntityNotFoundException<Order>($"| No orders found today for restaurant {restaurantId}");
             }
             catch (Exception e)
             {
