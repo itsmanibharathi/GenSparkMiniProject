@@ -29,11 +29,11 @@ namespace API.Utility
             // Customer Order Create
             CreateMap<CustomerOrderDto, Order>();
             CreateMap<Order, ReturnCustomerOrderDto>();
-            // CreateMap<OrderItem, ReturnCustomerOrderItemDto>();
             // customer mapping for order item
             CreateMap<OrderItem, ReturnCustomerOrderItemDto>()
                 .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product.ProductName))
-                .ForMember(dest => dest.ProductPrice, opt => opt.MapFrom(src => src.Product.ProductPrice));
+                .ForMember(dest => dest.ProductPrice, opt => opt.MapFrom(src => src.Product.ProductPrice))
+                .ForMember(dest => dest.ProductDescription, opt => opt.MapFrom(src => src.Product.ProductDescription));
 
             // Customer Order Payment
             CreateMap<OnlinePayment, ReturnOrderOnlinePaymentDto>();
@@ -57,7 +57,14 @@ namespace API.Utility
             CreateMap<ReturnRestaurantProductDto, RestaurantProductDto>();
 
             // Restaurant Order
-            CreateMap<Order, ReturnRestaurantOrderDto>();
+            CreateMap<Order, ReturnRestaurantOrderDto>()
+                .ForMember(dest => dest.EmployeeName, opt => opt.MapFrom(src => src.Employee.EmployeeName));
+
+            CreateMap<OrderItem, ReturnRestaurantOrderItemDto>()
+                .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product.ProductName))
+                .ForMember(dest => dest.ProductPrice, opt => opt.MapFrom(src => src.Product.ProductPrice))
+                .ForMember(dest => dest.ProductDescription, opt => opt.MapFrom(src => src.Product.ProductDescription));
+
             // Employee Register
             CreateMap<EmployeeRegisterDto, Employee>();
             CreateMap<Employee, ReturnEmployeeRegisterDto>();

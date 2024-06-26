@@ -1,6 +1,9 @@
-﻿namespace API.Models.DTOs.CustomerDto
+
+using API.Models.Enums;
+
+namespace API.Models.DTOs.RestaurantDto
 {
-    public class ReturnCustomerOrderItemDto
+    public class ReturnRestaurantOrderItemDto
     {
         public int OrderItemId { get; set; }
         public int ProductId { get; set; }

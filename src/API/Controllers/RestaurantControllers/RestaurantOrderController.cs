@@ -85,11 +85,11 @@ namespace API.Controllers.RestaurantControllers
             }
             catch (EntityNotFoundException<Order> ex)
             {
-                return NotFound(new ApiResponse(StatusCodes.Status404NotFound, ex.Message));
+                return StatusCode(StatusCodes.Status404NotFound, new ApiResponse(StatusCodes.Status404NotFound, ex.Message));
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(StatusCodes.Status500InternalServerError, ex.Message));
             }
         }
 
@@ -131,7 +131,7 @@ namespace API.Controllers.RestaurantControllers
         /// <response code="200">Returns the updated order.</response>
         /// <response code="404">If the order is not found.</response>
         /// <response code="500">If there is a server error.</response>
-        [HttpPost("{orderId}/Preparing")]
+        [HttpPut("Preparing/{orderId}")]
         [ProducesResponseType(typeof(ApiResponse<ReturnRestaurantOrderDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status401Unauthorized)]
@@ -172,7 +172,7 @@ namespace API.Controllers.RestaurantControllers
         /// <response code="200">Returns the updated order.</response>
         /// <response code="404">If the order is not found.</response>
         /// <response code="500">If there is a server error.</response>
-        [HttpPost("{orderId}/prepared")]
+        [HttpPut("prepared/{orderId}")]
         [ProducesResponseType(typeof(ApiResponse<ReturnRestaurantOrderDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status401Unauthorized)]

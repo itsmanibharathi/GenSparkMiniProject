@@ -16,14 +16,19 @@ namespace API.Repositories
         {
             try
             {
-                var res = await _context.Orders.Where(o => o.RestaurantId == restaurantId).ToListAsync();
+                var res = await _context.Orders
+                .Include(o => o.OrderItems)
+                .ThenInclude(oi => oi.Product)
+                .Include(o => o.Restaurant)
+                .Include(o => o.Employee)
+                .Where(o => o.RestaurantId == restaurantId).ToListAsync();
                 return res.Count() > 0 ? res : throw new EntityNotFoundException<Order>();
             }
-            catch(EntityNotFoundException<Order>)
+            catch (EntityNotFoundException<Order>)
             {
                 throw;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new UnableToDoActionException($"Unable to get all orders by {restaurantId}", ex);
             }
@@ -34,7 +39,13 @@ namespace API.Repositories
         {
             try
             {
-                var res = await _context.Orders.Where(o => o.RestaurantId == restaurantId && o.OrderDate.Date == DateTime.Now.Date).ToListAsync();
+                var res = await _context.Orders
+                .Include(o => o.OrderItems)
+                .ThenInclude(oi => oi.Product)
+                .ThenInclude(p => p.Restaurant)
+                .Include(e => e.Employee)
+
+                .Where(o => o.RestaurantId == restaurantId && o.OrderDate.Date == DateTime.Now.Date).ToListAsync();
                 return res.Count() > 0 ? res : throw new EntityNotFoundException<Order>();
             }
             catch (EntityNotFoundException<Order>)
