@@ -2,7 +2,9 @@ import $ from 'jquery';
 import AuthPage from './auth.html';
 import { signInPage, signUpPage } from '../../Services/authLayoutService.js';
 import showAlert from '../../Services/alertService.js';
+import { basePath } from '../../Services/routerService.js';
 const loadAuthCallback = (api, token) => {
+    console.log('basepath  :', basePath)
     console.log('Loading Auth Callback');
     $('#signUpPage').on('click', signUpPage);
     $('#signInPage').on('click', signInPage);
@@ -18,7 +20,7 @@ const loadAuthCallback = (api, token) => {
             .then((res) => {
                 token.set(res.data.token);
                 showAlert('Sign In Successful', 'success');
-                window.location.href = '/customer';
+                window.location.href = basePath + '/customer';
             })
             .catch((err) => {
                 console.log(err);

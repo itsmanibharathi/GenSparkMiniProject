@@ -13,6 +13,7 @@ import apiService from '../../Services/apiService.js';
 import jwtService from '../../Services/jwtService.js';
 import localStorageService from '../../Services/localStorageService.js';
 import showAlert from '../../Services/alertService.js';
+import { basePath } from '../../Services/routerService.js';
 
 const token = new jwtService('restaurant');
 const localStorage = new localStorageService('restaurant');
@@ -25,7 +26,7 @@ const localRoutes = {
         { path: '/restaurant/product', name: 'Product', component: ProductPage, callback: loadProductCallback },
         { path: '/restaurant/orders', name: 'Orders', component: OrderPage, callback: loadOrderCallback },
         { path: '/restaurant/orders/all', name: 'AllOrders', component: OrderPage, callback: loadAllOrderCallback },
-        { path: '/restaurant/auth', name: 'Auth', hide:true, component: AuthPage, callback: loadAuthCallback },
+        { path: '/restaurant/auth', name: 'Auth', hide: true, component: AuthPage, callback: loadAuthCallback },
     ]
 };
 
@@ -38,7 +39,7 @@ const loadRestaurant = (path) => {
         console.log('Logging out');
         token.remove();
         localStorage.clear();
-        window.location.href = '/restaurant/auth';
+        window.location.href = basePath+'/restaurant/auth';
         return;
     }
 
@@ -46,10 +47,10 @@ const loadRestaurant = (path) => {
 
     if (route) {
         if (!token.exists() && path !== '/restaurant/auth') {
-            window.location.href = '/restaurant/auth';
+            window.location.href = basePath+'/restaurant/auth';
         }
         else if (token.exists() && path === '/restaurant/auth') {
-            window.location.href = '/restaurant';
+            window.location.href = basePath+'/restaurant';
         }
         loadComponent('#body-placeholder', route.component, route.callback, api, token);
     } else {

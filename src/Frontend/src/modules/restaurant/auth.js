@@ -18,7 +18,7 @@ const loadAuthCallback = (api, token) => {
             .then((res) => {
                 token.set(res.data.token);
                 showAlert('Sign In Successful', 'success');
-                window.location.href = '/restaurant';
+                window.location.href = basePath+'/restaurant';
             })
             .catch((err) => {
                 console.log(err);

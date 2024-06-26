@@ -18,6 +18,7 @@ jobs:
     env:
       GENERATE_SOURCEMAP: false
       BASE_PATH: '/GenSparkMiniProject'
+      isProduction: true
     defaults:
       run:
         working-directory: src/Frontend
