@@ -17,12 +17,12 @@ const headerTemplate = (localRoutes, islogin, addCart) => {
                             </ul>
                             </div>
                             <div class="flex items-center gap-6 my-2">
-                                <a href="/${localRoutes.name}/logout" class="bg-button text-white text-lg px-5 py-2 rounded-xl ">logout</a>
+                                <li><a href="/${localRoutes.name}/logout" class="bg-button text-white text-lg px-5 py-2 rounded-xl ">logout</a></li>
                                 ` : `
                                 </ul>
                                 </div>
                                 <div class="flex items-center gap-6 my-2">
-                                <a href="/${localRoutes.name}/auth" class="bg-button text-white text-lg px-5 py-1 rounded-xl">LogIn</a>`
+                                <li> <a href="/${localRoutes.name}/auth" class="bg-button text-white text-lg px-5 py-1 rounded-xl">LogIn</a> </li>`
         } 
                             ${addCart ? ` <button onclick="onCartClick(this)" ><i class="fa-solid fa-cart-arrow-down text-white hover:text-secondary"></i></button>` : ''}
                             <button onclick="onToggleMenu(this)" class="md:hidden "><i name="menu" class="fa-solid fa-bars"></i></button>

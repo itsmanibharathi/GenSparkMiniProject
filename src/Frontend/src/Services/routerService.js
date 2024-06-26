@@ -30,16 +30,13 @@ const loadRoutes = () => {
         path = path.slice(base.length);
     }
 
-    // Remove trailing slash unless it's the root path
     path = path === '/' ? '/' : path.replace(/\/$/, '');
 
-    // Handle hash routing if present
     const hash = window.location.hash.toLowerCase();
     if (hash && hash !== '#/') {
         path = hash.replace('#', '');
     }
 
-    // Load corresponding route or 404 page
     if (routes[path]) {
         routes[path](path);
     } else {
@@ -61,6 +58,9 @@ $(document).on('click', 'a', function (e) {
         history.pushState(null, '', `${basePath}${href}`);
         loadRoutes();
     }
+    else {
+        window.href = href;
+    }
 });
 
 module.exports = {
@@ -68,3 +68,5 @@ module.exports = {
 };
 
 export const basePath = process.env.isProduction ? `/#` : '';
+
+console.log(process.env.BASE_PATH);
