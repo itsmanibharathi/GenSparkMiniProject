@@ -25,6 +25,25 @@ const loadAuthCallback = (api, token) => {
                 showAlert('Sign In Failed', 'error');
             });
     });
+
+    $('#signUp').on('submit', function (e) {
+        e.preventDefault();
+        var formData = $(this).serializeArray();
+        const data = {};
+        formData.forEach((item) => {
+            data[item.name] = item.value;
+        });
+        console.log(data);
+        api.post('customer/register', data)
+            .then((res) => {
+                showAlert('Sign Up Successful', 'success');
+                signInPage();
+            })
+            .catch((err) => {
+                console.log(err);
+                showAlert('Sign Up Failed', 'error');
+            });
+    });
 }
 
 
