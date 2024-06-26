@@ -1,7 +1,8 @@
 import $ from 'jquery';
 import loadCustomer from './modules/customer/index.js';
 import loadHome from './modules/home/index.js';
-
+import loadComponent from './Services/loadComponent.js';
+import Page404 from './components/404.html';
 const routes = {
     '/': loadHome,
     '/customer': loadCustomer,
@@ -21,7 +22,7 @@ const loadRoutes = () => {
     if (routes[path]) {
         routes[path](path);
     } else {
-        console.log('404');
+        loadComponent("#root",Page404);
     }
 };
 
