@@ -12,11 +12,33 @@ namespace API.Repositories
         {
         }
 
+        public async Task<Product> GetAsync(int productId)
+        {
+            try
+            {
+                var res = await _context.Products
+                .Include(x => x.Restaurant)
+                .FirstOrDefaultAsync(x => x.ProductId == productId);
+                return res ?? throw new EntityNotFoundException<Product>(productId);
+            }
+            catch (EntityNotFoundException<Product>)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new UnableToDoActionException("Unable to get the Product", ex);
+            }
+        }
+
+
         public async Task<IEnumerable<Product>> GetByRestaurantIdAsync(int restaurantId)
         {
             try
             {
-                var res= await _context.Products.Where(x => x.RestaurantId == restaurantId).ToListAsync();
+                var res = await _context.Products
+                .Include(x => x.Restaurant)
+                .Where(x => x.RestaurantId == restaurantId).ToListAsync();
                 return res.Count > 0 ? res : throw new EntityNotFoundException<Product>(restaurantId);
             }
             catch (EntityNotFoundException<Product>)

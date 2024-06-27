@@ -7,13 +7,14 @@ import ProductTemplate from '../../components/productTemplate.js';
 
 
 
-const loadProductCallback = (api, token) => {
+const loadProductCallback = async (api, token) => {
     var products = [];
     var isFormDirty = false;
     $('#productFormOpen').on('click', () => {
         $('#productFormContainer').toggle();
         $('#productFormOpen').toggleClass('hidden');
     });
+
 
     $('#productFormClose').on('click', () => {
         if (isFormDirty) {
@@ -39,6 +40,9 @@ const loadProductCallback = (api, token) => {
         $('#productForm').find('input[name="productPrice"]').val(product.productPrice);
         $('#productForm').find('input[name="productAvailable"]').val(product.productAvailable);
         $('#productForm').find('input[name="productDescription"]').val(product.productDescription);
+        $('#productForm').attr('action', 'restaurant/product/update');
+        $('#productForm').attr('productId', productId);
+
     }
 
     $('#productForm').on('input', (e) => {
@@ -53,10 +57,45 @@ const loadProductCallback = (api, token) => {
         }
     });
 
+    $('#productForm').on('blur', 'input', (e) => {
+        e.preventDefault();
+        let input = e.target;
+        if (input.value == '' && input.required) {
+            input.classList.add('border-red-500');
+            input.nextElementSibling.innerText = 'This field is required';
+        }
+        else if (input.name == 'productPrice' && input.value < 0) {
+            input.classList.add('border-red-500');
+            input.nextElementSibling.innerText = 'Price must be greater than 0';
+        }
+        else {
+            input.classList.remove('border-red-500');
+            input.nextElementSibling.innerText = '';
+            if (input.value !== '') {
+                input.classList.add('border-green-500');
+            }
+        }
+
+    });
+
+
+    $('#addressForm').on('change', 'select', (e) => {
+        e.preventDefault();
+        let select = e.target;
+        if (select.value == '') {
+            select.classList.add('border-red-500');
+            select.nextElementSibling.innerText = 'This field is required';
+        } else {
+            select.classList.remove('border-red-500');
+            select.classList.add('border-green-500');
+            select.nextElementSibling.innerText = '';
+        }
+    });
 
 
     $('#productForm').on('submit', (e) => {
         e.preventDefault();
+        const action = $('#productForm').attr('action');
         const formdata = $('#productForm').serializeArray();
         const data = {};
         formdata.forEach(item => {
@@ -66,15 +105,18 @@ const loadProductCallback = (api, token) => {
                 data[item.name] = item.value;
 
         });
-
+        $('#productForm').attr('productId') ? data.productId = $('#productForm').attr('productId') : '';
         log.debug('Product Data:', data);
 
-        api.post('restaurant/Product/add', data).then(res => {
+        api.post(action, data).then(res => {
             showAlert('Product added successfully', 'success');
             $('#productForm').trigger('reset');
             $('#productFormContainer').toggle();
             $('#productFormOpen').toggleClass('hidden');
-            $('#product-container').append(ProductTemplate(res.data, true));
+            if(action === 'restaurant/product/update')
+                $('#p-' + res.data.productId).replaceWith(ProductTemplate(res.data, true));
+            else
+                $('#product-container').append(ProductTemplate(res.data, true));
 
         }).catch(err => {
             log.error(err);
@@ -82,13 +124,21 @@ const loadProductCallback = (api, token) => {
         });
     });
 
-
-    GetProdcts(api).then(data => {
+    await GetProdcts(api).then(data => {
         products = data;
-        $('#product-container').append(products.map(product => ProductTemplate(product, true)).join(''));
+        loadProduct(products);
     });
 
 }
+
+
+const loadProduct = (products) => {
+    const productContainer = $('#product-container');
+    productContainer.empty();
+    productContainer.append(products.map(product => ProductTemplate(product, true)).join(''));
+
+}
+
 
 const GetProdcts = async (api) => {
     return await api.get('restaurant/product/all').then(res => {

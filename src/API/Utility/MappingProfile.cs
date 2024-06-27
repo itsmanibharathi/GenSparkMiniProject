@@ -53,8 +53,10 @@ namespace API.Utility
 
             // Restaurant Product
             CreateMap<RestaurantProductDto, Product>();
+            CreateMap<RestaurantProductDto, Product>();
             CreateMap<Product, ReturnRestaurantProductDto>();
             CreateMap<ReturnRestaurantProductDto, RestaurantProductDto>();
+
 
             // Restaurant Order
             CreateMap<Order, ReturnRestaurantOrderDto>()

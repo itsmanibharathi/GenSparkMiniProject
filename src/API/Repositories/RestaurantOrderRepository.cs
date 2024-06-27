@@ -2,6 +2,7 @@
 using API.Exceptions;
 using API.Models;
 using API.Repositories.Interfaces;
+using API.Models.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Repositories
@@ -21,7 +22,9 @@ namespace API.Repositories
                 .ThenInclude(oi => oi.Product)
                 .Include(o => o.Restaurant)
                 .Include(o => o.Employee)
-                .Where(o => o.RestaurantId == restaurantId).ToListAsync();
+                .Where(o => o.RestaurantId == restaurantId)
+                .Where(o => o.OrderStatus != OrderStatus.Create && o.OrderStatus != OrderStatus.Cancelled)
+                .ToListAsync();
                 return res.Count() > 0 ? res : throw new EntityNotFoundException<Order>();
             }
             catch (EntityNotFoundException<Order>)
@@ -44,8 +47,9 @@ namespace API.Repositories
                 .ThenInclude(oi => oi.Product)
                 .ThenInclude(p => p.Restaurant)
                 .Include(e => e.Employee)
-
-                .Where(o => o.RestaurantId == restaurantId && o.OrderDate.Date == DateTime.Now.Date).ToListAsync();
+                .Where(o => o.RestaurantId == restaurantId && o.OrderDate.Date == DateTime.Now.Date)
+                .Where(o => o.OrderStatus != OrderStatus.Create && o.OrderStatus != OrderStatus.Cancelled)
+                .ToListAsync();
                 return res.Count() > 0 ? res : throw new EntityNotFoundException<Order>();
             }
             catch (EntityNotFoundException<Order>)

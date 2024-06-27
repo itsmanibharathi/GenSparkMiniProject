@@ -123,7 +123,8 @@ namespace API.Services
         {
             try
             {
-                var res = await _restaurantProductRepository.UpdateAsync(_mapper.Map<Product>(restaurantProductDto));
+                var data = _mapper.Map<Product>(restaurantProductDto);
+                var res = await _restaurantProductRepository.UpdateAsync(data);
                 return _mapper.Map<ReturnRestaurantProductDto>(res);
             }
             catch (EntityNotFoundException<Product>)
