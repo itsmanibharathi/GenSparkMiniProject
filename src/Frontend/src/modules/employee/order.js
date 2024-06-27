@@ -5,6 +5,15 @@ import log from '../../utility/loglevel.js';
 import OrderTemplate from '../../components/orderTemplate.js';
 
 var orders = [];
+
+const loadSearchOrderCallback = async (api) => {
+    orders = await GetOrders(api, "Search");
+    loadOrder(orders);
+    document.updateOrder = async (id, status) => updateOrderStatus(id, status, api);
+
+}
+
+
 const loadOrderCallback = async (api) => {
     orders = await GetOrders(api, '');
     loadOrder(orders);
@@ -56,6 +65,7 @@ const updateOrderStatus = async (id, status, api) => {
 
 module.exports = {
     OrderPage,
+    loadSearchOrderCallback,
     loadOrderCallback,
     loadAllOrderCallback
 }

@@ -21,6 +21,7 @@ const routes = {
     '/restaurant/auth': loadRestaurant,
     '/restaurant/logout': loadRestaurant,
     '/employee': loadEmployee,
+    '/employee/orders/search': loadEmployee,
     '/employee/orders': loadEmployee,
     '/employee/orders/all': loadEmployee,
     '/employee/auth': loadEmployee,

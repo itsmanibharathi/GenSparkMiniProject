@@ -46,7 +46,7 @@ namespace API.Controllers.EmployeeControllers
             try
             {
                 int EmployeeId = int.Parse(User.FindFirstValue("Id"));
-                var result = await _employeeOrderService.GetAllByEmpId(EmployeeId);
+                var result = await _employeeOrderService.GetByEmpId(EmployeeId);
                 var response = new ApiResponse<IEnumerable<ReturnEmployeeOrderDto>>(StatusCodes.Status200OK, result);
                 return StatusCode(StatusCodes.Status200OK, response);
             }

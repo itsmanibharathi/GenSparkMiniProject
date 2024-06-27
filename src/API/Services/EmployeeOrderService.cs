@@ -140,7 +140,7 @@ namespace API.Services
         {
             try
             {
-                var res = await _employeeOrderRepository.GetTodayByEmployeeIdAsunc(employeeId);
+                var res = await _employeeOrderRepository.GetTodayByEmployeeIdAsync(employeeId);
                 return _mapper.Map<IEnumerable<ReturnEmployeeOrderDto>>(res.OrderByDescending(o => o.OrderDate).ThenBy(o => o.OrderStatus));
             }
             catch (EntityNotFoundException<Order>)
@@ -164,7 +164,7 @@ namespace API.Services
         {
             try
             {
-                var res = await _employeeOrderRepository.GetAllByEmployeeIdAsunc(employeeId);
+                var res = await _employeeOrderRepository.GetAllByEmployeeIdAsync(employeeId);
                 return _mapper.Map<IEnumerable<ReturnEmployeeOrderDto>>(res.OrderByDescending(o => o.OrderDate).ThenBy(o => o.OrderStatus));
             }
             catch (EntityNotFoundException<Order>)
@@ -186,7 +186,7 @@ namespace API.Services
         /// <exception cref="EntityNotFoundException{Order}">Thrown when the order is not found.</exception>
         /// <exception cref="UnauthorizedAccessException">Thrown when the order is already assigned to another employee.</exception>
         /// <exception cref="UnableToDoActionException">Thrown when unable to perform the action.</exception>
-        
+
         /// <exception cref="UnauthorizedAccessException">Thrown when the order does not belong to the employee.</exception>
         /// <exception cref="InvalidOrderException">Thrown when the order is not ready for delivery.</exception>
         public async Task<ReturnEmployeeOrderDto> AcceptOrder(int employeeId, int orderID)
@@ -198,13 +198,19 @@ namespace API.Services
                 {
                     throw new UnauthorizedAccessException($"Order {orderID} is already assigned to another employee");
                 }
-                if (order.OrderStatus != OrderStatus.Prepared || order.OrderStatus != OrderStatus.Preparing)
+                Console.WriteLine("order status" + order.OrderStatus);
+                if (order.OrderStatus == OrderStatus.Preparing)
                 {
-                    throw new InvalidOrderException($"Order {orderID} is not ready for Accept or invalid order");
+                    Console.WriteLine("yes order status " + order.OrderStatus);
                 }
-                order.EmployeeId = employeeId;
-                var res = await _employeeOrderRepository.UpdateAsync(order);
-                return _mapper.Map<ReturnEmployeeOrderDto>(res);
+                if (order.OrderStatus == OrderStatus.Prepared || order.OrderStatus == OrderStatus.Preparing)
+                {
+                    order.EmployeeId = employeeId;
+                    var res = await _employeeOrderRepository.UpdateAsync(order);
+                    return _mapper.Map<ReturnEmployeeOrderDto>(res);
+                }
+                else
+                    throw new InvalidOrderException($"Order {orderID} is not ready for Accept or invalid order");
             }
             catch (UnauthorizedAccessException)
             {
@@ -244,7 +250,7 @@ namespace API.Services
                 {
                     throw new UnauthorizedAccessException($"Order {orderId} does not belong to employee {employeeId}");
                 }
-                if(order.OrderStatus != OrderStatus.PickedUp)
+                if (order.OrderStatus != OrderStatus.PickedUp)
                 {
                     throw new InvalidOrderException($"Order {orderId} is not ready for delivery");
                 }
@@ -298,7 +304,7 @@ namespace API.Services
                 {
                     throw new UnauthorizedAccessException($"Order {orderId} does not belong to employee {employeeId}");
                 }
-                if(order.OrderStatus != OrderStatus.Prepared)
+                if (order.OrderStatus != OrderStatus.Prepared)
                 {
                     throw new InvalidOrderException($"Order {orderId} is not ready for pickup");
                 }

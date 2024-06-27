@@ -16,13 +16,13 @@ const OrderTemplate = (item, module) => {
         }
         else if (module === 'employee') {
             if (status == 'Place' || status === 'Preparing' || status === 'Prepared') {
-                return `<button class="mt-2 bg-green-700 text-white px-4 py-2 rounded" onClick="updateOrder(${id},'Accepted')" >Accept Order</button>`;
+                return `<button class="mt-2 bg-green-700 text-white px-4 py-2 rounded" onClick="updateOrder(${id},'accept')" >Accept Order</button>`;
             }
             else if (status == 'Accepted') {
-                return `<button class="mt-2 bg-green-700 text-white px-4 py-2 rounded" onClick="updateOrder(${id},'PickedUp')" >PickedUp Order</button>`;
+                return `<button class="mt-2 bg-green-700 text-white px-4 py-2 rounded" onClick="updateOrder(${id},'pickup')" >PickedUp Order</button>`;
             }
             else if (status == 'PickedUp') {
-                return `<button class="mt-2 bg-green-700 text-white px-4 py-2 rounded" onClick="updateOrder(${id},'Delivered')" >Delivered Order</button>`;
+                return `<button class="mt-2 bg-green-700 text-white px-4 py-2 rounded" onClick="updateOrder(${id},'deliver')" >Delivered Order</button>`;
             }
         }
         return '';

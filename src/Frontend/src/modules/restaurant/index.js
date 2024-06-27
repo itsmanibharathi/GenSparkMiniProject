@@ -39,7 +39,7 @@ const loadRestaurant = (path) => {
         console.log('Logging out');
         token.remove();
         localStorage.clear();
-        window.location.href = basePath+'/restaurant/auth';
+        window.location.href = basePath + '/restaurant/auth';
         return;
     }
 
@@ -47,10 +47,10 @@ const loadRestaurant = (path) => {
 
     if (route) {
         if (!token.exists() && path !== '/restaurant/auth') {
-            window.location.href = basePath+'/restaurant/auth';
+            window.location.href = basePath + '/restaurant/auth';
         }
         else if (token.exists() && path === '/restaurant/auth') {
-            window.location.href = basePath+'/restaurant';
+            window.location.href = basePath + '/restaurant';
         }
         loadComponent('#body-placeholder', route.component, route.callback, api, token);
     } else {

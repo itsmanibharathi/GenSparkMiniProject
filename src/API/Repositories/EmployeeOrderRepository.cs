@@ -35,7 +35,7 @@ namespace API.Repositories
             }
         }
 
-        public async Task<IEnumerable<Order>> GetAllByEmployeeIdAsunc(int employeeId)
+        public async Task<IEnumerable<Order>> GetAllByEmployeeIdAsync(int employeeId)
         {
             try
             {
@@ -57,11 +57,16 @@ namespace API.Repositories
             }
         }
 
-        public async Task<IEnumerable<Order>> GetTodayByEmployeeIdAsunc(int employeeId)
+        public async Task<IEnumerable<Order>> GetTodayByEmployeeIdAsync(int employeeId)
         {
             try
             {
-                var res = await _context.Orders.Where(x => x.EmployeeId == employeeId && x.OrderDate.Date == DateTime.Now.Date && statuses.Contains(x.OrderStatus)).ToListAsync();
+                var res = await _context.Orders
+                .Include(x => x.OrderItems)
+                .ThenInclude(x => x.Product)
+                .Include(x => x.Employee)
+                .Include(x => x.CashPayment)
+                .Where(x => x.EmployeeId == employeeId && x.OrderDate.Date == DateTime.Now.Date && statuses.Contains(x.OrderStatus)).ToListAsync();
                 return res.Count > 0 ? res : throw new EntityNotFoundException<Order>(employeeId);
             }
             catch (EntityNotFoundException<Order>)
@@ -79,7 +84,12 @@ namespace API.Repositories
             try
             {
                 var orderstatus = new OrderStatus[] { OrderStatus.Preparing, OrderStatus.Prepared };
-                var res = await _context.Orders.Include(o => o.CustomerAddress).Where(o => o.EmployeeId == null && employeeRange.Contains(o.CustomerAddress.Code) && orderstatus.Contains(o.OrderStatus)).ToListAsync();
+                var res = await _context.Orders
+                .Include(x => x.OrderItems)
+                .ThenInclude(x => x.Product)
+                .Include(x => x.Employee)
+                .Include(x => x.CashPayment)
+                .Include(o => o.CustomerAddress).Where(o => o.EmployeeId == null && employeeRange.Contains(o.CustomerAddress.Code) && orderstatus.Contains(o.OrderStatus)).ToListAsync();
                 return res.Count > 0 ? res : throw new EntityNotFoundException<Order>();
             }
             catch (EntityNotFoundException<Order>)
