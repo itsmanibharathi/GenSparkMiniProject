@@ -28,10 +28,13 @@ namespace API.Utility
 
             // Customer Order Create
             CreateMap<CustomerOrderDto, Order>();
-            CreateMap<Order, ReturnCustomerOrderDto>();
+            CreateMap<Order, ReturnCustomerOrderDto>()
+                .ForMember(dest => dest.CustomerName, opt => opt.MapFrom(src => src.Customer.CustomerName))
+                .ForMember(dest => dest.EmployeeName, opt => opt.MapFrom(src => src.Employee.EmployeeName));
             // customer mapping for order item
             CreateMap<OrderItem, ReturnCustomerOrderItemDto>()
                 .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product.ProductName))
+                .ForMember(dest => dest.RestaurantName, opt => opt.MapFrom(src => src.Product.Restaurant.Name))
                 .ForMember(dest => dest.ProductPrice, opt => opt.MapFrom(src => src.Product.ProductPrice))
                 .ForMember(dest => dest.ProductDescription, opt => opt.MapFrom(src => src.Product.ProductDescription));
 
@@ -60,10 +63,13 @@ namespace API.Utility
 
             // Restaurant Order
             CreateMap<Order, ReturnRestaurantOrderDto>()
+                .ForMember(dest => dest.CustomerName, opt => opt.MapFrom(src => src.Customer.CustomerName))
                 .ForMember(dest => dest.EmployeeName, opt => opt.MapFrom(src => src.Employee.EmployeeName));
+
 
             CreateMap<OrderItem, ReturnRestaurantOrderItemDto>()
                 .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product.ProductName))
+                .ForMember(dest => dest.RestaurantName, opt=> opt.MapFrom(src => src.Product.Restaurant.Name))
                 .ForMember(dest => dest.ProductPrice, opt => opt.MapFrom(src => src.Product.ProductPrice))
                 .ForMember(dest => dest.ProductDescription, opt => opt.MapFrom(src => src.Product.ProductDescription));
 
@@ -76,10 +82,13 @@ namespace API.Utility
             CreateMap<Employee, ReturnEmployeeLoginDto>();
 
             // Employee Order
-            CreateMap<Order, ReturnEmployeeOrderDto>();
+            CreateMap<Order, ReturnEmployeeOrderDto>()
+                .ForMember(dest => dest.CustomerName, opt => opt.MapFrom(src => src.Customer.CustomerName))
+                .ForMember(dest => dest.EmployeeName, opt => opt.MapFrom(src => src.Employee.EmployeeName));
 
             CreateMap<OrderItem, ReturnEmployeeOrderItemDto>()
                 .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product.ProductName))
+                .ForMember(dest => dest.RestaurantName, opt => opt.MapFrom(src => src.Product.Restaurant.Name))
                 .ForMember(dest => dest.ProductPrice, opt => opt.MapFrom(src => src.Product.ProductPrice))
                 .ForMember(dest => dest.ProductDescription, opt => opt.MapFrom(src => src.Product.ProductDescription));
         }

@@ -22,6 +22,7 @@ namespace API.Repositories
                 .ThenInclude(oi => oi.Product)
                 .Include(o => o.Restaurant)
                 .Include(o => o.Employee)
+                .Include(o => o.Customer)
                 .Where(o => o.RestaurantId == restaurantId)
                 .Where(o => o.OrderStatus != OrderStatus.Create && o.OrderStatus != OrderStatus.Cancelled)
                 .ToListAsync();

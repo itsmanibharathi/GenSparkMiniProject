@@ -37,6 +37,7 @@ namespace API.Repositories
                 .Include(o => o.OrderItems)
                 .ThenInclude(oi => oi.Product)
                 .ThenInclude(p => p.Restaurant)
+                .Include(o => o.Customer)
                 .Where(x => x.CustomerId == customerId).ToListAsync();
                 return res.Count > 0 ? res : throw new EntityNotFoundException<Order>();
             }

@@ -21,6 +21,8 @@ namespace API.Repositories
                 return await _context.Orders
                     .Include(x => x.OrderItems)
                     .ThenInclude(x => x.Product)
+                    .Include(x =>x.Restaurant)
+                    .Include(x => x.Customer)
                     .Include(x => x.Employee)
                     .Include(x => x.CashPayment)
                     .FirstOrDefaultAsync(x => x.OrderId == orderId && statuses.Contains(x.OrderStatus)) ?? throw new EntityNotFoundException<Order>(orderId);
