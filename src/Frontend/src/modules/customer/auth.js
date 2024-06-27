@@ -8,6 +8,47 @@ const loadAuthCallback = (api, token) => {
     console.log('Loading Auth Callback');
     $('#signUpPage').on('click', signUpPage);
     $('#signInPage').on('click', signInPage);
+
+    $('#signIn').on('blur', 'input', function (e) {
+        const input = e.target;
+        const value = input.value;
+        if(value===''&& input.required ){
+            input.classList.add('border-red-500');
+            input.nextElementSibling.innerText = 'This field is required';
+        }
+        else if (input.name === 'customerEmail' && !/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(value)) {
+            input.classList.add('border-red-500');
+            input.nextElementSibling.innerText = 'Invalid email address';
+        }
+        else {
+            input.classList.remove('border-red-500');
+            input.nextElementSibling.innerText = '';
+            if (value !== '') {
+                input.classList.add('border-green-500');
+            }
+        }
+    });
+
+    $('#signUp').on('blur', 'input', function (e) {
+        const input = e.target;
+        const value = input.value;
+        if(value===''&& input.required ){
+            input.classList.add('border-red-500');
+            input.nextElementSibling.innerText = 'This field is required';
+        }
+        else if (input.name === 'customerEmail' && !/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(value)) {
+            input.classList.add('border-red-500');
+            input.nextElementSibling.innerText = 'Invalid email address';
+        }
+        else {
+            input.classList.remove('border-red-500');
+            input.nextElementSibling.innerText = '';
+            if (value !== '') {
+                input.classList.add('border-green-500');
+            }
+        }
+    });
+
     $('#signIn').on('submit', function (e) {
         e.preventDefault();
         var formData = $(this).serializeArray();

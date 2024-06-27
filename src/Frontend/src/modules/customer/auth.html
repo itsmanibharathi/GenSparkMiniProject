@@ -4,13 +4,16 @@
             <form id="signUp">
                 <h1>Sign Up</h1>
                 <label>
-                    <input type="text" name="customerName" placeholder="Name" />
+                    <input type="text" name="customerName" placeholder="Name" required />
+                    <span class="text-red-500 text-xs italic"></span>
                 </label>
                 <label>
-                    <input type="email" name="customerEmail" placeholder="Email" />
+                    <input type="email" name="customerEmail" placeholder="Email" required />
+                    <span class="text-red-500 text-xs italic"></span>
                 </label>
                 <label>
-                    <input type="password" name="Customerpassword" placeholder="Password" />
+                    <input type="password" name="customerpassword" placeholder="Password" required />
+                    <span class="text-red-500 text-xs italic"></span>
                 </label>
                 <button type="submit" style="margin-top: 9px">Sign Up</button>
             </form>
@@ -19,10 +22,13 @@
             <form id="signIn">
                 <h1>Sign in</h1>
                 <label>
-                    <input type="email" name="CustomerEmail" id="CustomerEmail" placeholder="Email" />
+                    <input type="email" name="customerEmail" id="CustomerEmail" placeholder="Email" required />
+                    <span class="text-red-500 text-xs italic"></span>
                 </label>
                 <label>
-                    <input type="password" name="Customerpassword" id="Customerpassword" placeholder="Password" />
+                    <input type="password" name="customerpassword" id="Customerpassword" placeholder="Password"
+                        required />
+                    <span class="text-red-500 text-xs italic"></span>
                 </label>
                 <button type="submit">Sign In</button>
             </form>
