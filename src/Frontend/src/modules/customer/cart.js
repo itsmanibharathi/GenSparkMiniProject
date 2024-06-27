@@ -9,28 +9,71 @@ class cartCallback {
         this.db = db;
         this.window = window;
         this.document = window.document;
-        this.address = [];
         this.islogin = islogin;
     }
 
     async init() {
-        const orderData = this.db.get('order') || [];
-        if (orderData.length > 0) {
-            this.loadPayment();
-        }
-        else {
-            this.loadCart();
-            if (this.islogin)
-                await this.loadAddress();
+        this.document.onCartClick = async () => {
+            const cart = document.querySelector('#cart');
+            cart.classList.toggle('hidden');
+            if (!cart.classList.contains('hidden')) {
+                if (!this.islogin) {
+                    this.loadCart();
+                    return;
+                }
+                const lastorder = await this.GetLastCreateOrder();
+                console.log("Last Order: ", lastorder);
+                if (lastorder.length > 0) {
+                    this.db.set('order', lastorder);
+                    this.loadPayment();
+                }
+                else {
+                    const orderData = this.db.get('order') || [];
+                    if (orderData.length > 0) {
+                        this.loadPayment();
+                    }
+                    else {
+                        this.loadCart();
+                    }
+                }
+            }
         }
     }
-    async loadAddress() {
-        this.address = await this.api.get('Customer/Address').then((res) => res.data).catch((err) => showAlert(err.message));
-        log.info('Customer Address :', this.address);
 
+    async GetAddress() {
+        return await this.api.get('Customer/Address')
+            .then((res) => res.data)
+            .catch((err) => {
+                if (err.statusCode == 404) {
+                    showAlert("Pls add address",)
+                }
+            });
+    }
+
+    async GetLastCreateOrder() {
+        return await this.api.get('Customer/order/lastCreate')
+            .then((res) => res.data)
+            .catch((err) => {
+                if (err.statusCode == 404) {
+                    return [];
+                }
+                else {
+                    showAlert(err.message, 'error');
+                }
+            });
+    }
+
+
+    async loadAddress() {
+        var addresses = this.db.get("addresses") || [];
+        console.log("load address: ", addresses);
+        if (!addresses.length > 0) {
+            addresses = await this.GetAddress();
+            this.db.set('addresses', addresses);
+        }
         const addressContainer = $('#customer-address');
         addressContainer.empty();
-        this.address.forEach((address) => {
+        addresses.forEach((address) => {
             const addressRow = $(`
                 <option value="${address.addressId}">${address.type}</option>
             `);
@@ -40,7 +83,10 @@ class cartCallback {
     loadCart() {
         this.document.querySelector('#payment-container').classList.add('hidden');
         this.document.querySelector('#cart-container').classList.remove('hidden');
-        console.log('Loading Cart');
+        log.debug("Load card")
+        if (this.islogin) {
+            this.loadAddress();
+        }
         const cartItemsContainer = $('#cart-items');
         cartItemsContainer.empty();
         const cartData = this.db.get('cart') || [];
@@ -63,6 +109,8 @@ class cartCallback {
         });
         this.updateTotal();
     }
+
+
     loadPayment() {
         this.document.querySelector('#cart-container').classList.add('hidden');
         this.document.querySelector('#payment-container').classList.remove('hidden');
@@ -78,16 +126,39 @@ class cartCallback {
                             <h2 class="mt-2 font-bold">Order Id: #${order.orderId}</h2>
                             <span class="text-gray-500 -mt-1">${order.restaurantName}</span>
                         </div>
-                        <span class="text-gray-500">${order.totalAmount}</span>
                     </div>
                     <div class="flex flex-col">
+                        <p class="text-gray-500">Order Details: </p>
                         ${order.orderItems.map(item => `
                             <div class="flex flex-row justify-between items-center">
                                 <h2 class="mt-2 mb-2 font-bold">${item.productName}</h2>
                                 <span class="text-gray-500">${item.quantity} x ${item.productPrice}</span>
-                                <span class="text-gray-500">${item.totalPrice}</span>
+                                <span class="text-gray-500 rupee ">${item.quantity * item.productPrice}</span>
                             </div>                            
                         `).join('')}
+                    </div>
+                    <div class="flex flex-col ">
+                        <p class="text-gray-500">Bill Details: </p>
+                        <div class="flex flex-row justify-between items-center -mt-3">
+                            <h2 class="mt-2 mb-2 font-bold">Total Order Price: </h2>
+                            <span class="text-gray-500 rupee">${order.totalOrderPrice}</span>
+                        </div>
+                        <div class="flex flex-row justify-between items-center -mt-3">
+                            <h2 class="mt-2 mb-2 font-bold">Shipping Price: </h2>
+                            <span class="text-gray-500 rupee">${order.shippingPrice}</span>
+                        </div>
+                        <div class="flex flex-row justify-between items-center -mt-3">
+                        <h2 class="mt-2 mb-2 font-bold">TaxRat: </h2>
+                        <span class="text-gray-500 percent">${order.taxRat * 100}</span>
+                        </div>
+                        <div class="flex flex-row justify-between items-center -mt-3">
+                        <h2 class="mt-2 mb-2 font-bold">Discount Rat: </h2>
+                        <span class="text-gray-500 percent">${order.discountRat * 100}</span>
+                        </div>
+                        <div class="flex flex-row justify-between items-center -mt-3">
+                            <h2 class="mt-2 mb-2 font-bold">Total Amount: </h2>
+                            <span class="text-gray-500 rupee">${order.totalAmount}</span>
+                        </div>
                     </div>
                 </div>
             `);
@@ -115,6 +186,7 @@ class cartCallback {
         this.db.set('cart', cartData);
         this.loadCart();
         this.document.querySelector('#cart').classList.remove('hidden');
+        showAlert('Product added to cart', 'success');
     }
 
     updateQuantity(index, change) {

@@ -36,10 +36,6 @@ const headerTemplate = (localRoutes, islogin, addCart) => {
                 navLinks.classList.toggle('top-[6%]');
 
             }
-            function onCartClick() {
-                const cart = document.querySelector('#cart');
-                cart.classList.toggle('hidden');
-            }
         </script>`
     )
 }

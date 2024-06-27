@@ -6,13 +6,13 @@ import ProductTemplate from '../../components/productTemplate.js';
 var products = [];
 const HomeCallback = async (api, cart) => {
     products = await GetProdcts(api);
-    $('#product-container').append(products.map(product => ProductTemplate(product)).join(''));
-
-    document.addtoCart = (productId) => {
+    const productContainer = $('#product-container');
+    productContainer.empty();
+    productContainer.append(products.map(p => ProductTemplate(p)));
+    document.addToCart = (productId) => {
         log.debug('Adding to cart:', productId);
         var product = products.find(p => p.productId == productId);
         cart.addToCart(product);
-        showAlert('Product added to cart', 'success');
     }
 }
 

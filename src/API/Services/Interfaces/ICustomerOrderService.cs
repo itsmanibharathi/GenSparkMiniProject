@@ -30,6 +30,14 @@ namespace API.Services.Interfaces
         /// <exception cref="EntityNotFoundException{Order}">Thrown when the customer does not have any orders.</exception>
         /// <exception cref="UnableToDoActionException">Thrown when unable to perform the action.</exception>
         public Task<IEnumerable<ReturnCustomerOrderDto>> GetAllOrders(int customerId);
+        /// <summary>
+        /// Retrieves all last Create orders for a customer.
+        /// </summary>
+        /// <param name="customerId">The ID of the customer.</param>
+        /// <returns>A collection of DTOs representing the customer orders.</returns>
+        /// <exception cref="EntityNotFoundException{Order}">Thrown when the customer does not have any orders.</exception>
+        /// <exception cref="UnableToDoActionException">Thrown when unable to perform the action.</exception>
+        public Task<IEnumerable<ReturnCustomerOrderDto>> GetlastCreate(int customerId);
 
         /// <summary>
         /// Retrieves a specific order for a customer.

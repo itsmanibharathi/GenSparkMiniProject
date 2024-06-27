@@ -19,7 +19,7 @@ const ProductTemplate = (product, isrestaurant = false) => {
                 </div>
                 ${isrestaurant
             ? `<button onclick="editProduct(${product.productId})" class="bg-button text-white text-lg px-5 py-2 rounded-lg hover:bg-button-hover w-full"><i class="fa-solid fa-edit"></i> Edit</button>`
-            : `<button onclick="addtoCart(${product.productId})" class="bg-button text-white text-lg px-5 py-2 rounded-lg hover:bg-button-hover w-full"><i class="fa-solid fa-cart-shopping"></i> Add to Cart</button>`
+            : `<button onclick="addToCart(${product.productId})" class="bg-button text-white text-lg px-5 py-2 rounded-lg hover:bg-button-hover w-full"><i class="fa-solid fa-cart-shopping"></i> Add to Cart</button>`
         }
             </div>
         </div>

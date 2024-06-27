@@ -16,6 +16,12 @@
     font-weight: 900;
     margin-left: 5px;
 }
+.percent::after{
+    content: "\25"; 
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    margin-left: 5px;
+}
 
 .success{
     @apply bg-green-100 border border-green-400 text-green-700;

@@ -162,6 +162,30 @@ namespace API.Services
                 throw;
             }
         }
+        /// <summary>
+        /// Retrieves Get all last Create orders for a given customer ID.
+        /// </summary>
+        /// <param name="customerId">The ID of the customer.</param>
+        /// <returns>A collection of DTOs for the retrieved customer orders.</returns>
+        /// <exception cref="EntityNotFoundException{Order}">Thrown when the customer does not have any orders.</exception>
+        /// <exception cref="UnableToDoActionException">Thrown when unable to perform the action.</exception>
+        public async Task<IEnumerable<ReturnCustomerOrderDto>> GetlastCreate(int customerId)
+        {
+            try
+            {
+                var res = await _customerOrderRepository.GetOrdersByCustomerIdAsync(customerId);
+                res = res.Where(o => o.OrderStatus == OrderStatus.Create);
+                return _mapper.Map<IEnumerable<ReturnCustomerOrderDto>>(res.OrderByDescending(o => o.OrderDate));
+            }
+            catch (EntityNotFoundException<Order>)
+            {
+                throw new EntityNotFoundException<Order>($"User {customerId} does not have any orders");
+            }
+            catch (UnableToDoActionException)
+            {
+                throw;
+            }
+        }
 
         /// <summary>
         /// Retrieves a specific order for a given customer ID and order ID.

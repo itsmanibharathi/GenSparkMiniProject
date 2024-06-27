@@ -180,6 +180,41 @@ namespace API.Controllers.CustomerControllers
         }
 
         /// <summary>
+        /// Gets all orders of the customer.
+        /// </summary>
+        /// <returns>The list of orders.</returns>
+        /// <response code="200">Returns the list of orders.</response>
+        /// <response code="404">If no orders are found.</response>
+        /// <response code="500">If there is a server error.</response>
+        [HttpGet("lastCreate")]
+        [ProducesResponseType(typeof(ApiResponse<IEnumerable<ReturnCustomerOrderDto>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult> GetlastCreate()
+        {
+            try
+            {
+                int customerId = int.Parse(User.FindFirst("Id").Value);
+                _logger.LogInformation("Getting all orders");
+                var result = await _customerOrderService.GetlastCreate(customerId);
+                var response = new ApiResponse<IEnumerable<ReturnCustomerOrderDto>>(StatusCodes.Status200OK, result);
+                return StatusCode(StatusCodes.Status200OK, response);
+            }
+            catch (EntityNotFoundException<Order> ex)
+            {
+                _logger.LogError(ex.Message);
+                var response = new ApiResponse(StatusCodes.Status404NotFound, ex.Message);
+                return StatusCode(StatusCodes.Status404NotFound, response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                var response = new ApiResponse(StatusCodes.Status500InternalServerError, ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
+        }
+
+        /// <summary>
         /// Creates an online payment for the customer order.
         /// </summary>
         /// <param name="orderPaymentDto">The payment details.</param>
@@ -244,7 +279,7 @@ namespace API.Controllers.CustomerControllers
         /// <response code="500">If there is a server error.</response>
         [HttpPost("payment/COD")]
         [ProducesResponseType(typeof(ApiResponse<IEnumerable<ReturnOrderCashPaymentDto>>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ApiResponse),StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
