@@ -18,7 +18,7 @@ jobs:
     env:
       GENERATE_SOURCEMAP: false
       BASE_PATH: '/GenSparkMiniProject'
-      isProduction: true
+      # isProduction: true
       API_URL: 'http://localhost:5170/api'
       
     defaults:
