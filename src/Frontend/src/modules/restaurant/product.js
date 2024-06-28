@@ -23,10 +23,17 @@ const loadProductCallback = async (api, token) => {
                 return;
             }
         }
-        isFormDirty = false;
         $('#productForm').trigger('reset');
+        $('#productForm').find('input').removeClass('border-red-500');
+        $('#productForm').find('input').removeClass('border-green-500');
+        $('#productForm').find('input').next().text('');
+        $('#productForm').attr('action', 'restaurant/product/add');
+        $('#productForm').find('select').removeClass('border-red-500');
+        $('#productForm').find('select').removeClass('border-green-500');
+        $('#productForm').find('select').next().text('');
         $('#productFormContainer').toggle();
         $('#productFormOpen').toggleClass('hidden');
+        isFormDirty = false;
     });
 
     document.editProduct = (productId) => {
@@ -113,7 +120,7 @@ const loadProductCallback = async (api, token) => {
             $('#productForm').trigger('reset');
             $('#productFormContainer').toggle();
             $('#productFormOpen').toggleClass('hidden');
-            if(action === 'restaurant/product/update')
+            if (action === 'restaurant/product/update')
                 $('#p-' + res.data.productId).replaceWith(ProductTemplate(res.data, true));
             else
                 $('#product-container').append(ProductTemplate(res.data, true));
@@ -123,7 +130,6 @@ const loadProductCallback = async (api, token) => {
             showAlert('Failed to add product', 'error');
         });
     });
-
     await GetProdcts(api).then(data => {
         products = data;
         loadProduct(products);

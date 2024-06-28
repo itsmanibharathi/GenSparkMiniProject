@@ -33,7 +33,7 @@ const OrderTemplate = (item, module) => {
             <img src="https://www.foodiesfeed.com/wp-content/uploads/2023/06/burger-with-melted-cheese-768x768.jpg" alt="Product Image"
                 class="w-full md:w-1/4 rounded-lg mb-4 md:mb-0">
             <div class="md:ml-4 flex-1">
-                <h2 class="text-xl font-bold">${orderItem.productName}</h2>
+                <h2 class="text-xl font-bold">${orderItem.productName} <span class="font-light">${orderItem.restaurantName}</span></h2>
                 <p class="mt-2">${orderItem.productDescription}</p>
                 <div class="mt-4">
                     <p class="text-xl font-bold text-green-400 rupee">${orderItem.productPrice.toFixed(2)}</p>
@@ -60,7 +60,11 @@ const OrderTemplate = (item, module) => {
                 </div>
                 <div class="w-full sm:w-auto mb-2 sm:mb-0">
                     <p class="text-gray-600">SHIP TO</p>
-                    <p class="font-bold">Mani</p>
+                    <p class="font-bold">${item.customerName}</p>
+                </div>
+                <div class="w-full sm:w-auto mb-2 sm:mb-0">
+                    <p class="text-gray-600">PICKUP BY</p>
+                    <p class="font-bold">${item.employeeName ?? '---'}</p>
                 </div>
                 <div class="w-full sm:w-auto mb-2 sm:mb-0">
                     <p class="text-gray-600">ORDER #</p>
