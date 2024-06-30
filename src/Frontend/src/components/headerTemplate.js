@@ -1,5 +1,5 @@
 import logo from '../../public/assets/Image/logo.svg'
-const headerTemplate = (localRoutes, islogin, addCart) => {
+const headerTemplate = (localRoutes, token, addCart) => {
     return (
         `<header class="bg-tertiary">
             <nav class="flex justify-between items-center w-[92%] h-[8%] mx-auto">
@@ -12,12 +12,12 @@ const headerTemplate = (localRoutes, islogin, addCart) => {
                     class="bg-tertiary text-white  z-10 text-lg nav-links duration-500 md:static absolute md:min-h-fit min-h-[60vh] left-0 top-[-100%] md:w-auto w-full flex items-center px-5">
                     <ul class="m-auto flex md:flex-row flex-col md:items-center md:gap-[4vw] gap-8">
                     <li><a href="/" class="nav" >Main</a></li>
-                    ${islogin ? `
+                    ${token.exists() ? `
                           ${localRoutes.routes.map((item) => item.hide ? '' : `<li><a href="${item.path}" class="text-white hover:text-button-hover">${item.name}</a></li>`).join('')}
                             </ul>
                             </div>
                             <div class="flex items-center gap-6 my-2">
-                                <a href="/${localRoutes.name}/logout" class="bg-button text-white text-lg px-5 py-2 rounded-xl ">logout</a>
+                                <a href="/${localRoutes.name}/logout" class="bg-button text-white text-lg px-5 py-2 rounded-xl ">logout<span class=" text-tertiary font-bold"> ${token.name()}</span></a>
                                 ` : `
                                 </ul>
                                 </div>

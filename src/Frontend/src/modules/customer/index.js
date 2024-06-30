@@ -39,7 +39,7 @@ const loadCustomer = (path) => {
     document.deleteItem = (index) => _cartCallback.deleteItem(index);
     document.checkout = (e) => _cartCallback.checkout(e);
     document.payment = (e) => _cartCallback.payment(e);
-    $('#header-placeholder').html(headerTemplate(localRoutes, token.exists(), true));
+    $('#header-placeholder').html(headerTemplate(localRoutes, token, true));
     loadComponent('#footer-placeholder', Footer);
 
     switch (path) {

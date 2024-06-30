@@ -32,7 +32,7 @@ const localRoutes = {
 
 const loadRestaurant = (path) => {
     log.debug('Loading Restaurant');
-    $('#header-placeholder').html(headerTemplate(localRoutes, token.exists(), false));
+    $('#header-placeholder').html(headerTemplate(localRoutes, token, false));
     loadComponent('#footer-placeholder', Footer);
 
     if (path == '/restaurant/logout') {

@@ -8,7 +8,7 @@ var orders = [];
 
 const loadSearchOrderCallback = async (api) => {
     orders = await GetOrders(api, "Search");
-    loadOrder(orders);
+    loadOrder(orders, 'No order found');
     document.updateOrder = async (id, status) => updateOrderStatus(id, status, api);
 
 }
@@ -16,22 +16,23 @@ const loadSearchOrderCallback = async (api) => {
 
 const loadOrderCallback = async (api) => {
     orders = await GetOrders(api, '');
-    loadOrder(orders);
+    loadOrder(orders, 'Today you didn\'t receive any order');
     document.updateOrder = async (id, status) => updateOrderStatus(id, status, api);
 }
 
 const loadAllOrderCallback = async (api) => {
     orders = await GetOrders(api, 'all');
-    loadOrder(orders);
+    loadOrder(orders, 'No order found');
     document.updateOrder = async (id, status) => showAlert('You can only view all orders', 'warning');
 }
 
-const loadOrder = async (orders) => {
+const loadOrder = async (orders, msg) => {
     if (orders == undefined || orders.length == 0) {
-        showAlert('Today you didn\'t receive any order', 'warning');
+        showAlert(msg, 'warning');
         const orderContainer = $('#order-container');
         orderContainer.empty();
-        orderContainer.append('<h1>Today you didn\'t receive any order</h1>');
+        orderContainer.append(`<h1>${msg}</h1>`);
+        $('#pagination').hide();
         return;
     }
     // const orderContainer = $('#order-container');
@@ -40,29 +41,33 @@ const loadOrder = async (orders) => {
     const OrderContainer = $('#order-container');
     OrderContainer.empty();
 
-    const orderList = orders.map(order => OrderTemplate(order));
-
-
+    const orderList = orders.map(order => OrderTemplate(order, 'employee'));
     const orderPerPage = 4;
     let currentPage = 1;
     const numPages = Math.ceil(orders.length / orderPerPage);
     const num = $('#num');
     OrderContainer.append(orderList.slice((currentPage - 1) * orderPerPage, currentPage * orderPerPage).join(''));
-    num.html(`${currentPage} of ${numPages}`);
-    $('#Previous').on('click', () => {
-        if (currentPage > 1) {
-            currentPage--;
-            OrderContainer.html(orderList.slice((currentPage - 1) * orderPerPage, currentPage * orderPerPage).join(''));
-            num.html(`${currentPage} of ${numPages}`);
-        }
-    });
-    $('#next').on('click', () => {
-        if (currentPage < numPages) {
-            currentPage++;
-            OrderContainer.html(orderList.slice((currentPage - 1) * orderPerPage, currentPage * orderPerPage).join(''));
-            num.html(`${currentPage} of ${numPages}`);
-        }
-    });
+    if (orders.length - 2 < orderPerPage) {
+        $('#pagination').hide();
+    }
+    else {
+        $('#pagination').show();
+        num.html(`${currentPage} of ${numPages}`);
+        $('#Previous').on('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                OrderContainer.html(orderList.slice((currentPage - 1) * orderPerPage, currentPage * orderPerPage).join(''));
+                num.html(`${currentPage} of ${numPages}`);
+            }
+        });
+        $('#next').on('click', () => {
+            if (currentPage < numPages) {
+                currentPage++;
+                OrderContainer.html(orderList.slice((currentPage - 1) * orderPerPage, currentPage * orderPerPage).join(''));
+                num.html(`${currentPage} of ${numPages}`);
+            }
+        });
+    }
 }
 
 
@@ -82,7 +87,11 @@ const updateOrderStatus = async (id, status, api) => {
     return await api.put(`employee/Order/${status}/${id}`).then(res => res.data)
         .then(data => {
             if (data) {
-                $(`#order-${id}`).replaceWith(OrderTemplate(data, 'restaurant'));
+                if (status == 'accepted') {
+                    $(`#order-${id}`).remove();
+                    return;
+                }
+                $(`#order-${id}`).replaceWith(OrderTemplate(data, 'employee'));
             }
             showAlert('Order status updated successfully', 'success');
         }).catch(err => {

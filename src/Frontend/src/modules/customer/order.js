@@ -19,7 +19,7 @@ const loadOrders = (orders) => {
     const OrderContainer = $('#order-container');
     OrderContainer.empty();
 
-    const orderList = orders.map(order => OrderTemplate(order));
+    const orderList = orders.map(order => OrderTemplate(order, 'customer'));
 
 
     const orderPerPage = 4;

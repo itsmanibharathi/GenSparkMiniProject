@@ -31,7 +31,7 @@ const localRoutes = {
 
 const loadEmployee = (path) => {
     log.debug('Loading employee');
-    $('#header-placeholder').html(headerTemplate(localRoutes, token.exists(), false));
+    $('#header-placeholder').html(headerTemplate(localRoutes, token, false));
     loadComponent('#footer-placeholder', Footer);
 
     if (path == '/employee/logout') {

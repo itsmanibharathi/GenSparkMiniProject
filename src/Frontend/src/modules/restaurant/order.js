@@ -31,7 +31,7 @@ const loadOrder = async (orders) => {
     const OrderContainer = $('#order-container');
     OrderContainer.empty();
 
-    const orderList = orders.map(order => OrderTemplate(order));
+    const orderList = orders.map(order => OrderTemplate(order, 'restaurant'));
 
 
     const orderPerPage = 4;

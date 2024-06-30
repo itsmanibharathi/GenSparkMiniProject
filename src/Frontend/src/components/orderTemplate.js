@@ -1,28 +1,30 @@
 const OrderTemplate = (item, module) => {
-    const setBtn = (id, status, module) => {
+    const setBtn = (item, module, employeeName) => {
+        const { orderId, orderStatus } = item;
         if (module === 'customer') {
-            if (status == 'Delivered') {
-                return `<button class="mt-2 bg-gray-700 text-white px-4 py-2 rounded" onClick="buyAgain(${id})" >Buy Again</button>`;
+            if (orderStatus == 'Delivered') {
+                return `<button class="mt-2 bg-gray-600 text-white px-4 py-2 rounded" onClick="buyAgain(${orderId})" >Buy Again</button>`;
             }
         }
 
         else if (module === 'restaurant') {
-            if (status == 'Place') {
-                return `<button class="mt-2 bg-green-700 text-white px-4 py-2 rounded" onClick="updateOrder(${id},'Preparing')" >Start Preparing</button>`;
+            if (orderStatus == 'Place') {
+                return `<button class="mt-2 bg-green-700 text-white px-4 py-2 rounded" onClick="updateOrder(${orderId},'Preparing')" >Start Preparing</button>`;
             }
-            else if (status === 'Preparing') {
-                return `<button class="mt-2 bg-green-700 text-white px-4 py-2 rounded" onClick="updateOrder(${id},'Prepared')" >Prepared Order</button>`;
+            else if (orderStatus === 'Preparing') {
+                return `<button class="mt-2 bg-green-700 text-white px-4 py-2 rounded" onClick="updateOrder(${orderId},'Prepared')" >Prepared Order</button>`;
             }
         }
         else if (module === 'employee') {
-            if (status == 'Place' || status === 'Preparing' || status === 'Prepared') {
-                return `<button class="mt-2 bg-green-700 text-white px-4 py-2 rounded" onClick="updateOrder(${id},'accept')" >Accept Order</button>`;
+            console.log(orderStatus);
+            if (employeeName == null) {
+                return `<button class="mt-2 bg-green-700 text-white px-4 py-2 rounded" onClick="updateOrder(${orderId},'accept')" >Accept Order</button>`;
             }
-            else if (status == 'Accepted') {
-                return `<button class="mt-2 bg-green-700 text-white px-4 py-2 rounded" onClick="updateOrder(${id},'pickup')" >PickedUp Order</button>`;
+            else if (orderStatus == 'Prepared') {
+                return `<button class="mt-2 bg-green-700 text-white px-4 py-2 rounded" onClick="updateOrder(${orderId},'pickup')" >PickedUp Order</button>`;
             }
-            else if (status == 'PickedUp') {
-                return `<button class="mt-2 bg-green-700 text-white px-4 py-2 rounded" onClick="updateOrder(${id},'deliver')" >Delivered Order</button>`;
+            else if (orderStatus == 'PickedUp') {
+                return `<button class="mt-2 bg-green-700 text-white px-4 py-2 rounded" onClick="updateOrder(${orderId},'deliver')" >Delivered Order</button>`;
             }
         }
         return '';
@@ -79,8 +81,14 @@ const OrderTemplate = (item, module) => {
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-y-2">
                         ${orderItemsHtml}
                     </div>
+                    ${module === 'customer' || module === 'employee' ? `
+                        <div class="mt-4">
+                            <p class="text-xl font-bold">Delivery Address</p>
+                            <p>${item.deliveryAddress}</p>
+                        </div>
+                    ` : ''}
                     <div class="mt-4 md:mt-0 md:ml-auto text-right">
-                        ${setBtn(item.orderId, item.orderStatus, module)}
+                        ${setBtn(item, module, item.employeeName)}
                     </div>
                 </div>
             </div>
