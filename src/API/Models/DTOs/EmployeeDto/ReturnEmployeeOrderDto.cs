@@ -1,4 +1,5 @@
-﻿using API.Models.Enums;
+﻿using API.Models.DTOs.CustomerDto;
+using API.Models.Enums;
 
 namespace API.Models.DTOs.EmployeeDto
 {
@@ -13,6 +14,7 @@ namespace API.Models.DTOs.EmployeeDto
         public decimal TotalOrderPrice { get; set; }
         public OrderStatus OrderStatus { get; set; }
         public DateTime OrderDate { get; set; }
+        public ReturnCustomerAddressDto? CustomerAddress { get; set; }
         public IEnumerable<ReturnEmployeeOrderItemDto>? OrderItems { get; set; }
         public DateTime DeliveryDate { get; set; }
     }

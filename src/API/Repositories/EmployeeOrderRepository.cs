@@ -14,29 +14,6 @@ namespace API.Repositories
         {
         }
 
-        public override async Task<Order> GetAsync(int orderId)
-        {
-            try
-            {
-                return await _context.Orders
-                    .Include(x => x.OrderItems)
-                    .ThenInclude(x => x.Product)
-                    .Include(x =>x.Restaurant)
-                    .Include(x => x.Customer)
-                    .Include(x => x.Employee)
-                    .Include(x => x.CashPayment)
-                    .FirstOrDefaultAsync(x => x.OrderId == orderId && statuses.Contains(x.OrderStatus)) ?? throw new EntityNotFoundException<Order>(orderId);
-            }
-            catch (EntityNotFoundException<Order>)
-            {
-                throw;
-            }
-            catch (Exception ex)
-            {
-                throw new UnableToDoActionException("Unable to get the Order", ex);
-            }
-        }
-
         public async Task<IEnumerable<Order>> GetAllByEmployeeIdAsync(int employeeId)
         {
             try
@@ -45,8 +22,12 @@ namespace API.Repositories
                 .Include(x => x.OrderItems)
                 .ThenInclude(x => x.Product)
                 .Include(x => x.Employee)
+                .Include(x => x.Customer)
+                .Include(o => o.Restaurant)
+                .Include(o => o.CustomerAddress)
+                .Include(x => x.OnlinePayment)
                 .Include(x => x.CashPayment)
-                .Where(x => x.EmployeeId == employeeId && statuses.Contains(x.OrderStatus)).ToListAsync();
+                .Where(x => x.EmployeeId == employeeId && statuses.Contains(x.OrderStatus) && x.CustomerAddress.AddressId == x.CustomerAddressId).ToListAsync();
                 return res.Count > 0 ? res : throw new EntityNotFoundException<Order>(employeeId);
             }
             catch (EntityNotFoundException<Order>)
@@ -67,6 +48,10 @@ namespace API.Repositories
                 .Include(x => x.OrderItems)
                 .ThenInclude(x => x.Product)
                 .Include(x => x.Employee)
+                .Include(x => x.Customer)
+                .Include(o => o.Restaurant)
+                .Include(o => o.CustomerAddress)
+                .Include(x => x.OnlinePayment)
                 .Include(x => x.CashPayment)
                 .Where(x => x.EmployeeId == employeeId && x.OrderDate.Date == DateTime.Now.Date && statuses.Contains(x.OrderStatus)).ToListAsync();
                 return res.Count > 0 ? res : throw new EntityNotFoundException<Order>(employeeId);
@@ -85,13 +70,22 @@ namespace API.Repositories
         {
             try
             {
+                Console.WriteLine("Hello World!" + employeeRange);
+                foreach (var item in employeeRange)
+                {
+                    Console.WriteLine(item);
+                }
                 var orderstatus = new OrderStatus[] { OrderStatus.Preparing, OrderStatus.Prepared };
                 var res = await _context.Orders
                 .Include(x => x.OrderItems)
                 .ThenInclude(x => x.Product)
+                .Include(x => x.Restaurant)
                 .Include(x => x.Employee)
+                .Include(x => x.Customer)
+                .Include(o => o.CustomerAddress)
+                .Include(x => x.OnlinePayment)
                 .Include(x => x.CashPayment)
-                .Include(o => o.CustomerAddress).Where(o => o.EmployeeId == null && employeeRange.Contains(o.CustomerAddress.Code) && orderstatus.Contains(o.OrderStatus)).ToListAsync();
+                .Where(o => o.EmployeeId == null && employeeRange.Contains(o.Restaurant.AddressCode) && orderstatus.Contains(o.OrderStatus)).ToListAsync();
                 return res.Count > 0 ? res : throw new EntityNotFoundException<Order>();
             }
             catch (EntityNotFoundException<Order>)

@@ -38,6 +38,9 @@ namespace API.Utility
                 .ForMember(dest => dest.ProductPrice, opt => opt.MapFrom(src => src.Product.ProductPrice))
                 .ForMember(dest => dest.ProductDescription, opt => opt.MapFrom(src => src.Product.ProductDescription));
 
+            //ReturnCustomerOrderAddressDto
+            CreateMap<CustomerAddress, ReturnCustomerOrderAddressDto>();
+
             // Customer Order Payment
             CreateMap<OnlinePayment, ReturnOrderOnlinePaymentDto>();
             CreateMap<CashPayment, ReturnOrderCashPaymentDto>();
