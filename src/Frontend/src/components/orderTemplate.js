@@ -93,8 +93,15 @@ const OrderTemplate = (item, module) => {
                     </div>
                     ${module === 'customer' || module === 'employee' ? `
                         <div class="mt-4">
-                            <p class="text-xl font-bold">Delivery Address</p>
-                            <p> code: ${item.customerAddress.code}</p>
+                            <p class="text-xl font-bold">Shipping Details</p>
+                            <div class="flex flex-col space-y-2">
+                                <p>Delivery man name: ${item.employeeName}</p>
+                                <p>Payment Method: ${item.paymentMethod}</p>
+                                <p>Payment Status: ${item.paymentStatus}</p>
+                                <p>Shipping Price: ${item.shippingPrice}</p>
+                                <p>Total Amount: ${item.totalAmount}</p>
+                                <p class="clock" >Delivery Date: ${new Intl.DateTimeFormat('en-US', options).format(new Date(item.deliveryDate)) ?? '---'}</p>
+                            </div>
                         </div>
                         
                     ` : ''}
@@ -114,14 +121,10 @@ window.toggleDetails = (id) => {
 export default OrderTemplate;
 
 
-{/* <div class="mt-4">
-                            <p class="text-xl font-bold">Shipping Details</p>
-                            <div class="flex flex-col space-y-2">
-                                <p>Delivery man name: ${item.employeeName}</p>
-                                <p>Payment Method: ${item.paymentMethod}</p>
-                                <p>Payment Status: ${item.paymentStatus}</p>
-                                <p>Shipping Price: ${item.shippingPrice}</p>
-                                <p>Total Amount: ${item.totalAmount}</p>
-                                <p class="clock" >Delivery Date: ${new Intl.DateTimeFormat('en-US', options).format(new Date(item.deliveryDate)) ?? '---'}</p>
-                            </div>
-                        </div> */}
+{/*  */ }
+
+
+// <div class="mt-4">
+//     <p class="text-xl font-bold">Delivery Address</p>
+//     <p> code: ${item.customerAddress.code}</p>
+// </div>
