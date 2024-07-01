@@ -136,7 +136,8 @@ namespace API.Services
 
         private int calShipingPrice(AddressCode from, AddressCode to)
         {
-            return Math.Abs((int)from - (int)to) * 10;
+            var res = Math.Abs((int)from - (int)to) * 10;
+            return res > 0 ? res : 50;
         }
 
         /// <summary>

@@ -260,6 +260,7 @@ namespace API.Services
                     order.CashPayment.ReceiveBy = employeeId;
                     order.CashPayment.PaymentStatus = PaymentStatus.Paid;
                     order.CashPayment.PaymentDate = DateTime.Now;
+                    order.PaymentStatus = PaymentStatus.Paid;
                 }
                 order.OrderStatus = OrderStatus.Delivered;
                 order.DeliveryDate = DateTime.Now;

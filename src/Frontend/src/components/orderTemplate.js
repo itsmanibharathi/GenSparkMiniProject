@@ -45,6 +45,16 @@ const OrderTemplate = (item, module) => {
         </div>
     `).join('');
 
+    const options = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: true
+    };
+
     return `
         <div id="order-${item.orderId}" class="relative max-w-4xl mx-auto bg-white rounded-lg shadow-md p-4 mb-4 hover:shadow-lg">
             <div class="absolute top-1 right-1">
@@ -84,8 +94,9 @@ const OrderTemplate = (item, module) => {
                     ${module === 'customer' || module === 'employee' ? `
                         <div class="mt-4">
                             <p class="text-xl font-bold">Delivery Address</p>
-                            <p>${item.deliveryAddress}</p>
+                            <p> code: ${item.customerAddress.code}</p>
                         </div>
+                        
                     ` : ''}
                     <div class="mt-4 md:mt-0 md:ml-auto text-right">
                         ${setBtn(item, module, item.employeeName)}
@@ -101,3 +112,16 @@ window.toggleDetails = (id) => {
     orderDetails.classList.toggle('hidden');
 }
 export default OrderTemplate;
+
+
+{/* <div class="mt-4">
+                            <p class="text-xl font-bold">Shipping Details</p>
+                            <div class="flex flex-col space-y-2">
+                                <p>Delivery man name: ${item.employeeName}</p>
+                                <p>Payment Method: ${item.paymentMethod}</p>
+                                <p>Payment Status: ${item.paymentStatus}</p>
+                                <p>Shipping Price: ${item.shippingPrice}</p>
+                                <p>Total Amount: ${item.totalAmount}</p>
+                                <p class="clock" >Delivery Date: ${new Intl.DateTimeFormat('en-US', options).format(new Date(item.deliveryDate)) ?? '---'}</p>
+                            </div>
+                        </div> */}
