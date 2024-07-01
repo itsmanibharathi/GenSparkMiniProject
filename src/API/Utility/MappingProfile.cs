@@ -72,7 +72,7 @@ namespace API.Utility
 
             CreateMap<OrderItem, ReturnRestaurantOrderItemDto>()
                 .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product.ProductName))
-                .ForMember(dest => dest.RestaurantName, opt=> opt.MapFrom(src => src.Product.Restaurant.Name))
+                .ForMember(dest => dest.RestaurantName, opt => opt.MapFrom(src => src.Product.Restaurant.Name))
                 .ForMember(dest => dest.ProductPrice, opt => opt.MapFrom(src => src.Product.ProductPrice))
                 .ForMember(dest => dest.ProductDescription, opt => opt.MapFrom(src => src.Product.ProductDescription));
 

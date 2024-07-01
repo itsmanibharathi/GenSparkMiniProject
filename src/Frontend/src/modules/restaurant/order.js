@@ -7,13 +7,13 @@ import OrderTemplate from '../../components/orderTemplate.js';
 var orders = [];
 const loadOrderCallback = async (api) => {
     orders = await GetOrders(api, '');
-    loadOrder(orders,'Today you didn\'t receive any order');
+    loadOrder(orders, 'Today you didn\'t receive any order');
     document.updateOrder = async (id, status) => updateOrderStatus(id, status, api);
 }
 
 const loadAllOrderCallback = async (api) => {
     orders = await GetOrders(api, 'all');
-    loadOrder(orders,'No order found');
+    loadOrder(orders, 'No order found');
     document.updateOrder = async (id, status) => showAlert('You can only view all orders', 'warning');
 }
 
@@ -26,13 +26,14 @@ const loadOrder = async (orders, msg) => {
         $('#pagination').hide();
         return;
     }
+    
     // const orderContainer = $('#order-container');
     // orderContainer.empty();
     // orderContainer.append(orders.map(order => OrderTemplate(order, 'employee')).join(''));
     const OrderContainer = $('#order-container');
     OrderContainer.empty();
 
-    const orderList = orders.map(order => OrderTemplate(order, 'employee'));
+    const orderList = orders.map(order => OrderTemplate(order, 'restaurant'));
     const orderPerPage = 4;
     let currentPage = 1;
     const numPages = Math.ceil(orders.length / orderPerPage);
@@ -73,7 +74,8 @@ const GetOrders = async (api, path) => {
 }
 
 const updateOrderStatus = async (id, status, api) => {
-    return await api.put(`restaurant/Order/${status}/${id}`).then(res => res.data)
+    return await api.put(`restaurant/Order/${status}/${id}`)
+        .then(res => res.data)
         .then(data => {
             if (data) {
                 $(`#order-${id}`).replaceWith(OrderTemplate(data, 'restaurant'));
